@@ -1,0 +1,30 @@
+{
+  "kind": "collectionType",
+  "collectionName": "particpants",
+  "info": {
+    "singularName": "particpant",
+    "pluralName": "particpants",
+    "displayName": "Particpant"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "email": {
+      "type": "email",
+      "required": true,
+      "unique": true
+    },
+    "nickname": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "token": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    }
+  }
+}
