@@ -4,7 +4,8 @@
   "info": {
     "singularName": "particpant",
     "pluralName": "particpants",
-    "displayName": "Particpant"
+    "displayName": "Participant",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
