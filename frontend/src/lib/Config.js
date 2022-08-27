@@ -1,4 +1,5 @@
-import config from '$lib/data/config.json'
 
-
-export const Config = config;
+export default {
+    // TODO: implement production option
+    baseUrl: "http://localhost:1337"
+};
