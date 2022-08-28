@@ -1,11 +1,10 @@
 <script>
-    import Config from "$lib/Config";
-    import { storeJwt, storeNickname } from '$lib/LocalStorage';
-
+    import { goto } from "$app/navigation";
+    import Config from "$lib/services/Config";
+    import UserStore from '$lib/stores/user.store';
 
     let email = "";
     let password = "";
-
     let error = "";
 
     async function submit(){
@@ -23,14 +22,19 @@
 		});
 
         if(!resp.ok){
-            error = (await resp.json()).message;
+            if(resp.status == 400){
+                error = "invalid login";
+            }else{
+                error = `${resp.status} -> ${resp.statusText}`; 
+            }
             return;
         }
+
         // happy path
         const decodedResp = await resp.json();
+        UserStore.setUser(decodedResp.jwt, decodedResp.user.username);
 
-        storeJwt(decodedResp.jwt);
-        storeNickname(decodedResp.user.username);
+        goto("/");
     }
 
 </script>
@@ -43,5 +47,5 @@
 </form>
 
 {#if error}
-    <p>we encoutered the following error {error}</p>
+    <p>{error}</p>
 {/if}
