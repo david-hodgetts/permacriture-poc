@@ -1,1 +1,0 @@
-- remove invitation api folder as soon as user login process is validated
