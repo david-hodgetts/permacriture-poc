@@ -24,6 +24,8 @@
         if(!resp.ok){
             if(resp.status == 400){
                 error = "invalid login";
+                email = "";
+                password = "";
             }else{
                 error = `${resp.status} -> ${resp.statusText}`; 
             }
@@ -43,7 +45,7 @@
 <form on:submit|preventDefault={submit}>
     <input type="email" label="email" placeholder="your email" bind:value={email}>
     <input type="password" label="password" placeholder="your password" bind:value={password}>
-    <button type='submit'>Submit</button>
+    <button type='submit' disabled={!email || !password}>Submit</button>
 </form>
 
 {#if error}
