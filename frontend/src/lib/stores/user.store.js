@@ -4,8 +4,8 @@ import { browser } from '$app/env';
 
 function createUserStore() {
 	const { subscribe, set } = writable({
-        nickname: browser ? getNickname() : "",
-        jwt: browser ? getJwt() : "",
+        nickname: getNickname(),
+        jwt: getJwt(),
     });
 
 	return {
@@ -16,18 +16,14 @@ function createUserStore() {
          * @param {string} nickname 
          */
         setUser: (jwt, nickname) => {
-            if(browser){
-                storeJwt(jwt);
-                storeNickname(nickname);
-            }
-            set({nickname, jwt});
+            storeJwt(jwt);
+            storeNickname(nickname);
+            set({ nickname, jwt });
         },
 		clear: () => {
-            if(browser){
-                clearJwt();
-                clearNickname();
-            }
-            set({nickname: "", jwt: ""});
+            clearJwt();
+            clearNickname();
+            set({ nickname: "", jwt: "" });
         }
 	};
 }
