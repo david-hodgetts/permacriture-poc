@@ -9,3 +9,29 @@ It aims to test and validate the following technical stack.
 ## backend/api
 
 [Strapi](https://strapi.io/) based cms/api.
+
+
+## installation
+
+Install dependencies for both folders:
+
+```
+$ npm install
+```
+
+Make sure you have a valid .env file for the strapi project.
+
+
+## runing the project locally
+
+Start the backend:
+
+```
+$ npm run develop
+```
+
+Start the frontent:
+
+```
+$ npm run dev
+```
