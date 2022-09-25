@@ -1,0 +1,23 @@
+{
+    "kind": "collectionType",
+    "collectionName": "terrains",
+    "info": {
+        "singularName": "terrain",
+        "pluralName": "terrains",
+        "displayName": "Terrain"
+    },
+    "options": {
+        "draftAndPublish": true
+    },
+    "pluginOptions": {},
+    "attributes": {
+        "title": {
+            "type": "string",
+            "required": true,
+            "unique": true
+        },
+        "description": {
+            "type": "richtext"
+        }
+    }
+}
