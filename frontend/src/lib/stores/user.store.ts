@@ -1,10 +1,12 @@
-import { clearJwt, clearNickname, getJwt, getNickname, storeJwt, storeNickname } from "$lib/services/LocalStorage";
+import type { User } from "$lib/models/User";
+import { clearJwt, clearNickname, getJwt, getUser, storeJwt, storeUser } from "$lib/services/LocalStorage";
 import { writable } from "svelte/store";
-import { browser } from '$app/env';
+
 
 function createUserStore() {
+ 
 	const { subscribe, set } = writable({
-        nickname: getNickname(),
+        user: getUser(),
         jwt: getJwt(),
     });
 
@@ -15,15 +17,15 @@ function createUserStore() {
          * @param {string} jwt token
          * @param {string} nickname 
          */
-        setUser: (jwt, nickname) => {
+        setUser: (jwt: string, user: User) => {
             storeJwt(jwt);
-            storeNickname(nickname);
-            set({ nickname, jwt });
+            storeUser(user);
+            set({ user, jwt });
         },
 		clear: () => {
             clearJwt();
             clearNickname();
-            set({ nickname: "", jwt: "" });
+            set({ user: null, jwt: "" });
         }
 	};
 }

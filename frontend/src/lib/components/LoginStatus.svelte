@@ -3,8 +3,8 @@
 </script>
 
 
-{#if $UserStore.nickname}
-    <p>logged in as {$UserStore.nickname}</p>
+{#if $UserStore.user}
+    <p>logged in as {$UserStore.user.nickname}</p>
     <a href="/logout">logout</a>
 {:else}
     <p>you are not logged in</p>

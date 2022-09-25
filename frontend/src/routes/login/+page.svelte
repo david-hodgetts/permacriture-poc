@@ -34,7 +34,11 @@
 
         // happy path
         const decodedResp = await resp.json();
-        UserStore.setUser(decodedResp.jwt, decodedResp.user.username);
+        console.log("logged-in as", decodedResp);
+        
+        const jwt = decodedResp.jwt;
+        const user = { id: decodedResp.user.id, nickname: decodedResp.user.username };
+        UserStore.setUser(jwt, user);
 
         goto("/");
     }
