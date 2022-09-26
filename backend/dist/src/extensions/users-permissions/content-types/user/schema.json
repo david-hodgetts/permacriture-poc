@@ -65,8 +65,9 @@
         },
         "terrain": {
             "type": "relation",
-            "relation": "oneToOne",
-            "target": "api::terrain.terrain"
+            "relation": "manyToOne",
+            "target": "api::terrain.terrain",
+            "inversedBy": "users"
         }
     }
 }

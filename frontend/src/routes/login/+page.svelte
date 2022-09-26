@@ -1,6 +1,7 @@
 <script>
     import { goto } from "$app/navigation";
     import Config from "$lib/services/Config";
+	import { strapiService } from "$lib/services/StrapiService";
     import UserStore from '$lib/stores/user.store';
 
     let email = "";
@@ -39,6 +40,8 @@
         const jwt = decodedResp.jwt;
         const user = { id: decodedResp.user.id, nickname: decodedResp.user.username };
         UserStore.setUser(jwt, user);
+
+        const terrain = await strapiService.getTerrain(user);
 
         goto("/");
     }

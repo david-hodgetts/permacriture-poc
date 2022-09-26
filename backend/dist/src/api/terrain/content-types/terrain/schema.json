@@ -18,6 +18,12 @@
         },
         "description": {
             "type": "richtext"
+        },
+        "users": {
+            "type": "relation",
+            "relation": "oneToMany",
+            "target": "plugin::users-permissions.user",
+            "mappedBy": "terrain"
         }
     }
 }
