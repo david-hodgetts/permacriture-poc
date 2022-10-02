@@ -4,7 +4,8 @@
   "info": {
     "singularName": "terrain",
     "pluralName": "terrains",
-    "displayName": "Terrain"
+    "displayName": "Terrain",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -24,6 +25,11 @@
       "relation": "oneToMany",
       "target": "plugin::users-permissions.user",
       "mappedBy": "terrain"
+    },
+    "moderators": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "admin::user"
     }
   }
 }
