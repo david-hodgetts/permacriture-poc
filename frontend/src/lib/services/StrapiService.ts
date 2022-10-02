@@ -2,13 +2,13 @@ import type { Terrain } from "$lib/models/Terrain";
 
 import axios  from 'axios';
 import Config from "$lib/services/Config";
-import type { User } from "$lib/models/User";
+import type { Context, User } from "$lib/models/User";
 import { getJwt } from "$lib/services/LocalStorage";
 
 
-function axiosOptions(){
+function axiosOptions(optionaJwt:string = ""){
 
-  const authToken = getJwt();
+  const authToken = optionaJwt ? optionaJwt : getJwt();
   return {
     headers: { 
       'Content-Type': 'application/json',
@@ -20,13 +20,13 @@ function axiosOptions(){
 class StrapiService
 {
 
-    async getTerrain(user:User): Promise<Terrain|null>{
-        const url = `${Config.baseUrl}/api/users/me`;
-        console.log(axiosOptions());
+    async getContext(optionaJwt: string = ""): Promise<Context|null>{
+        const url = `${Config.baseUrl}/api/user-context`;
+        console.log(axiosOptions(optionaJwt));
         try{
-            let terrain = await axios.get(url, axiosOptions());
-            console.log(terrain);
-            return terrain as any as Terrain;
+            let context = await axios.get(url, axiosOptions(optionaJwt));
+            console.log(context);
+            return context.data as Context;
         }catch(e){
           console.error(e);
           return null;

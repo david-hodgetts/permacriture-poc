@@ -1,4 +1,4 @@
-import type { User } from "$lib/models/User";
+import type User from "$lib/models/User";
 import { clearJwt, clearNickname, getJwt, getUser, storeJwt, storeUser } from "$lib/services/LocalStorage";
 import { writable } from "svelte/store";
 
@@ -12,12 +12,7 @@ function createUserStore() {
 
 	return {
 		subscribe,
-        /**
-         * 
-         * @param {string} jwt token
-         * @param {string} nickname 
-         */
-        setUser: (jwt: string, user: User) => {
+        setUser: (user: User, jwt: string) => {
             storeJwt(jwt);
             storeUser(user);
             set({ user, jwt });

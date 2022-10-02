@@ -1,4 +1,4 @@
-export interface Terrain
+export default interface Terrain
 {
     id:number,
     title:string,

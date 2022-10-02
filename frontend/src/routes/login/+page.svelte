@@ -1,7 +1,8 @@
-<script>
+<script lang="ts">
     import { goto } from "$app/navigation";
     import Config from "$lib/services/Config";
 	import { strapiService } from "$lib/services/StrapiService";
+    import type User from "$lib/models/User";
     import UserStore from '$lib/stores/user.store';
 
     let email = "";
@@ -36,12 +37,24 @@
         // happy path
         const decodedResp = await resp.json();
         console.log("logged-in as", decodedResp);
-        
+       
+        // 1 get jwt
         const jwt = decodedResp.jwt;
-        const user = { id: decodedResp.user.id, nickname: decodedResp.user.username };
-        UserStore.setUser(jwt, user);
 
-        const terrain = await strapiService.getTerrain(user);
+        // get user context with jwt
+        const context = await strapiService.getContext(jwt);
+
+        if(!context){
+            error = `unable to get context`;
+            return;
+        }
+        // persist user
+        const user: User = { 
+            id: decodedResp.user.id, 
+            nickname: decodedResp.user.username,
+            context: context,
+        };
+        UserStore.setUser(user, jwt);
 
         goto("/");
     }

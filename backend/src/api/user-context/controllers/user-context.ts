@@ -3,24 +3,31 @@
  */
 
 export default {
-  getUserContext: async (ctx, next) => {
-    console.log("user", ctx.state.user);
-    const userId = ctx.state.user.id;
+    getUserContext: async (ctx, next) => {
+        try {
+            // console.log("user", ctx.state.user);
+            const userId = ctx.state.user.id;
 
-    const entry = await strapi.db.query('api::terrain.terrain').findOne({
-      select: ['id', 'title', 'description'],
-      where: {'users': {
-        'id': userId,
-      }},
-      populate: ['users'],
-    });
+            const entry = await strapi.db.query('api::terrain.terrain').findOne({
+                select: ['id', 'title', 'description'],
+                where: {
+                    'users': {
+                        'id': userId,
+                    }
+                },
+                populate: ['users'],
+            });
 
-    console.log(entry);
+            const data = {
+                terrain: {
+                    id: entry.id,
+                    title: entry.title,
+                }
+            }
 
-    try {
-      ctx.body = 'ok';
-    } catch (err) {
-      ctx.body = err;
+            ctx.body = JSON.stringify(data);
+        } catch (err) {
+            ctx.body = err;
+        }
     }
-  }
 };

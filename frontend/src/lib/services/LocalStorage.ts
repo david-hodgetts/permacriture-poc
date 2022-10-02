@@ -1,6 +1,6 @@
 // note for self -> The keys and the values stored with localStorage are always in the UTF-16 string format.
 
-import type { User } from "$lib/models/User";
+import type User from "$lib/models/User";
 
 
 
