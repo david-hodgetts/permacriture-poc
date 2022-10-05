@@ -30,6 +30,20 @@
       "type": "relation",
       "relation": "oneToMany",
       "target": "admin::user"
+    },
+    "start": {
+      "type": "date",
+      "required": true
+    },
+    "end": {
+      "type": "date",
+      "required": true
+    },
+    "publication_delay": {
+      "type": "integer",
+      "default": 0,
+      "required": true,
+      "min": 0
     }
   }
 }
