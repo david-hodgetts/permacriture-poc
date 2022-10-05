@@ -1,5 +1,6 @@
 
+const isProd = window.location.host == 'app.permacriture.org';
+
 export default {
-    // TODO: implement production option
-    baseUrl: "http://localhost:1337"
+    baseUrl: isProd ? "https://api.permacriture.org" : "http://localhost:1337"
 };
