@@ -1,7 +1,7 @@
 
 const { ValidationError } = require("@strapi/utils").errors;
 function validateTerrain(event){
-    const start =  new Date(event.params.data.start);
+    const start = new Date(event.params.data.start);
     const end =  new Date(event.params.data.end);
 
     // end must be greater than start

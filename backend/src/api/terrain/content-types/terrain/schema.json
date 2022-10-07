@@ -39,9 +39,15 @@
       "type": "date",
       "required": true
     },
-    "publication_delay": {
+    "contribution_publication_delay": {
       "type": "integer",
-      "default": 0,
+      "default": 24,
+      "required": true,
+      "min": 0
+    },
+    "contribution_manual_publication_delay": {
+      "type": "integer",
+      "default": 8,
       "required": true,
       "min": 0
     }
