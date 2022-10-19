@@ -26,11 +26,6 @@
       "target": "plugin::users-permissions.user",
       "mappedBy": "terrain"
     },
-    "moderators": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "admin::user"
-    },
     "start": {
       "type": "date",
       "required": true
