@@ -1,4 +1,3 @@
-
 const isProd = window.location.host == 'app.permacriture.org';
 
 export default {

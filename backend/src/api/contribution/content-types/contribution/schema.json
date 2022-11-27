@@ -4,22 +4,46 @@
   "info": {
     "singularName": "contribution",
     "pluralName": "contributions",
-    "displayName": "Contribution"
+    "displayName": "Contribution",
+    "description": ""
   },
   "options": {
     "draftAndPublish": false
   },
   "pluginOptions": {},
   "attributes": {
-    "text": {
-      "type": "text",
-      "required": true
-    },
-    "user": {
+    "author": {
       "type": "relation",
       "relation": "manyToOne",
       "target": "plugin::users-permissions.user",
       "inversedBy": "contributions"
+    },
+    "state": {
+      "type": "enumeration",
+      "enum": [
+        "Pending",
+        "Published",
+        "Abandoned"
+      ],
+      "default": "Pending",
+      "required": true
+    },
+    "publicationDatetime": {
+      "type": "datetime"
+    },
+    "isSeed": {
+      "type": "boolean",
+      "default": true,
+      "required": true
+    },
+    "text": {
+      "type": "richtext"
+    },
+    "terrain": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::terrain.terrain",
+      "inversedBy": "contribution"
     }
   }
 }

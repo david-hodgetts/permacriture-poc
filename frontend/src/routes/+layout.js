@@ -1,0 +1,3 @@
+// src/routes/+layout.js
+// disable ssr once and for all we hope...
+export const ssr = false;
