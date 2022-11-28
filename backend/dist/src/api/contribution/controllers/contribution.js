@@ -29,7 +29,8 @@ exports.default = strapi_1.factories.createCoreController('api::contribution.con
             where: {
                 'terrain': {
                     'id': terrain.id,
-                }
+                },
+                'state': 'Published',
             },
             populate: ['author'],
         });

@@ -35,7 +35,8 @@ export default factories.createCoreController('api::contribution.contribution', 
             where: {
                 'terrain': {
                     'id': terrain.id,
-                }
+                },
+                'state': 'Published',
             },
             populate: ['author'],
         });
