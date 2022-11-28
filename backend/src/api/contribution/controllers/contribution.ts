@@ -39,6 +39,7 @@ export default factories.createCoreController('api::contribution.contribution', 
                 'state': 'Published',
             },
             populate: ['author'],
+            orderBy: { publicationDatetime: 'asc'}
         });
         
         console.log("entries", entries);

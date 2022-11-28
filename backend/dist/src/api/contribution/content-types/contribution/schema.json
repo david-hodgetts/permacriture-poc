@@ -42,8 +42,7 @@
         "terrain": {
             "type": "relation",
             "relation": "oneToOne",
-            "target": "api::terrain.terrain",
-            "inversedBy": "contribution"
+            "target": "api::terrain.terrain"
         }
     }
 }

@@ -4,9 +4,15 @@
 
 
 {#if $UserStore.user}
-    <p>logged in as {$UserStore.user.nickname} on terrain {$UserStore.user.context.terrain.title}</p>
-    <a href="/logout">logout</a>
-{:else}
-    <p>you are not logged in</p>
-    <a href="/login">login</a>
+    <p>
+        user {$UserStore.user.nickname} | {$UserStore.user.context.terrain.title}
+        <a href="/logout">logout</a>
+    </p>
 {/if}
+
+<style>
+    p{
+        margin: 0;
+        padding: 0;
+    }
+</style>

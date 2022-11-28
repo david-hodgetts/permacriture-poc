@@ -45,12 +45,6 @@
             "default": 8,
             "required": true,
             "min": 0
-        },
-        "contribution": {
-            "type": "relation",
-            "relation": "oneToOne",
-            "target": "api::contribution.contribution",
-            "mappedBy": "terrain"
         }
     }
 }

@@ -33,6 +33,7 @@ exports.default = strapi_1.factories.createCoreController('api::contribution.con
                 'state': 'Published',
             },
             populate: ['author'],
+            orderBy: { publicationDatetime: 'asc' }
         });
         console.log("entries", entries);
         // // some more custom logic

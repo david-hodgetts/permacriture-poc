@@ -8,4 +8,13 @@ import Navigation from "$lib/components/Navigation.svelte";
 
 <Navigation />
 
-<slot></slot>
+<main>
+    <slot></slot>
+</main>
+
+
+<style lang="scss">
+    main{
+        margin-top: var(--navbar-height);
+    }
+</style>
