@@ -9,6 +9,7 @@ export enum ContributionState{
 export class Contribution{
     
     constructor(
+        public id: number,
         public author: User,
         public text: string,
         public state: ContributionState,
@@ -18,6 +19,7 @@ export class Contribution{
 
     public static newFromObj(obj:any){
         return new Contribution(
+            obj.id,
             obj.author, 
             obj.text, 
             obj.state,

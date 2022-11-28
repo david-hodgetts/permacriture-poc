@@ -13,3 +13,11 @@ export function truncate(text:string, desiredCharCount:number): string{
     const subString = text.slice(0, desiredCharCount - 1);
     return subString.slice(0, subString.lastIndexOf(" ")) + "\u2026";
 }
+
+export function produceDateString(date: Date) {
+    return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+}
+
+export function produceTimeString(date: Date) {
+    return `${String(date.getHours()).padStart(2, '0')}h${String(date.getMinutes()).padStart(2, '0')}`;
+}
