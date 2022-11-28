@@ -1,7 +1,10 @@
 <script lang="ts">
 	import type { Contribution } from "$lib/models/Contribution";
+    import { truncate } from "$lib/services/textUtils";
 
     export let contribution: Contribution;
+
+    const maxCharCount = 180;
 
     function produceDateString(date:Date){
         return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
@@ -26,6 +29,14 @@
             <span>{produceTimeString(contribution.publicationDatetime)}</span>
         </div> 
     </header>
+    <div class="text">
+        {@html truncate(contribution.text, maxCharCount)}
+    </div>
+    <footer>
+        <div class="open-detail">
+            &hellip; voir plus
+        </div>
+    </footer>
 </div>
 
 
@@ -38,6 +49,7 @@
         color: var(--color-grey-1);
         padding-left:16.5px;
         padding-right:16.5px;
+        font-size: var(--font-size);
     }
 
     h2{
@@ -45,8 +57,22 @@
         padding: 0;
     }
 
+    .text{
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+
     .date-time{
         font-size: var(--font-size-small);
+    }
+
+    footer{
+        padding-bottom: 40px;
+    }
+
+    .open-detail{
+        font-size: var(--font-size-super-small);
+        font-weight: bold;
     }
 
     header{
