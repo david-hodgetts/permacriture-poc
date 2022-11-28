@@ -56,6 +56,12 @@
         font-size: var(--font-size);
         cursor: pointer;
     }
+    
+    header{
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+    }
 
     h2{
         margin: 0;
@@ -80,11 +86,6 @@
         font-weight: bold;
     }
 
-    header{
-        display: flex;
-        justify-content: space-between;
-        align-items: baseline;
-    }
 </style>
 
 
