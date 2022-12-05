@@ -64,6 +64,7 @@ export default factories.createCoreController('api::contribution.contribution', 
         return this.transformResponse(sanitizedEntity);
     },
 
+    // TODO: extract in service
     async create(ctx) {
         // some logic here
         // const response = await super.create(ctx);
@@ -95,9 +96,9 @@ export default factories.createCoreController('api::contribution.contribution', 
         }
 
         // 1. create new contribution
-
         const newContribution = await strapi.entityService.create('api::contribution.contribution', {
             data: {
+                author: userId,
                 state: "Pending",
                 isSeed: false,
                 text: "",
@@ -105,9 +106,19 @@ export default factories.createCoreController('api::contribution.contribution', 
             },
         });
         console.log(newContribution);
+        console.log("creating first link");
+        // 2. create link 
+        const link = await strapi.entityService.create('api::link.link', {
+            data:{
+                parent: parentContributionId,
+                child: newContribution.id,
+                isFirstLink: true,
+            },
+        });
 
-      
-        return {message: "ok"};
+        console.log("link", link);
+
+        ctx.body = newContribution;
     }
       
 })); 

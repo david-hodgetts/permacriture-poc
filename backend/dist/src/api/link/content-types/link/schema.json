@@ -4,7 +4,8 @@
     "info": {
         "singularName": "link",
         "pluralName": "links",
-        "displayName": "Link"
+        "displayName": "Link",
+        "description": ""
     },
     "options": {
         "draftAndPublish": false
@@ -20,6 +21,11 @@
             "type": "relation",
             "relation": "oneToOne",
             "target": "api::contribution.contribution"
+        },
+        "isFirstLink": {
+            "type": "boolean",
+            "default": false,
+            "required": false
         }
     }
 }
