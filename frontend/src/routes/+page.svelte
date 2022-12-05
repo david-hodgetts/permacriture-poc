@@ -4,7 +4,7 @@
     import ContributionEditor from "$lib/components/ContributionEditor.svelte"
     import { onMount } from 'svelte';
 	import { strapiService } from "$lib/services/StrapiService";
-	import { Contribution, ContributionState } from "$lib/models/Contribution";
+	import type { Contribution } from "$lib/models/Contribution";
 
     let contributions: Contribution[] = [];
     let selectedContribution: Contribution | null = null;
@@ -12,12 +12,14 @@
     onMount(async() => {
         contributions = await strapiService.getContributions();
         console.log(contributions);
-        console.log(contributions[0].state == ContributionState.Published);
     });
 
     function onCardSelectionRequest(e:any){
-        console.log("youpi", e.detail.contribution);
         selectedContribution = e.detail.contribution;
+    }
+
+    function onNewContributionRequest(e:any){
+        const parentContribution = e.detail.contribution;
     }
 
 </script>
@@ -30,6 +32,7 @@
     <ContributionList 
         contributions={contributions} 
         on:cardSelectionRequest={onCardSelectionRequest} 
+        on:newContributionRequest={onNewContributionRequest}
     />
 {:else}
     <ContributionEditor 

@@ -21,7 +21,7 @@ function newDateOrNull(dateStr: string | null): Date | null{
         return null;
     }
 
-    return null;
+    return result;
 }
 
 export class Contribution{

@@ -25,7 +25,7 @@ exports.default = strapi_1.factories.createCoreController('api::contribution.con
         });
         console.log("terrain", terrain);
         const entries = await strapi.db.query('api::contribution.contribution').findMany({
-            select: ['id', 'text', 'isSeed', 'state', 'publicationDatetime'],
+            select: ['id', 'text', 'isSeed', 'state', 'publicationDatetime', 'lastSavedDatetime'],
             where: {
                 'terrain': {
                     'id': terrain.id,
@@ -48,4 +48,44 @@ exports.default = strapi_1.factories.createCoreController('api::contribution.con
         const sanitizedEntity = await this.sanitizeOutput(entity, ctx);
         return this.transformResponse(sanitizedEntity);
     },
+    async create(ctx) {
+        // some logic here
+        // const response = await super.create(ctx);
+        // some more logic
+        const userId = ctx.state.user.id;
+        console.log("before craa");
+        let userContext;
+        try {
+            userContext = await strapi.service('api::user-context.user-context').getContext(userId);
+        }
+        catch (e) {
+            return ctx.badRequest("invalid user context", {});
+        }
+        console.log("usercontext", userContext);
+        // extract parentContributionId from request body
+        const parentContributionId = ctx.request.body.data.parentContributionId;
+        // check parentContribution exists and is a valid contrib (ie is in published state)
+        const parentContribution = await strapi.db.query('api::contribution.contribution').findOne({
+            select: ['id'],
+            where: {
+                'id': parentContributionId,
+                'state': 'Published',
+            },
+        });
+        console.log(parentContribution);
+        if (!parentContribution) {
+            return ctx.badRequest('invalid parent contribution', {});
+        }
+        // 1. create new contribution
+        const newContribution = await strapi.entityService.create('api::contribution.contribution', {
+            data: {
+                state: "Pending",
+                isSeed: false,
+                text: "",
+                terrain: 1
+            },
+        });
+        console.log(newContribution);
+        return { message: "ok" };
+    }
 }));

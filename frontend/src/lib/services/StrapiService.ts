@@ -53,6 +53,11 @@ class StrapiService
             return [];
         }
     }
+
+    async createNewContributionFromParent(contribution:Contribution): Promise<Contribution>{
+        const url = `${Config.baseUrl}/api/contributions`;
+
+    }
 }
 
 export const strapiService = new StrapiService();

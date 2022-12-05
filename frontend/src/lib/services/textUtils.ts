@@ -14,10 +14,16 @@ export function truncate(text:string, desiredCharCount:number): string{
     return subString.slice(0, subString.lastIndexOf(" ")) + "\u2026";
 }
 
-export function produceDateString(date: Date) {
+export function produceDateString(date: Date|null) {
+    if(date === null){
+        return "";
+    }
     return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
 }
 
-export function produceTimeString(date: Date) {
+export function produceTimeString(date: Date|null) {
+    if(date === null){
+        return "";
+    }
     return `${String(date.getHours()).padStart(2, '0')}h${String(date.getMinutes()).padStart(2, '0')}`;
 }

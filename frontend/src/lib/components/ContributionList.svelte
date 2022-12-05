@@ -10,6 +10,9 @@
     function onCardSelectionRequest(e:any){
         dispatch("cardSelectionRequest", e.detail);
     }
+    function onNewContributionRequest(e:any){
+        dispatch("newContributionRequest", e.detail);
+    }
 </script>
 
 <div 
@@ -18,7 +21,8 @@
     {#each contributions as contribution }
         <ContributionCard 
             contribution={contribution} 
-            on:cardSelectionRequest={onCardSelectionRequest} />
+            on:cardSelectionRequest={onCardSelectionRequest} 
+            on:newContributionRequest={onNewContributionRequest}/>
     {/each}
 </div>
 

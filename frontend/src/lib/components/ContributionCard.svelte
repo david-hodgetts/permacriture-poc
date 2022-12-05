@@ -10,36 +10,37 @@
     const maxCharCount = 180;
 
     function sendSelectionRequest(){
-        console.log("youpi");
         dispatch("cardSelectionRequest", { contribution: contribution });
     }
 
-
+    function sendNewContributionRequest(){
+        dispatch("newContributionRequest", { contribution: contribution });
+    }
 </script>
 
 
-<div 
-    class="contribution-card"
-    on:click={sendSelectionRequest}
->
-    <header>
-        {#if contribution.author != null}
-            <h2>contribution.author</h2>
-        {:else}
-            <h2>&nbsp</h2>
-        {/if}
-        <div class="date-time">
-            <span>{produceDateString(contribution.publicationDatetime)}</span>
-            <span>{produceTimeString(contribution.publicationDatetime)}</span>
-        </div> 
-    </header>
-    <div class="text">
-        {@html truncate(contribution.text, maxCharCount)}
+<div class="contribution-card">
+    <div class="selectable" on:click={sendSelectionRequest}>
+        <header>
+            {#if contribution.author != null}
+                <h2>contribution.author</h2>
+            {:else}
+                <h2>&nbsp</h2>
+            {/if}
+            <div class="date-time">
+                <span>{produceDateString(contribution.publicationDatetime)}</span>
+                <span>{produceTimeString(contribution.publicationDatetime)}</span>
+            </div> 
+        </header>
+        <div class="text">
+            {@html truncate(contribution.text, maxCharCount)}
+        </div>
     </div>
     <footer>
         <div class="open-detail">
             &hellip; voir plus
         </div>
+        <button on:click={sendNewContributionRequest}>new</button>
     </footer>
 </div>
 
@@ -47,13 +48,15 @@
 
 <style lang="scss">
     .contribution-card{
-        background-color: var(--color-grey-0);
+        background-color: var(--white);
         height: var(--contribution-card-height);
         border-radius: 20px;
         color: var(--color-grey-1);
         padding-left: 16.5px;
         padding-right: 16.5px;
         font-size: var(--font-size);
+
+        border: solid 1px var(--color-grey-0);
         cursor: pointer;
     }
     
@@ -78,6 +81,8 @@
     }
 
     footer{
+        display: flex;
+        justify-content: space-between;
         padding-bottom: 40px;
     }
 

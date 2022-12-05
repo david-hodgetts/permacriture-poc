@@ -1,0 +1,15 @@
+
+{
+  "kind": "collectionType",
+  "collectionName": "user_contexts",
+  "info": {
+    "singularName": "user-context",
+    "pluralName": "user-contexts",
+    "displayName": "user-context"
+  },
+  "options": {
+    "draftAndPublish": false,
+    "comment": ""
+  },
+  "attributes": {}
+}
