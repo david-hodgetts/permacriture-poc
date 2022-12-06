@@ -43,9 +43,6 @@
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::terrain.terrain"
-    },
-    "lastSavedDatetime": {
-      "type": "datetime"
     }
   }
 }

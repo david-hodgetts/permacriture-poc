@@ -91,6 +91,10 @@
         font-weight: bold;
     }
 
+    button{
+        cursor: pointer;
+    }
+
 </style>
 
 

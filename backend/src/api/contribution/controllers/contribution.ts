@@ -31,7 +31,7 @@ export default factories.createCoreController('api::contribution.contribution', 
         console.log("terrain", terrain);
 
         const entries = await strapi.db.query('api::contribution.contribution').findMany({
-            select: ['id', 'text', 'isSeed', 'state', 'publicationDatetime', 'lastSavedDatetime'],
+            select: ['id', 'text', 'isSeed', 'state', 'publicationDatetime',],
             where: {
                 'terrain': {
                     'id': terrain.id,
@@ -43,9 +43,6 @@ export default factories.createCoreController('api::contribution.contribution', 
         });
         
         console.log("entries", entries);
-
-
-
 
         // // some more custom logic
         // meta.date = Date.now();
@@ -59,7 +56,9 @@ export default factories.createCoreController('api::contribution.contribution', 
         const { query } = ctx;
 
         const entity = await strapi.service('api::contribution.contribution').findOne(id, query);
+        console.log("before", entity);
         const sanitizedEntity = await this.sanitizeOutput(entity, ctx);
+        console.log("after", entity);
 
         return this.transformResponse(sanitizedEntity);
     },
@@ -102,9 +101,13 @@ export default factories.createCoreController('api::contribution.contribution', 
                 state: "Pending",
                 isSeed: false,
                 text: "",
-                terrain: 1
+                terrain: userContext.terrain.id,
             },
+            populate: ['author'],
         });
+
+        // replace full leaky object by id
+        newContribution.author = userId;
         console.log(newContribution);
         console.log("creating first link");
         // 2. create link 
@@ -118,7 +121,8 @@ export default factories.createCoreController('api::contribution.contribution', 
 
         console.log("link", link);
 
-        ctx.body = newContribution;
+        ctx.body = {
+            data: { id: newContribution.id },
+        };
     }
-      
 })); 

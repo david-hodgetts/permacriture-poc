@@ -5,6 +5,7 @@
     import { onMount } from 'svelte';
 	import { strapiService } from "$lib/services/StrapiService";
 	import type { Contribution } from "$lib/models/Contribution";
+	import { goto } from "$app/navigation";
 
     let contributions: Contribution[] = [];
     let selectedContribution: Contribution | null = null;
@@ -18,8 +19,20 @@
         selectedContribution = e.detail.contribution;
     }
 
-    function onNewContributionRequest(e:any){
+    async function onNewContributionRequest(e:any){
+        console.log(onNewContributionRequest);
         const parentContribution = e.detail.contribution;
+        let newContributionId = await strapiService.createNewContributionFromParent(parentContribution);
+        console.log(newContributionId);
+        if(newContributionId == -1){
+            // TODO: handle error for user
+            console.error("unable to create new contribution");
+            return;
+        }
+
+        // open the editor
+        // goto(`/editor/${newContributionId}`);
+
     }
 
 </script>
