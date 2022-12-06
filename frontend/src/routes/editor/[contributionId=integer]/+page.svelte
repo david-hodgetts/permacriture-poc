@@ -6,8 +6,6 @@
     export let data: PageData;
 
     async function saveText(){
-        console.log("save Text", data.contribution.text);
-
         try{
             await strapiService.updateContribution({ id: data.contribution.id, text: data.contribution.text }) 
         }catch(e){

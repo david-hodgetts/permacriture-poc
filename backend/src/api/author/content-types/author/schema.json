@@ -4,7 +4,8 @@
   "info": {
     "singularName": "author",
     "pluralName": "authors",
-    "displayName": "Author"
+    "displayName": "Author",
+    "description": ""
   },
   "options": {
     "draftAndPublish": false
@@ -31,12 +32,6 @@
       "relation": "oneToMany",
       "target": "api::contribution.contribution",
       "mappedBy": "author"
-    },
-    "contribution": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::contribution.contribution",
-      "inversedBy": "author"
     }
   }
 }

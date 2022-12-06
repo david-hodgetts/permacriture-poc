@@ -22,7 +22,7 @@ exports.default = strapi_1.factories.createCoreController('api::contribution.con
             return ctx.badRequest("invalid user context", {});
         }
         console.log("usercontext", userContext);
-        const entries = await strapi.db.query('api::contribution.contribution').findMany({
+        const contributions = await strapi.db.query('api::contribution.contribution').findMany({
             select: ['id', 'text', 'isSeed', 'state', 'publicationDatetime',],
             where: {
                 'terrain': {
@@ -33,10 +33,12 @@ exports.default = strapi_1.factories.createCoreController('api::contribution.con
             populate: ['author'],
             orderBy: { publicationDatetime: 'asc' }
         });
-        console.log("entries", entries);
+        console.log("contributions", contributions);
         // // some more custom logic
         // meta.date = Date.now();
-        return { entries };
+        ctx.body = {
+            data: contributions
+        };
     },
     // Method 3: Replacing a core action
     async findOne(ctx) {
@@ -49,6 +51,29 @@ exports.default = strapi_1.factories.createCoreController('api::contribution.con
         const sanitizedEntity = await this.sanitizeOutput(entity, ctx);
         ctx.body = sanitizedEntity;
         // return this.transformResponse(sanitizedEntity);
+    },
+    async myContributions(ctx) {
+        const userId = ctx.state.user.id;
+        let userContext;
+        try {
+            userContext = await strapi.service('api::user-context.user-context').getContext(userId);
+        }
+        catch (e) {
+            return ctx.badRequest("invalid user context", {});
+        }
+        console.log("usercontext", userContext);
+        const contributions = await strapi.db.query('api::contribution.contribution').findMany({
+            select: ['id', 'text', 'publicationDatetime', 'isSeed', 'state'],
+            where: {
+                'author': userContext.author.id,
+                'state': 'Pending',
+            },
+            populate: ['author'],
+        });
+        console.log(contributions);
+        ctx.body = {
+            data: contributions
+        };
     },
     // TODO: extract in service
     async create(ctx) {

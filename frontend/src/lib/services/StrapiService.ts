@@ -49,8 +49,20 @@ class StrapiService
         const url = `${Config.baseUrl}/api/contributions`;
         try{
             const response = await axios.get(url, axiosOptions());
+            console.log(response);
+            return response.data.data.map((item: any) => new Contribution(item)) as Contribution[];
+        }catch(e){
+            errorHandler(e as AxiosError);
+            throw e;
+        }
+    }
+    
+    async myContributions(): Promise<Contribution[]>{
+        const url = `${Config.baseUrl}/api/contributions/mine`;
+        try{
+            const response = await axios.get(url, axiosOptions());
             // console.log(response);
-            return response.data.entries.map((entry:any) => new Contribution(entry)) as Contribution[];
+            return response.data.data.map((entry:any) => new Contribution(entry)) as Contribution[];
         }catch(e){
             errorHandler(e as AxiosError);
             throw e;
@@ -101,7 +113,6 @@ class StrapiService
             errorHandler(e as AxiosError);
             throw e;
         }
-
     }
 }
 

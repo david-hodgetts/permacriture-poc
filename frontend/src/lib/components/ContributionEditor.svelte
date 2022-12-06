@@ -18,7 +18,7 @@
 <div class="contribution-editor">
     <header>
         {#if contribution.author != null}
-            <h2>contribution.author</h2>
+            <h2>{contribution.author.nickname}</h2>
         {:else}
             <h2>&nbsp</h2>
         {/if}
@@ -45,6 +45,7 @@
         position:fixed;
         top: 25%;
         left: 0;
+        width: 100%;
         height: 50%;
         background-color: var(--color-grey-0);
         border-radius: 20px;

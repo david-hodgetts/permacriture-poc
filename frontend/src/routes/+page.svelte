@@ -12,7 +12,7 @@
 
     onMount(async() => {
         contributions = await strapiService.getContributions();
-        console.log(contributions);
+        // console.log(contributions);
     });
 
     function onCardSelectionRequest(e:any){
@@ -20,9 +20,8 @@
     }
 
     async function onNewContributionRequest(e:any){
-        console.log(onNewContributionRequest);
         const parentContribution = e.detail.contribution;
-        let newContributionId = await strapiService.createNewContributionFromParent(parentContribution);
+        const newContributionId = await strapiService.createNewContributionFromParent(parentContribution);
         console.log(newContributionId);
         if(newContributionId == -1){
             // TODO: handle error for user
@@ -30,9 +29,8 @@
             return;
         }
 
-        // open the editor
-        // goto(`/editor/${newContributionId}`);
-
+        // open the editor 
+        goto(`/editor/${newContributionId}`);
     }
 
 </script>

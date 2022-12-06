@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { Contribution } from "$lib/models/Contribution";
+	import { ContributionState } from "$lib/models/Contribution";
     import { truncate, produceDateString, produceTimeString } from "$lib/services/textUtils";
     import { createEventDispatcher } from "svelte";
 
@@ -23,7 +24,7 @@
     <div class="selectable" on:click={sendSelectionRequest}>
         <header>
             {#if contribution.author != null}
-                <h2>contribution.author</h2>
+                <h2>{contribution.author.nickname}</h2>
             {:else}
                 <h2>&nbsp</h2>
             {/if}
@@ -40,7 +41,9 @@
         <div class="open-detail">
             &hellip; voir plus
         </div>
-        <button on:click={sendNewContributionRequest}>new</button>
+        {#if contribution.state === ContributionState.Published}
+            <button on:click={sendNewContributionRequest}>new</button>
+        {/if}
     </footer>
 </div>
 
