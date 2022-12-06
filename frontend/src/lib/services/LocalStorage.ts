@@ -39,7 +39,7 @@ export function getUser():User | null{
     }
     return null;
 }
-export function clearNickname(){
+export function clearUser(){
     removeItem(keys.user);
 }
 

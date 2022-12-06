@@ -1,4 +1,5 @@
 import { newDateOrNull } from "$lib/services/dateUtils";
+import type Author from "./Author";
 import { BaseStrapiEntity } from "./BaseStrapiEntity";
 import type { id } from "./Id";
 
@@ -11,7 +12,7 @@ export enum ContributionState{
 
 export class Contribution extends BaseStrapiEntity{
     
-    public author!: id;
+    public author!: Author | null;
     public text!: string;
     public state!: ContributionState;
     public publicationDatetime!: Date | null;
@@ -21,8 +22,10 @@ export class Contribution extends BaseStrapiEntity{
         super(obj);
         this.author = obj.author;
         this.text = obj.text;
-        this.state = obj.ContributionState;
+        this.state = obj.state;
         this.publicationDatetime =  newDateOrNull(obj.publicationDatetime);
         this.isSeed = obj.isSeed;
     }
+
+
 }

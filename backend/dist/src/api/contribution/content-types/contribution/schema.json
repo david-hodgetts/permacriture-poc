@@ -12,12 +12,6 @@
     },
     "pluginOptions": {},
     "attributes": {
-        "author": {
-            "type": "relation",
-            "relation": "manyToOne",
-            "target": "plugin::users-permissions.user",
-            "inversedBy": "contributions"
-        },
         "state": {
             "type": "enumeration",
             "enum": [
@@ -43,6 +37,12 @@
             "type": "relation",
             "relation": "oneToOne",
             "target": "api::terrain.terrain"
+        },
+        "author": {
+            "type": "relation",
+            "relation": "oneToOne",
+            "target": "api::author.author",
+            "inversedBy": "contribution"
         }
     }
 }

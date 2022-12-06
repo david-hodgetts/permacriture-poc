@@ -43,6 +43,7 @@
 
         // get user context with jwt
         const context = await strapiService.getContext(jwt);
+        console.log("context", context);
 
         if(!context){
             error = `unable to get context`;
@@ -51,7 +52,6 @@
         // persist user
         const user: User = { 
             id: decodedResp.user.id, 
-            nickname: decodedResp.user.username,
             context: context,
         };
         UserStore.setUser(user, jwt);

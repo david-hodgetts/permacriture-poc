@@ -15,7 +15,7 @@
         'strike',
     ];
 
-    function quillAction(node: HTMLElement, { placeholder }){
+    function quillAction(node: HTMLElement, { placeholder }: { placeholder:string }){
         const editor = new Quill(node, {
             modules: {  },
             theme: 'bubble',
@@ -61,7 +61,11 @@
 
     .editor{
         border: 1px solid #000;
-        width: 800px;
-        height: 800px;
+        width: 100%;
+        height: 100%;
+    }
+
+    :global(.ql-container){
+        font-size: var(--font-size);
     }
 </style>

@@ -5,7 +5,7 @@
 
 {#if $UserStore.user}
     <p>
-        user {$UserStore.user.nickname} | {$UserStore.user.context.terrain.title}
+        user {$UserStore.user.context.author.nickname} | {$UserStore.user.context.terrain.title}
         <a href="/logout">logout</a>
     </p>
 {/if}

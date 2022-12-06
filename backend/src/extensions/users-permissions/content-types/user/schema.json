@@ -63,17 +63,11 @@
       "inversedBy": "users",
       "configurable": false
     },
-    "terrain": {
+    "author": {
       "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::terrain.terrain",
-      "inversedBy": "users"
-    },
-    "contributions": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::contribution.contribution",
-      "mappedBy": "author"
+      "relation": "oneToOne",
+      "target": "api::author.author",
+      "inversedBy": "user"
     }
   }
 }

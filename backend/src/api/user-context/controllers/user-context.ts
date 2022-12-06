@@ -7,7 +7,6 @@ export default {
         try {
             const userId = ctx.state.user.id;
             const userContext = await strapi.service('api::user-context.user-context').getContext(userId);
-
             ctx.body = userContext;
         } catch (err) {
             ctx.body = err;

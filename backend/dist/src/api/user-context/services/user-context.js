@@ -6,19 +6,18 @@ module.exports = createCoreService('api::user-context.user-context', ({ strapi }
     // Method 1: Creating an entirely new custom service
     // Method 3: Replacing a core service
     async getContext(userId) {
-        const entry = await strapi.db.query('api::terrain.terrain').findOne({
-            select: ['id', 'title', 'description'],
+        const author = await strapi.query('api::author.author').findOne({
+            select: ['id', 'nickname'],
             where: {
-                'users': {
+                'user': {
                     'id': userId,
                 }
-            }
+            },
+            populate: ['terrain']
         });
         const data = {
-            terrain: {
-                id: entry.id,
-                title: entry.title,
-            }
+            userId,
+            author,
         };
         return data;
     }

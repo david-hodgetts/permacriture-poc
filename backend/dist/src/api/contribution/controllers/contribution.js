@@ -14,21 +14,19 @@ exports.default = strapi_1.factories.createCoreController('api::contribution.con
         // console.log("data", data);
         // console.log("meta", meta);
         const userId = ctx.state.user.id;
-        // get terrain of user
-        const terrain = await strapi.db.query('api::terrain.terrain').findOne({
-            select: ['id', 'title', 'description'],
-            where: {
-                'users': {
-                    'id': userId,
-                }
-            },
-        });
-        console.log("terrain", terrain);
+        let userContext;
+        try {
+            userContext = await strapi.service('api::user-context.user-context').getContext(userId);
+        }
+        catch (e) {
+            return ctx.badRequest("invalid user context", {});
+        }
+        console.log("usercontext", userContext);
         const entries = await strapi.db.query('api::contribution.contribution').findMany({
             select: ['id', 'text', 'isSeed', 'state', 'publicationDatetime',],
             where: {
                 'terrain': {
-                    'id': terrain.id,
+                    'id': userContext.author.terrain.id,
                 },
                 'state': 'Published',
             },
@@ -45,10 +43,13 @@ exports.default = strapi_1.factories.createCoreController('api::contribution.con
         const { id } = ctx.params;
         const { query } = ctx;
         const entity = await strapi.service('api::contribution.contribution').findOne(id, query);
+        if (!entity) {
+            return ctx.notFound("contribution not found", {});
+        }
         console.log("before", entity);
         const sanitizedEntity = await this.sanitizeOutput(entity, ctx);
-        console.log("after", entity);
-        return this.transformResponse(sanitizedEntity);
+        ctx.body = sanitizedEntity;
+        // return this.transformResponse(sanitizedEntity);
     },
     // TODO: extract in service
     async create(ctx) {
@@ -56,7 +57,6 @@ exports.default = strapi_1.factories.createCoreController('api::contribution.con
         // const response = await super.create(ctx);
         // some more logic
         const userId = ctx.state.user.id;
-        console.log("before craa");
         let userContext;
         try {
             userContext = await strapi.service('api::user-context.user-context').getContext(userId);
@@ -67,6 +67,7 @@ exports.default = strapi_1.factories.createCoreController('api::contribution.con
         console.log("usercontext", userContext);
         // extract parentContributionId from request body
         const parentContributionId = ctx.request.body.data.parentContributionId;
+        console.log("parentContributionId", parentContributionId);
         // check parentContribution exists and is a valid contrib (ie is in published state)
         const parentContribution = await strapi.db.query('api::contribution.contribution').findOne({
             select: ['id'],
@@ -82,16 +83,15 @@ exports.default = strapi_1.factories.createCoreController('api::contribution.con
         // 1. create new contribution
         const newContribution = await strapi.entityService.create('api::contribution.contribution', {
             data: {
-                author: userId,
+                author: userContext.author.id,
                 state: "Pending",
                 isSeed: false,
                 text: "",
-                terrain: userContext.terrain.id,
+                terrain: userContext.author.terrain.id,
             },
             populate: ['author'],
         });
         // replace full leaky object by id
-        newContribution.author = userId;
         console.log(newContribution);
         console.log("creating first link");
         // 2. create link 

@@ -26,20 +26,22 @@ function errorHandler(e: AxiosError){
     if(e.response?.status === 401){
         goto("/login");
     }
-    throw e;
 }
 
 class StrapiService
 {
-    async getContext(optionaJwt: string = ""): Promise<Context|null>{
+    async getContext(optionaJwt: string = ""): Promise<Context>{
         const url = `${Config.baseUrl}/api/user-context`;
         console.log(axiosOptions(optionaJwt));
         try{
-            const context = await axios.get(url, axiosOptions(optionaJwt));
-            return context.data as Context;
+            const response = await axios.get(url, axiosOptions(optionaJwt));
+            const context = response.data;
+            context.terrain = context.author.terrain;
+            delete context.author.terrain;
+            return context as Context;
         }catch(e){
             errorHandler(e as AxiosError);
-            return null;
+            throw e;
         }
     }
 
@@ -51,7 +53,7 @@ class StrapiService
             return response.data.entries.map((entry:any) => new Contribution(entry)) as Contribution[];
         }catch(e){
             errorHandler(e as AxiosError);
-            return [];
+            throw e;
         }
     }
 
@@ -72,15 +74,15 @@ class StrapiService
         }
     }
     
-    async contributionWithId(contributionId: id): Promise<Contribution[]>{
-        const url = `${Config.baseUrl}/api/contributions/${contributionId}`;
+    async contributionWithId(contributionId: id): Promise<Contribution>{
+        const url = `${Config.baseUrl}/api/contributions/${contributionId}?populate[0]=author`;
         try{
             const response = await axios.get(url, axiosOptions());
-            // console.log(response);
-            return response.data.entries.map((entry:any) => new Contribution(entry)) as Contribution[];
+            console.log(response.data);
+            return new Contribution(response.data);
         }catch(e){
             errorHandler(e as AxiosError);
-            return [];
+            throw e;
         }
     }
 }

@@ -1,5 +1,5 @@
 import type User from "$lib/models/User";
-import { clearJwt, clearNickname, getJwt, getUser, storeJwt, storeUser } from "$lib/services/LocalStorage";
+import { clearJwt, clearUser, getJwt, getUser, storeJwt, storeUser } from "$lib/services/LocalStorage";
 import { writable } from "svelte/store";
 
 
@@ -19,7 +19,7 @@ function createUserStore() {
         },
 		clear: () => {
             clearJwt();
-            clearNickname();
+            clearUser();
             set({ user: null, jwt: "" });
         }
 	};
