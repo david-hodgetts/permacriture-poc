@@ -46,7 +46,6 @@ exports.default = strapi_1.factories.createCoreController('api::contribution.con
         if (!entity) {
             return ctx.notFound("contribution not found", {});
         }
-        console.log("before", entity);
         const sanitizedEntity = await this.sanitizeOutput(entity, ctx);
         ctx.body = sanitizedEntity;
         // return this.transformResponse(sanitizedEntity);

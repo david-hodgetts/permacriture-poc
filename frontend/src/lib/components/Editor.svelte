@@ -38,7 +38,7 @@
 
             if(source === 'user'){
                 const payload = { detail: { text: editor.getText() }};
-                node.dispatchEvent(new CustomEvent("text-change", payload));
+                node.dispatchEvent(new CustomEvent("textchange", payload));
             }
         });
         return {
@@ -50,7 +50,7 @@
 </script>
 
 
-<div use:quillAction={{placeholder}} class="editor">
+<div use:quillAction={{placeholder}} class="editor" on:textchange>
 
 </div>
 

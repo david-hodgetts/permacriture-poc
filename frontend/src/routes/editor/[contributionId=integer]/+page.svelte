@@ -1,12 +1,22 @@
 <script lang="ts">
-	import type { Contribution } from "$lib/models/Contribution";
 	import type { PageData } from "./$types";
     import Editor from "$lib/components/Editor.svelte";
+	import { strapiService } from "$lib/services/StrapiService";
 
     export let data: PageData;
 
-    function saveText(){
-        console.log("save Text");
+    async function saveText(){
+        console.log("save Text", data.contribution.text);
+
+        try{
+            await strapiService.updateContribution({ id: data.contribution.id, text: data.contribution.text }) 
+        }catch(e){
+            console.error(e);
+        }
+    }
+
+    function onTextChange(e:any){
+        data.contribution.text = e.detail.text
     }
 </script>
 
@@ -15,8 +25,10 @@
 
 
 <div class="editor">
-    <Editor 
+    <Editor
+        placeholder="éditez votre contribution"
         text={data.contribution.text}
+        on:textchange={onTextChange}
     />
     <button on:click={saveText}>save</button>
 </div>

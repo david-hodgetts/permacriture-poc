@@ -85,6 +85,24 @@ class StrapiService
             throw e;
         }
     }
+
+    async updateContribution(changedProps: any): Promise<null>{
+        const url = `${Config.baseUrl}/api/contributions/${changedProps.id}`;
+        const payload = {
+            data: changedProps
+        };
+        delete payload.data.id;
+        console.log(payload);
+        try{
+            const response = await axios.put(url, payload, axiosOptions());
+            console.log(response.data);
+            return null;
+        }catch(e){
+            errorHandler(e as AxiosError);
+            throw e;
+        }
+
+    }
 }
 
 export const strapiService = new StrapiService();

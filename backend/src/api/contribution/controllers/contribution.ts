@@ -55,9 +55,8 @@ export default factories.createCoreController('api::contribution.contribution', 
         if(!entity){
             return ctx.notFound("contribution not found", {});
         }
-        console.log("before", entity);
+        
         const sanitizedEntity = await this.sanitizeOutput(entity, ctx);
-
         ctx.body = sanitizedEntity;
 
         // return this.transformResponse(sanitizedEntity);
