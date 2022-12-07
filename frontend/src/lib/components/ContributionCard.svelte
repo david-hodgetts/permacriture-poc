@@ -20,8 +20,8 @@
 </script>
 
 
-<div class="contribution-card">
-    <div class="selectable" on:click={sendSelectionRequest}>
+<div class="contribution-card" on:click|stopPropagation={sendSelectionRequest}>
+    <div class="content" >
         <header>
             {#if contribution.author != null}
                 <h2>{contribution.author.nickname}</h2>
@@ -52,6 +52,9 @@
 <style lang="scss">
     .contribution-card{
         background-color: var(--white);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
         height: var(--contribution-card-height);
         border-radius: 20px;
         color: var(--color-grey-1);
@@ -86,7 +89,7 @@
     footer{
         display: flex;
         justify-content: space-between;
-        padding-bottom: 40px;
+        padding-bottom: 20px;
     }
 
     .open-detail{
