@@ -5,6 +5,7 @@
     import { createEventDispatcher } from "svelte";
 
     export let contribution: Contribution;
+    export let isFocused: boolean = false;
 
     const dispatch = createEventDispatcher();
 
@@ -17,10 +18,21 @@
     function sendNewContributionRequest(){
         dispatch("newContributionRequest", { contribution: contribution });
     }
+    
+    function sendCloseRequest(){
+        dispatch("closeRequest", {});
+    }
+
 </script>
 
-
-<div class="contribution-card" on:click|stopPropagation={sendSelectionRequest}>
+{#if isFocused}
+    <div class="modal-close" on:click={sendCloseRequest}></div>
+{/if}
+<div 
+    class="contribution-card" 
+    class:focused={isFocused}
+    on:click|stopPropagation={sendSelectionRequest}
+>
     <div class="content" >
         <header>
             {#if contribution.author != null}
@@ -38,9 +50,9 @@
         </div>
     </div>
     <footer>
-        <div class="open-detail">
-            &hellip; voir plus
-        </div>
+        {#if !isFocused}
+            <div class="open-detail">&hellip; voir plus</div>
+        {/if}
         {#if contribution.state === ContributionState.Published}
             <button on:click={sendNewContributionRequest}>new</button>
         {/if}
@@ -50,6 +62,14 @@
 
 
 <style lang="scss">
+    .modal-close{
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+
+    }
     .contribution-card{
         background-color: var(--white);
         display: flex;
@@ -64,6 +84,14 @@
 
         border: solid 1px var(--color-grey-0);
         cursor: pointer;
+    }
+    
+    .focused{
+        position:fixed;
+        top: 25%;
+        left: 0;
+        width: 100%;
+        height: 50%;
     }
     
     header{

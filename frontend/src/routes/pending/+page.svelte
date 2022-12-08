@@ -1,7 +1,7 @@
 
 <script lang="ts">
 	import ContributionList from "$lib/components/ContributionList.svelte";
-    import ContributionEditor from "$lib/components/ContributionEditor.svelte";
+    import ContributionCard from "$lib/components/ContributionCard.svelte";
 	import type { PageData } from "./$types";
 	import type { Contribution } from "$lib/models/Contribution";
 
@@ -29,9 +29,10 @@
         on:newContributionRequest={onNewContributionRequest}
     />
 {:else}
-    <ContributionEditor 
+    <ContributionCard 
         contribution={selectedContribution} 
         on:closeRequest={() => selectedContribution = null}
+        isFocused={true}
     />
 {/if}
 

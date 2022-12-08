@@ -1,7 +1,7 @@
 <script lang="ts">
     // landing page
     import ContributionList from "$lib/components/ContributionList.svelte"
-    import ContributionEditor from "$lib/components/ContributionEditor.svelte"
+	import ContributionCard from "$lib/components/ContributionCard.svelte";
     import { onMount } from 'svelte';
 	import { strapiService } from "$lib/services/StrapiService";
 	import type { Contribution } from "$lib/models/Contribution";
@@ -46,8 +46,9 @@
         on:newContributionRequest={onNewContributionRequest}
     />
 {:else}
-    <ContributionEditor 
+    <ContributionCard 
         contribution={selectedContribution} 
+        isFocused={true}
         on:closeRequest={() => selectedContribution = null}
     />
 {/if}
