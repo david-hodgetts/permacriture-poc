@@ -3,17 +3,14 @@
     import ContributionList from "$lib/components/ContributionList.svelte"
 	import ContributionCard from "$lib/components/ContributionCard.svelte";
     import { onMount } from 'svelte';
+	import type { PageData } from "./$types";
 	import { strapiService } from "$lib/services/StrapiService";
 	import type { Contribution } from "$lib/models/Contribution";
 	import { goto } from "$app/navigation";
 
-    let contributions: Contribution[] = [];
+    export let data: PageData;
+    
     let selectedContribution: Contribution | null = null;
-
-    onMount(async() => {
-        contributions = await strapiService.getContributions();
-        // console.log(contributions);
-    });
 
     function onCardSelectionRequest(e:any){
         selectedContribution = e.detail.contribution;
@@ -41,7 +38,7 @@
 
 {#if selectedContribution === null}
     <ContributionList 
-        contributions={contributions} 
+        contributions={data.contributions} 
         on:cardSelectionRequest={onCardSelectionRequest} 
         on:newContributionRequest={onNewContributionRequest}
     />
