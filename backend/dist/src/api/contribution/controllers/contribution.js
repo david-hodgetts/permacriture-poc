@@ -34,6 +34,13 @@ exports.default = strapi_1.factories.createCoreController('api::contribution.con
             orderBy: { publicationDatetime: 'asc' }
         });
         console.log("contributions", contributions);
+        // add direct ancestors and children
+        for (const contribution of contributions) {
+            const parentLinks = await strapi.service('api::link.link').parentsOfContribution(contribution.id);
+            const childrenLinks = await strapi.service('api::link.link').childrenOfContribution(contribution.id);
+            contribution.children = childrenLinks.map(l => l.id);
+            contribution.parents = parentLinks.map(l => l.id);
+        }
         // // some more custom logic
         // meta.date = Date.now();
         ctx.body = {
@@ -48,6 +55,11 @@ exports.default = strapi_1.factories.createCoreController('api::contribution.con
         if (!entity) {
             return ctx.notFound("contribution not found", {});
         }
+        const parentLinks = await strapi.service('api::link.link').parentsOfContribution(entity.id);
+        const childrenLinks = await strapi.service('api::link.link').childrenOfContribution(entity.id);
+        entity.children = childrenLinks.map(l => l.id);
+        entity.parents = parentLinks.map(l => l.id);
+        console.log(entity);
         const sanitizedEntity = await this.sanitizeOutput(entity, ctx);
         ctx.body = sanitizedEntity;
         // return this.transformResponse(sanitizedEntity);
@@ -71,6 +83,13 @@ exports.default = strapi_1.factories.createCoreController('api::contribution.con
             populate: ['author'],
         });
         console.log(contributions);
+        // add direct ancestors and children
+        for (const contribution of contributions) {
+            const parentLinks = await strapi.service('api::link.link').parentsOfContribution(contribution.id);
+            const childrenLinks = await strapi.service('api::link.link').childrenOfContribution(contribution.id);
+            contribution.children = childrenLinks.map(l => l.id);
+            contribution.parents = parentLinks.map(l => l.id);
+        }
         ctx.body = {
             data: contributions
         };

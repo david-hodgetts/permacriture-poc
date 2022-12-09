@@ -3,6 +3,7 @@
 	import { ContributionState } from "$lib/models/Contribution";
     import { truncate, produceDateString, produceTimeString } from "$lib/services/textUtils";
     import { createEventDispatcher } from "svelte";
+	import { children } from "svelte/internal";
 
     export let contribution: Contribution;
     export let isFocused: boolean = false;
@@ -56,6 +57,8 @@
         {#if contribution.state === ContributionState.Published}
             <button on:click={sendNewContributionRequest}>new</button>
         {/if}
+
+        <div>{contribution.parents.length} | {contribution.children.length}</div>
     </footer>
 </div>
 
