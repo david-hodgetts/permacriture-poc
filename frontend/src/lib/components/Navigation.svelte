@@ -1,9 +1,8 @@
 <script lang="ts">
     import LoginStatus from "./LoginStatus.svelte";
     import { page } from "$app/stores";
-	import { onMount } from "svelte";
 
-    onMount(() => console.log($page.url.pathname));
+    $: { console.log($page.url.pathname) }
 </script>
 
 <nav>
@@ -12,7 +11,7 @@
         <li>
             <a 
             href="/pending" 
-            class:active={$page.url.pathname.startsWith('/editor/') || $page.url.pathname === 'pending'}>
+            class:active={$page.url.pathname.startsWith('/editor/') || $page.url.pathname === '/pending'}>
                 écrire
             </a>
         </li>
