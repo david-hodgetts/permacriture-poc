@@ -26,12 +26,6 @@
       "relation": "oneToOne",
       "target": "plugin::users-permissions.user",
       "mappedBy": "author"
-    },
-    "contributions": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::contribution.contribution",
-      "mappedBy": "author"
     }
   }
 }

@@ -35,9 +35,8 @@
         },
         "author": {
             "type": "relation",
-            "relation": "manyToOne",
-            "target": "api::author.author",
-            "inversedBy": "contributions"
+            "relation": "oneToOne",
+            "target": "api::author.author"
         }
     }
 }
