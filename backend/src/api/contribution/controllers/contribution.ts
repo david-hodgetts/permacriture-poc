@@ -27,7 +27,7 @@ export default factories.createCoreController('api::contribution.contribution', 
 
 
         const contributions = await strapi.db.query('api::contribution.contribution').findMany({
-            select: ['id', 'text', 'isSeed', 'state', 'publicationDatetime',],
+            select: ['id', 'text', 'state', 'publicationDatetime',],
             where: {
                 'terrain': {
                     'id': userContext.author.terrain.id,
@@ -94,7 +94,7 @@ export default factories.createCoreController('api::contribution.contribution', 
         console.log("usercontext", userContext);
         
         const contributions = await strapi.db.query('api::contribution.contribution').findMany({
-            select: ['id', 'text', 'publicationDatetime', 'isSeed', 'state'],
+            select: ['id', 'text', 'publicationDatetime', 'state'],
             where: {
                 'author': userContext.author.id,
                 'state': 'Pending',
@@ -153,7 +153,6 @@ export default factories.createCoreController('api::contribution.contribution', 
             data: {
                 author: userContext.author.id,
                 state: "Pending",
-                isSeed: false,
                 text: "",
                 terrain: userContext.author.terrain.id,
             },

@@ -16,7 +16,6 @@ export class Contribution extends BaseStrapiEntity{
     public text!: string;
     public state!: ContributionState;
     public publicationDatetime!: Date | null;
-    public isSeed!: boolean;
     public children!: id[];
     public parents!: id[];
 
@@ -26,7 +25,6 @@ export class Contribution extends BaseStrapiEntity{
         this.text = obj.text;
         this.state = obj.state;
         this.publicationDatetime =  newDateOrNull(obj.publicationDatetime);
-        this.isSeed = obj.isSeed;
         this.children = obj.children;
         this.parents = obj.parents;
     }

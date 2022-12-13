@@ -25,11 +25,6 @@
     "publicationDatetime": {
       "type": "datetime"
     },
-    "isSeed": {
-      "type": "boolean",
-      "default": true,
-      "required": true
-    },
     "text": {
       "type": "richtext"
     },
