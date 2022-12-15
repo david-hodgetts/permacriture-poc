@@ -17,13 +17,17 @@ function axiosOptions(optionaJwt: string = "") {
     };
 }
 
+enum HttpCode{
+    unauthorized = 401,
+}
+
 /**
  * error handler, redirect user to login if unauthorized
  * @param e: AxiosError
  */
 function errorHandler(e: AxiosError){
     console.error(e);
-    if(e.response?.status === 401){
+    if(e.response?.status === HttpCode.unauthorized){
         goto("/login");
     }
 }

@@ -4,6 +4,8 @@
     import ContributionCard from "$lib/components/ContributionCard.svelte";
 	import type { PageData } from "./$types";
 	import type { Contribution } from "$lib/models/Contribution";
+	import { goto } from "$app/navigation";
+	import { strapiService } from "$lib/services/StrapiService";
 
     export let data: PageData;
     let selectedContribution: Contribution | null = null;
@@ -12,8 +14,18 @@
         selectedContribution = e.detail.contribution;
     }
 
-    function onNewContributionRequest(){
-        console.log("TODO pending contributions can't be linked to");
+    async function onNewContributionRequest(e:any){
+        const parentContribution = e.detail.contribution;
+        const newContributionId = await strapiService.createNewContributionFromParent(parentContribution);
+        console.log(newContributionId);
+        if(newContributionId == -1){
+            // TODO: handle error for user
+            console.error("unable to create new contribution");
+            return;
+        }
+
+        // open the editor 
+        goto(`/editor/${newContributionId}`);
     }
 
 </script>

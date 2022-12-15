@@ -78,7 +78,6 @@ exports.default = strapi_1.factories.createCoreController('api::contribution.con
             select: ['id', 'text', 'publicationDatetime', 'state'],
             where: {
                 'author': userContext.author.id,
-                'state': 'Pending',
             },
             populate: ['author'],
         });
@@ -94,11 +93,37 @@ exports.default = strapi_1.factories.createCoreController('api::contribution.con
             data: contributions
         };
     },
+    // async update(ctx){
+    //     const userId = ctx.state.user.id;
+    //     let userContext;
+    //     try{
+    //         userContext = await strapi.service('api::user-context.user-context').getContext(userId);
+    //     }catch (e){
+    //         return ctx.badRequest("invalid user context", {});
+    //     }
+    //     console.log("update");
+    //     console.log("usercontext", userContext);
+    //     const { id } = ctx.params;
+    //     console.log("contribution id", id);
+    //     const contribution = await strapi.db.query("api::contribution.contribution").findOne(
+    //         {
+    //             select:['id', 'state'],
+    //             where: {
+    //                 'id': id,
+    //                 'author': userContext.author.id,
+    //             },
+    //             populate:['author'],
+    //         }
+    //     );
+    //     console.log("contribution", contribution);
+    //     if(!contribution || contribution.state != "Pending"){
+    //         return ctx.badRequest("invalid operation", {});
+    //     }
+    //     const response = await super.update(ctx);
+    //     return response;
+    // },
     // TODO: extract in service
     async create(ctx) {
-        // some logic here
-        // const response = await super.create(ctx);
-        // some more logic
         const userId = ctx.state.user.id;
         let userContext;
         try {
@@ -147,6 +172,20 @@ exports.default = strapi_1.factories.createCoreController('api::contribution.con
         console.log("link", link);
         ctx.body = {
             data: { id: newContribution.id },
+        };
+    },
+    async publish(ctx) {
+        // contribution id from query params
+        const { id } = ctx.params;
+        console.log("publish for contribution id", id);
+        await strapi.entityService.update("api::contribution.contribution", id, {
+            data: {
+                'state': 'Published',
+                'publicationDatetime': new Date(),
+            },
+        });
+        ctx.body = {
+            data: { id: id },
         };
     }
 }));

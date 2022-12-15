@@ -11,5 +11,14 @@ exports.default = {
                 middlewares: [],
             },
         },
+        {
+            method: 'PUT',
+            path: '/contributions/publish/:id',
+            handler: 'contribution.publish',
+            config: {
+                policies: ["is-contribution-mine", "is-contribution-updatable"],
+                middlewares: [],
+            },
+        },
     ],
 };
