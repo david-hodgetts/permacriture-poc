@@ -3,7 +3,6 @@
  */
 export default async (policyContext, config, { strapi }) => {
     const userId = policyContext.state.user.id;
-    console.log("youpi---------------", userId);
     let userContext;
     try{
         userContext = await strapi.service('api::user-context.user-context').getContext(userId);

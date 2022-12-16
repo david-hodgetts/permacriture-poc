@@ -1,6 +1,8 @@
 <script lang="ts">
+	import { goto } from "$app/navigation";
 	import type { Contribution } from "$lib/models/Contribution";
 	import { ContributionState } from "$lib/models/Contribution";
+	import { strapiService } from "$lib/services/StrapiService";
     import { truncate, produceDateString, produceTimeString } from "$lib/services/textUtils";
     import { createEventDispatcher } from "svelte";
 	import { children } from "svelte/internal";
@@ -24,6 +26,16 @@
         dispatch("closeRequest", {});
     }
 
+    async function handlePublicationRequest(){
+        try{
+            await strapiService.publishContribution(contribution);
+            contribution.publicationDatetime = new Date();
+            contribution.state = ContributionState.Published;
+        }catch(e){
+            console.error(e);
+        }
+    }
+
 </script>
 
 {#if isFocused}
@@ -32,6 +44,7 @@
 <div 
     class="contribution-card" 
     class:focused={isFocused}
+    class:isMine={contribution.isMine}
     on:click|stopPropagation={sendSelectionRequest}
 >
     <div class="content" >
@@ -41,6 +54,7 @@
             {:else}
                 <h2>&nbsp</h2>
             {/if}
+            <div>{contribution.state}</div>
             <div class="date-time">
                 <span>{produceDateString(contribution.publicationDatetime)}</span>
                 <span>{produceTimeString(contribution.publicationDatetime)}</span>
@@ -55,7 +69,10 @@
             <div class="open-detail">&hellip; voir plus</div>
         {/if}
         {#if contribution.state === ContributionState.Published}
-            <button on:click={sendNewContributionRequest}>new</button>
+            <button on:click|stopPropagation={sendNewContributionRequest}>new</button>
+        {:else if contribution.state === ContributionState.Pending}
+            <button on:click|stopPropagation={() => goto(`/editor/${contribution.id}`)}>edit</button>
+            <button on:click|stopPropagation={handlePublicationRequest}>publish</button>
         {/if}
 
         <div>{contribution.parents.length} | {contribution.children.length}</div>
@@ -87,6 +104,10 @@
 
         border: solid 1px var(--color-grey-0);
         cursor: pointer;
+    }
+
+    .isMine{
+        background-color: var(--color-grey-0);
     }
     
     .focused{

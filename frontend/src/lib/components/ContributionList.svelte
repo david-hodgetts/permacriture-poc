@@ -22,7 +22,8 @@
         <ContributionCard 
             contribution={contribution} 
             on:cardSelectionRequest={onCardSelectionRequest} 
-            on:newContributionRequest={onNewContributionRequest}/>
+            on:newContributionRequest={onNewContributionRequest}
+        />
     {/each}
 </div>
 
