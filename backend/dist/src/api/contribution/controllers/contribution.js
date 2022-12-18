@@ -31,7 +31,7 @@ exports.default = strapi_1.factories.createCoreController('api::contribution.con
                 'state': 'Published',
             },
             populate: ['author'],
-            orderBy: { publicationDatetime: 'asc' }
+            orderBy: { publicationDatetime: 'desc' }
         });
         console.log("contributions", contributions);
         // add direct ancestors and children
