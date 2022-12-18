@@ -43,6 +43,7 @@
 {:else}
     <ContributionCard 
         contribution={selectedContribution} 
+        on:newContributionRequest={onNewContributionRequest}
         on:closeRequest={() => selectedContribution = null}
         isFocused={true}
     />
