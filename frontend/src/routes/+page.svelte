@@ -51,10 +51,3 @@
 {/if}
 
 
-
-
-<!-- style -->
-<style lang="scss">
-
-</style>
-
