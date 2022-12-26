@@ -9,7 +9,8 @@ import type User from "./User";
 import userStore from "$lib/stores/user.store";
 
 export enum ContributionState{
-    Pending = "Pending",
+    Editing = "Editing",
+    PendingPublication = "PendingPublication",
     Published = "Published",
     Abandoned = "Abandoned",
 };

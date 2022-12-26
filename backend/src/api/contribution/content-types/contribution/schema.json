@@ -12,16 +12,6 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "state": {
-      "type": "enumeration",
-      "enum": [
-        "Pending",
-        "Published",
-        "Abandoned"
-      ],
-      "default": "Pending",
-      "required": true
-    },
     "publicationDatetime": {
       "type": "datetime"
     },
@@ -37,6 +27,16 @@
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::author.author"
+    },
+    "state": {
+      "type": "enumeration",
+      "enum": [
+        "Editing",
+        "PendingPublication",
+        "Published",
+        "Abandoned"
+      ],
+      "required": true
     }
   }
 }

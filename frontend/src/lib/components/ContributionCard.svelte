@@ -61,7 +61,11 @@
             </div> 
         </header>
         <div class="text">
-            {@html truncate(contribution.text, maxCharCount)}
+            {#if !isFocused}
+                {@html truncate(contribution.text, maxCharCount)}
+            {:else}
+                {@html contribution.text}
+            {/if}
         </div>
     </div>
     <footer>
@@ -70,7 +74,7 @@
         {/if}
         {#if contribution.state === ContributionState.Published}
             <button on:click|stopPropagation={sendNewContributionRequest}>new</button>
-        {:else if contribution.state === ContributionState.Pending}
+        {:else if contribution.state === ContributionState.Editing}
             <button on:click|stopPropagation={() => goto(`/editor/${contribution.id}`)}>edit</button>
             <button on:click|stopPropagation={handlePublicationRequest}>publish</button>
         {/if}
@@ -104,6 +108,9 @@
 
         border: solid 1px var(--color-grey-0);
         cursor: pointer;
+        
+        display: flex;
+        flex-direction: column;
     }
 
     .isMine{
@@ -118,6 +125,12 @@
         height: 50%;
     }
     
+    .content{
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+    }
+
     header{
         display: flex;
         justify-content: space-between;
@@ -132,6 +145,7 @@
     .text{
         margin-top: 20px;
         margin-bottom: 20px;
+        overflow-y: scroll;
     }
 
     .date-time{
