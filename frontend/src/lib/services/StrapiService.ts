@@ -53,7 +53,6 @@ class StrapiService
         const url = `${Config.baseUrl}/api/contributions`;
         try{
             const response = await axios.get(url, axiosOptions());
-            console.log(response);
             return response.data.data.map((item: any) => new Contribution(item)) as Contribution[];
         }catch(e){
             errorHandler(e as AxiosError);
@@ -122,14 +121,35 @@ class StrapiService
     async publishContribution(contribution: Contribution): Promise<null>{
         const url = `${Config.baseUrl}/api/contributions/publish/${contribution.id}`;
         try{
-            const response = await axios.put(url, {}, axiosOptions());
+            await axios.put(url, {}, axiosOptions());
             return null;
         }catch(e){
             errorHandler(e as AxiosError);
             throw e;
         }
     }
-
+	
+    async cancelPublication(contribution: Contribution):Promise<null> {
+        const url = `${Config.baseUrl}/api/contributions/cancel-publication/${contribution.id}`;
+        try{
+            await axios.put(url, {}, axiosOptions());
+            return null;
+        }catch(e){
+            errorHandler(e as AxiosError);
+            throw e;
+        }
+	}
+	
+    async abandonContribution(contribution: Contribution):Promise<null> {
+        const url = `${Config.baseUrl}/api/contributions/abandon/${contribution.id}`;
+        try{
+            await axios.put(url, {}, axiosOptions());
+            return null;
+        }catch(e){
+            errorHandler(e as AxiosError);
+            throw e;
+        }
+	}
 }
 
 export const strapiService = new StrapiService();

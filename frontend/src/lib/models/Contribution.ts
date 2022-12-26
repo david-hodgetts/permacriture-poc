@@ -45,4 +45,15 @@ export class Contribution extends BaseStrapiEntity{
         return user?.context.author.id === this.author.id;
     }
 
+    get delayInMinutesBeforePublication(): number{
+        if(this.state !== ContributionState.PendingPublication){
+            return 0;
+        }
+
+        const delayInMinutes = userStore.getUser()!.context.terrain.contribution_publication_delay * 60;
+
+        const now = new Date();
+        const remainingMillis = (this.publicationDatetime!.getTime() + delayInMinutes * 60 * 1000) - now.getTime();
+        return Math.round(remainingMillis / 1000 / 60);
+    }
 }

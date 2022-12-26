@@ -1,5 +1,5 @@
 /**
- * contribution only modifiable if in Pending state
+ * contribution only modifiable if in Editing state
  */
 export default async (policyContext, config, { strapi }) => {
 
@@ -12,7 +12,7 @@ export default async (policyContext, config, { strapi }) => {
         },
     });
 
-    if(!contribution || contribution.state !== 'Pending'){
+    if(!contribution || contribution.state !== 'Editing'){
         return false;
     }
 

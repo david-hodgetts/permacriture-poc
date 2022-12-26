@@ -21,7 +21,8 @@ function createUserStore() {
             clearJwt();
             clearUser();
             set({ user: null, jwt: "" });
-        }
+        },
+        getUser,
 	};
 }
 

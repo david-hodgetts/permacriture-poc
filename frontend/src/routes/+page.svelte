@@ -19,7 +19,7 @@
     async function onNewContributionRequest(e:any){
         const parentContribution = e.detail.contribution;
         const newContributionId = await strapiService.createNewContributionFromParent(parentContribution);
-        console.log(newContributionId);
+        console.log("new contribution id", newContributionId);
         if(newContributionId == -1){
             // TODO: handle error for user
             console.error("unable to create new contribution");

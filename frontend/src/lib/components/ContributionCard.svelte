@@ -6,6 +6,7 @@
     import { truncate, produceDateString, produceTimeString } from "$lib/services/textUtils";
     import { createEventDispatcher } from "svelte";
 	import { children } from "svelte/internal";
+	import ContributionList from "./ContributionList.svelte";
 
     export let contribution: Contribution;
     export let isFocused: boolean = false;
@@ -30,12 +31,32 @@
         try{
             await strapiService.publishContribution(contribution);
             contribution.publicationDatetime = new Date();
-            contribution.state = ContributionState.Published;
+            contribution.state = ContributionState.PendingPublication;
         }catch(e){
             console.error(e);
         }
     }
 
+    async function handlePublicationCancelRequest(){
+        try{
+            await strapiService.cancelPublication(contribution);
+            contribution.publicationDatetime = null;
+            contribution.state = ContributionState.Editing;
+        }catch(e){
+            console.error(e);
+        }
+    }
+
+    async function handleAbandonRequest(){
+        try{
+            await strapiService.abandonContribution(contribution);
+            contribution.publicationDatetime = null;
+            contribution.state = ContributionState.Abandoned;
+        }catch(e){
+            console.error(e);
+        }
+
+    }
 </script>
 
 {#if isFocused}
@@ -54,11 +75,20 @@
             {:else}
                 <h2>&nbsp</h2>
             {/if}
-            <div>{contribution.state}</div>
-            <div class="date-time">
-                <span>{produceDateString(contribution.publicationDatetime)}</span>
-                <span>{produceTimeString(contribution.publicationDatetime)}</span>
-            </div> 
+            <div class="small-text">{contribution.state}</div>
+            {#if contribution.state === ContributionState.PendingPublication}
+            <div>
+                <span>
+                    {`published in ${contribution.delayInMinutesBeforePublication} minutes`}
+                </span>
+                <button on:click={handlePublicationCancelRequest}>cancel</button>
+            </div>
+            {:else if contribution.state === ContributionState.Published}
+                <div class="date-time">
+                    <span>{produceDateString(contribution.publicationDatetime)}</span>
+                    <span>{produceTimeString(contribution.publicationDatetime)}</span>
+                </div> 
+            {/if}
         </header>
         <div class="text">
             {#if !isFocused}
@@ -77,6 +107,7 @@
         {:else if contribution.state === ContributionState.Editing}
             <button on:click|stopPropagation={() => goto(`/editor/${contribution.id}`)}>edit</button>
             <button on:click|stopPropagation={handlePublicationRequest}>publish</button>
+            <button on:click|stopPropagation={handleAbandonRequest}>abandon</button>
         {/if}
 
         <div>{contribution.parents.length} | {contribution.children.length}</div>
@@ -165,6 +196,10 @@
 
     button{
         cursor: pointer;
+    }
+
+    .small-text{
+        font-size: 12px;
     }
 
 </style>

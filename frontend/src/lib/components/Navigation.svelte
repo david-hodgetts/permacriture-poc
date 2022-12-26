@@ -8,13 +8,6 @@
 <nav>
     <LoginStatus />
     <ul>
-        <li>
-            <a 
-            href="/pending" 
-            class:active={$page.url.pathname.startsWith('/editor/') || $page.url.pathname === '/pending'}>
-                écrire
-            </a>
-        </li>
         <li><a href="/" class:active={$page.url.pathname === "/"}>textes</a></li>
         <li>carte</li>
     </ul>

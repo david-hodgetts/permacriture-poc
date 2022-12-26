@@ -17,6 +17,5 @@ export interface Context
         start: string,
         end: string,
         contribution_publication_delay: number,
-        contribution_manual_publication_delay: number,
     }
 }

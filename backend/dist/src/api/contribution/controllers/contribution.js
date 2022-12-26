@@ -7,12 +7,6 @@ const strapi_1 = require("@strapi/strapi");
 exports.default = strapi_1.factories.createCoreController('api::contribution.contribution', ({ strapi }) => ({
     // Method 2: Wrapping a core action (leaves core logic in place)
     async find(ctx) {
-        // some custom logic here
-        // ctx.query = { ...ctx.query, local: 'en' };
-        // Calling the default core action
-        // const { data, meta } = await super.find(ctx);
-        // console.log("data", data);
-        // console.log("meta", meta);
         const userId = ctx.state.user.id;
         let userContext;
         try {
@@ -23,12 +17,22 @@ exports.default = strapi_1.factories.createCoreController('api::contribution.con
         }
         console.log("usercontext", userContext);
         const contributions = await strapi.db.query('api::contribution.contribution').findMany({
-            select: ['id', 'text', 'state', 'publicationDatetime',],
+            select: ['id', 'text', 'state', 'publicationDatetime'],
             where: {
-                'terrain': {
-                    'id': userContext.author.terrain.id,
-                },
-                'state': 'Published',
+                $or: [
+                    {
+                        'terrain': {
+                            'id': userContext.author.terrain.id,
+                        },
+                        'state': 'Published',
+                    },
+                    {
+                        'terrain': {
+                            'id': userContext.author.terrain.id,
+                        },
+                        'author': userContext.author.id,
+                    },
+                ]
             },
             populate: ['author'],
             orderBy: { publicationDatetime: 'desc' }
@@ -41,8 +45,6 @@ exports.default = strapi_1.factories.createCoreController('api::contribution.con
             contribution.children = childrenLinks.map(l => l.id);
             contribution.parents = parentLinks.map(l => l.id);
         }
-        // // some more custom logic
-        // meta.date = Date.now();
         ctx.body = {
             data: contributions
         };
@@ -93,35 +95,6 @@ exports.default = strapi_1.factories.createCoreController('api::contribution.con
             data: contributions
         };
     },
-    // async update(ctx){
-    //     const userId = ctx.state.user.id;
-    //     let userContext;
-    //     try{
-    //         userContext = await strapi.service('api::user-context.user-context').getContext(userId);
-    //     }catch (e){
-    //         return ctx.badRequest("invalid user context", {});
-    //     }
-    //     console.log("update");
-    //     console.log("usercontext", userContext);
-    //     const { id } = ctx.params;
-    //     console.log("contribution id", id);
-    //     const contribution = await strapi.db.query("api::contribution.contribution").findOne(
-    //         {
-    //             select:['id', 'state'],
-    //             where: {
-    //                 'id': id,
-    //                 'author': userContext.author.id,
-    //             },
-    //             populate:['author'],
-    //         }
-    //     );
-    //     console.log("contribution", contribution);
-    //     if(!contribution || contribution.state != "Pending"){
-    //         return ctx.badRequest("invalid operation", {});
-    //     }
-    //     const response = await super.update(ctx);
-    //     return response;
-    // },
     // TODO: extract in service
     async create(ctx) {
         const userId = ctx.state.user.id;
@@ -152,7 +125,7 @@ exports.default = strapi_1.factories.createCoreController('api::contribution.con
         const newContribution = await strapi.entityService.create('api::contribution.contribution', {
             data: {
                 author: userContext.author.id,
-                state: "Pending",
+                state: "Editing",
                 text: "",
                 terrain: userContext.author.terrain.id,
             },
@@ -180,8 +153,36 @@ exports.default = strapi_1.factories.createCoreController('api::contribution.con
         console.log("publish for contribution id", id);
         await strapi.entityService.update("api::contribution.contribution", id, {
             data: {
-                'state': 'Published',
+                'state': 'PendingPublication',
                 'publicationDatetime': new Date(),
+            },
+        });
+        ctx.body = {
+            data: { id: id },
+        };
+    },
+    async cancelPublication(ctx) {
+        // contribution id from query params
+        const { id } = ctx.params;
+        console.log("cancel publication for contribution id", id);
+        await strapi.entityService.update("api::contribution.contribution", id, {
+            data: {
+                'state': 'Editing',
+                'publicationDatetime': null,
+            },
+        });
+        ctx.body = {
+            data: { id: id },
+        };
+    },
+    async abandon(ctx) {
+        // contribution id from query params
+        const { id } = ctx.params;
+        console.log("abandon publication for contribution id", id);
+        await strapi.entityService.update("api::contribution.contribution", id, {
+            data: {
+                'state': 'Abandoned',
+                'publicationDatetime': null,
             },
         });
         ctx.body = {

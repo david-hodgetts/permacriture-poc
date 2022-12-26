@@ -4,6 +4,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
  * checks that contribution is Mine
  */
 exports.default = async (policyContext, config, { strapi }) => {
+    console.log("is policy mine");
     const userId = policyContext.state.user.id;
     let userContext;
     try {
