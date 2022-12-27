@@ -131,7 +131,6 @@ exports.default = strapi_1.factories.createCoreController('api::contribution.con
             },
             populate: ['author'],
         });
-        // replace full leaky object by id
         console.log(newContribution);
         console.log("creating first link");
         // 2. create link 

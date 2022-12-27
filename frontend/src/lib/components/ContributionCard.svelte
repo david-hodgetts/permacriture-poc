@@ -5,8 +5,6 @@
 	import { strapiService } from "$lib/services/StrapiService";
     import { truncate, produceDateString, produceTimeString } from "$lib/services/textUtils";
     import { createEventDispatcher } from "svelte";
-	import { children } from "svelte/internal";
-	import ContributionList from "./ContributionList.svelte";
 
     export let contribution: Contribution;
     export let isFocused: boolean = false;
@@ -81,7 +79,7 @@
                 <span>
                     {`published in ${contribution.delayInMinutesBeforePublication} minutes`}
                 </span>
-                <button on:click={handlePublicationCancelRequest}>cancel</button>
+                <button on:click|stopPropagation={handlePublicationCancelRequest}>cancel</button>
             </div>
             {:else if contribution.state === ContributionState.Published}
                 <div class="date-time">
