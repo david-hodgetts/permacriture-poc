@@ -15,6 +15,15 @@ export enum ContributionState{
     Abandoned = "Abandoned",
 };
 
+export enum Order {
+    Ascending = "Asc",
+    Descending = "Desc",
+};
+
+export enum Filter {
+    all, mine,
+};
+
 
 export class Contribution extends BaseStrapiEntity{
     
@@ -27,10 +36,12 @@ export class Contribution extends BaseStrapiEntity{
 
     constructor(obj: any){
         super(obj);
+        
         this.author = obj.author;
         this.text = obj.text;
         this.state = obj.state;
-        this.publicationDatetime =  newDateOrNull(obj.publicationDatetime);
+        this.publicationDatetime = newDateOrNull(obj.publicationDatetime);
+        this.createdAt = new Date(obj.createdAt);
         this.children = obj.children;
         this.parents = obj.parents;
     }

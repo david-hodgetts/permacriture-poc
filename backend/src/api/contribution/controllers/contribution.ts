@@ -20,7 +20,7 @@ export default factories.createCoreController('api::contribution.contribution', 
 
 
         const contributions = await strapi.db.query('api::contribution.contribution').findMany({
-            select: ['id', 'text', 'state', 'publicationDatetime'],
+            select: ['id', 'text', 'state', 'publicationDatetime', 'createdAt'],
             where:{
                 $or: [
                     {
@@ -94,7 +94,7 @@ export default factories.createCoreController('api::contribution.contribution', 
         console.log("usercontext", userContext);
         
         const contributions = await strapi.db.query('api::contribution.contribution').findMany({
-            select: ['id', 'text', 'publicationDatetime', 'state'],
+            select: ['id', 'text', 'publicationDatetime', 'state', 'createdAt'],
             where: {
                 'author': userContext.author.id,
             },
