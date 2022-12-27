@@ -15,17 +15,16 @@ export default {
             populate: ['terrain'],
         });
 
-        console.log("pending contributions ", pendingContributions);
+        // console.log("pending contributions ", pendingContributions);
 
         for(const contribution of pendingContributions){
             const delayMinutes = contribution.terrain.contribution_publication_delay * 60;
             const now = new Date();
 
             const elapsedMinutes = (now.getTime() - new Date(contribution.publicationDatetime).getTime()) / 1000 / 60;
-            console.log(`delay minutes ${delayMinutes} elapsed ${elapsedMinutes}`);
+            // console.log(`delay minutes ${delayMinutes} elapsed ${elapsedMinutes}`);
 
             if(elapsedMinutes > delayMinutes){
-                console.log("youpi should be published");
                 await strapi.db.query('api::contribution.contribution').update({
                     where:{
                         id: contribution.id

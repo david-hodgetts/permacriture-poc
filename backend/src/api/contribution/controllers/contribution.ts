@@ -156,7 +156,6 @@ export default factories.createCoreController('api::contribution.contribution', 
             populate: ['author'],
         });
 
-        // replace full leaky object by id
         console.log(newContribution);
         console.log("creating first link");
         // 2. create link 
