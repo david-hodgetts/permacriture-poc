@@ -2,7 +2,6 @@
  * checks that contribution is Mine
  */
 export default async (policyContext, config, { strapi }) => {
-    console.log("is policy mine")
     const userId = policyContext.state.user.id;
     let userContext;
     try{

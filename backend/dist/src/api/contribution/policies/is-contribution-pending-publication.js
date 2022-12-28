@@ -4,7 +4,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
  * contribution only modifiable if in Editing state
  */
 exports.default = async (policyContext, config, { strapi }) => {
-    console.log("test policy--------------------------------");
     const ctx = strapi.requestContext.get();
     const { id } = ctx.params;
     const contribution = await strapi.db.query("api::contribution.contribution").findOne({

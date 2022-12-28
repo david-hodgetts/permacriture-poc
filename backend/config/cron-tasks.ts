@@ -25,13 +25,14 @@ export default {
             // console.log(`delay minutes ${delayMinutes} elapsed ${elapsedMinutes}`);
 
             if(elapsedMinutes > delayMinutes){
+                const publicationDate = new Date();
                 await strapi.db.query('api::contribution.contribution').update({
                     where:{
                         id: contribution.id
                     },
                     data:{
                         state: "Published",
-                        publicationDateTime: new Date(),
+                        publicationDateTime: publicationDate,
                     }
                 });
             }
