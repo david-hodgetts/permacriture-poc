@@ -108,7 +108,7 @@
             <button on:click|stopPropagation={handleAbandonRequest}>abandon</button>
         {/if}
 
-        <div>{contribution.parents.length} | {contribution.children.length}</div>
+        <div>{contribution.totalCountOfParents} | {contribution.totalCountOfChildren}</div>
     </footer>
 </div>
 

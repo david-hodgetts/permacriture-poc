@@ -24,6 +24,10 @@ export enum Filter {
     all, mine,
 };
 
+export enum Relation{
+    Parent,
+    Child,
+}
 
 export class Contribution extends BaseStrapiEntity{
     
@@ -34,8 +38,12 @@ export class Contribution extends BaseStrapiEntity{
     public children!: id[];
     public parents!: id[];
 
+    public totalCountOfParents:number = 0;
+    public totalCountOfChildren:number = 0;
+
     constructor(obj: any){
         super(obj);
+        console.log("item", obj);
         
         this.author = obj.author;
         this.text = obj.text;
@@ -66,5 +74,16 @@ export class Contribution extends BaseStrapiEntity{
         const now = new Date();
         const remainingMillis = (this.publicationDatetime!.getTime() + delayInMinutes * 60 * 1000) - now.getTime();
         return Math.round(remainingMillis / 1000 / 60);
+    }
+
+    getDirectRelationsOfType(relation: Relation){
+        switch(relation){
+            case Relation.Child:
+                return this.children;
+            case Relation.Parent:
+                return this.parents;
+            default:
+                throw new Error(`unsupported relation found -> ${relation}`);
+        }
     }
 }

@@ -5,6 +5,8 @@ import { getJwt } from "$lib/services/LocalStorage";
 import { goto } from "$app/navigation";
 import { Contribution } from "$lib/models/Contribution";
 import type { id } from '$lib/models/Id';
+import type { Link } from '$lib/models/Link';
+import { Graph } from '$lib/models/Graph';
 
 
 function axiosOptions(optionaJwt: string = "") {
@@ -53,24 +55,48 @@ class StrapiService
         const url = `${Config.baseUrl}/api/contributions`;
         try{
             const response = await axios.get(url, axiosOptions());
-            return response.data.data.map((item: any) => new Contribution(item)) as Contribution[];
+            let contributions = response.data.data.map((item: any) => new Contribution(item)) as Contribution[];
+
+            const graph = new Graph(contributions);
+            contributions = graph.addCompleteChildParentCountToContributions();
+
+            return contributions;
+        }catch(e){
+            errorHandler(e as AxiosError);
+            throw e;
+        }
+    }
+
+    async getLinks(): Promise<Link[]>{
+        const url = `${Config.baseUrl}/api/links?populate=%2A`;
+        try{
+            const response = await axios.get(url, axiosOptions());
+            return response.data.data.map((l: any) => {
+                console.log(l);
+                return {
+                    id: l.id,
+                    parent: l.attributes.parent.data.id,
+                    child: l.attributes.child.data.id,
+                    isFirstLink: l.attributes.isFirstLink,
+                };
+            }) as Link[];
         }catch(e){
             errorHandler(e as AxiosError);
             throw e;
         }
     }
     
-    async myContributions(): Promise<Contribution[]>{
-        const url = `${Config.baseUrl}/api/contributions/mine`;
-        try{
-            const response = await axios.get(url, axiosOptions());
-            // console.log(response);
-            return response.data.data.map((entry:any) => new Contribution(entry)) as Contribution[];
-        }catch(e){
-            errorHandler(e as AxiosError);
-            throw e;
-        }
-    }
+    // async myContributions(): Promise<Contribution[]>{
+    //     const url = `${Config.baseUrl}/api/contributions/mine`;
+    //     try{
+    //         const response = await axios.get(url, axiosOptions());
+    //         // console.log(response);
+    //         return response.data.data.map((entry:any) => new Contribution(entry)) as Contribution[];
+    //     }catch(e){
+    //         errorHandler(e as AxiosError);
+    //         throw e;
+    //     }
+    // }
 
     async createNewContributionFromParent(parentContribution:Contribution): Promise<id>{
         const url = `${Config.baseUrl}/api/contributions`;

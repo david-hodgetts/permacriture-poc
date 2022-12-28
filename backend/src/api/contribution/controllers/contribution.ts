@@ -5,6 +5,15 @@
 import { factories } from '@strapi/strapi'
 import userContext from '../../user-context/controllers/user-context';
 
+
+async function addChildrenAndParentsToContribution(contribution, strapi){
+    const parentLinks = await strapi.service('api::link.link').parentsOfContribution(contribution.id);
+    const childrenLinks = await strapi.service('api::link.link').childrenOfContribution(contribution.id);
+
+    contribution.children = childrenLinks.map(l => l.child.id);
+    contribution.parents = parentLinks.map(l => l.parent.id);
+}
+
 export default factories.createCoreController('api::contribution.contribution', ({ strapi }) => ({
 
     // Method 2: Wrapping a core action (leaves core logic in place)
@@ -41,17 +50,12 @@ export default factories.createCoreController('api::contribution.contribution', 
             orderBy: { publicationDatetime: 'desc' }
         });
         
-        console.log("contributions", contributions);
-
         // add direct ancestors and children
-        for(const contribution of contributions){
-            
-            const parentLinks = await strapi.service('api::link.link').parentsOfContribution(contribution.id); 
-            const childrenLinks = await strapi.service('api::link.link').childrenOfContribution(contribution.id); 
-
-            contribution.children = childrenLinks.map(l => l.id);
-            contribution.parents = parentLinks.map(l => l.id);
+        for(let contribution of contributions){
+            await addChildrenAndParentsToContribution(contribution, strapi);
         }
+        
+        console.log("contributions", contributions);
 
         ctx.body = {
             data: contributions 
@@ -67,13 +71,9 @@ export default factories.createCoreController('api::contribution.contribution', 
         if(!entity){
             return ctx.notFound("contribution not found", {});
         }
+
+        await addChildrenAndParentsToContribution(entity, strapi);
         
-        const parentLinks = await strapi.service('api::link.link').parentsOfContribution(entity.id);
-        const childrenLinks = await strapi.service('api::link.link').childrenOfContribution(entity.id);
-
-        entity.children = childrenLinks.map(l => l.id);
-        entity.parents = parentLinks.map(l => l.id);
-
         console.log(entity);
         
         const sanitizedEntity = await this.sanitizeOutput(entity, ctx);
@@ -103,12 +103,7 @@ export default factories.createCoreController('api::contribution.contribution', 
         console.log(contributions);
         // add direct ancestors and children
         for(const contribution of contributions){
-            
-            const parentLinks = await strapi.service('api::link.link').parentsOfContribution(contribution.id); 
-            const childrenLinks = await strapi.service('api::link.link').childrenOfContribution(contribution.id); 
-
-            contribution.children = childrenLinks.map(l => l.id);
-            contribution.parents = parentLinks.map(l => l.id);
+            await addChildrenAndParentsToContribution(contribution, strapi);
         }
         
         ctx.body = {
