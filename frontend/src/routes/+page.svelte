@@ -3,7 +3,7 @@
     import ContributionList from "$lib/components/ContributionList.svelte"
 	import ContributionCard from "$lib/components/ContributionCard.svelte";
     import ListFilter from "$lib/components/ListFilter.svelte";
-
+    import ContributionButtonList from "$lib/components/ContributionButtonList.svelte";
 
 	import type { PageData } from "./$types";
 	import { strapiService } from "$lib/services/StrapiService";
@@ -15,6 +15,9 @@
 
     let contributions: Contribution[] = [];
 
+    let parentContributions: Contribution[] = []; // holds parents of selectedContribution
+    let childContributions: Contribution[] = []; // holds children of selectedContribution
+
     let order = Order.Descending;
     let selectedFilter = Filter.all;
     
@@ -24,8 +27,17 @@
         updateContributions();
     });
 
-    function onCardSelectionRequest(e:any){
-        selectedContribution = e.detail.contribution;
+    function onContributionSelectionRequest(e:any){
+        const contributionId = e.detail.contributionId;
+        selectedContribution = data.mapOfContributions.get(contributionId) as Contribution;
+
+        parentContributions = selectedContribution!.parents.map((id) => {
+            return data.mapOfContributions.get(id);
+        }) as Contribution[];
+        
+        childContributions = selectedContribution!.children.map((id) => {
+            return data.mapOfContributions.get(id);
+        }) as Contribution[];
     }
 
     async function onNewContributionRequest(e:any){
@@ -83,16 +95,62 @@
     />
     <ContributionList 
         contributions={contributions} 
-        on:cardSelectionRequest={onCardSelectionRequest} 
+        on:cardSelectionRequest={onContributionSelectionRequest} 
         on:newContributionRequest={onNewContributionRequest}
     />
 {:else}
+    <!-- click catcher, closes focused card -->
+    <div class="modal-close" 
+        on:click={() => selectedContribution = null}/>
+
+    <!-- parent contributions -->
+    <div class="top">
+        <ContributionButtonList 
+            contributions={parentContributions}
+            on:contributionSelectionRequest={onContributionSelectionRequest}
+        />
+    </div>
+
+    <!-- focused contribution card -->
     <ContributionCard 
         contribution={selectedContribution} 
         isFocused={true}
         on:newContributionRequest={onNewContributionRequest}
-        on:closeRequest={() => selectedContribution = null}
     />
+    
+    <!-- child contributions -->
+    <div class="bottom">
+        <ContributionButtonList 
+            contributions={childContributions}
+            on:contributionSelectionRequest={onContributionSelectionRequest}
+        />
+    </div>
 {/if}
 
+
+<style>
+    .modal-close{
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+    }
+    .top{
+        position: absolute;
+        top:var(--navigation-height);
+        left: 0;
+        width: 100%;
+        z-index: 2;
+        pointer-events: none;
+    }
+    .bottom{
+        position: absolute;
+        bottom:0;
+        left: 0;
+        width: 100%;
+        z-index: 3;
+    }
+</style>
 

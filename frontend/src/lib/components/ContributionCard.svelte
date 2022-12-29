@@ -14,15 +14,11 @@
     const maxCharCount = 180;
 
     function sendSelectionRequest(){
-        dispatch("cardSelectionRequest", { contribution: contribution });
+        dispatch("cardSelectionRequest", { contributionId: contribution.id });
     }
 
     function sendNewContributionRequest(){
         dispatch("newContributionRequest", { contribution: contribution });
-    }
-    
-    function sendCloseRequest(){
-        dispatch("closeRequest", {});
     }
 
     async function handlePublicationRequest(){
@@ -57,9 +53,6 @@
     }
 </script>
 
-{#if isFocused}
-    <div class="modal-close" on:click={sendCloseRequest}></div>
-{/if}
 <div 
     class="contribution-card" 
     class:focused={isFocused}
@@ -115,14 +108,6 @@
 
 
 <style lang="scss">
-    .modal-close{
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-
-    }
     .contribution-card{
         background-color: var(--white);
         display: flex;
@@ -152,6 +137,7 @@
         left: 0;
         width: 100%;
         height: 50%;
+        z-index: 3;
     }
     
     .content{

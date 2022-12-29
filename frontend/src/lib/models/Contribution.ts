@@ -76,6 +76,20 @@ export class Contribution extends BaseStrapiEntity{
         return Math.round(remainingMillis / 1000 / 60);
     }
 
+    /**
+     * return 2 letter author abbrev
+     * or GR if author not present (assumes is a grain in that case)
+     */
+    public get authorAbbrev(): string{
+        if(!this.author){
+            return "Gr";
+        }
+
+        const firstLetter = this.author.nickname[0].toLocaleUpperCase();
+        const lastLetter = this.author.nickname[this.author.nickname.length - 1];
+        return `${firstLetter}${lastLetter}`;
+    }
+
     getDirectRelationsOfType(relation: Relation){
         switch(relation){
             case Relation.Child:

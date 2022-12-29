@@ -15,9 +15,7 @@
     }
 </script>
 
-<div 
-    class="contribution-list"
->
+<div class="contribution-list">
     {#each contributions as contribution }
         <ContributionCard 
             contribution={contribution} 
