@@ -6,9 +6,9 @@ import { factories } from '@strapi/strapi'
 import userContext from '../../user-context/controllers/user-context';
 
 
-async function addChildrenAndParentsToContribution(contribution, strapi){
-    const parentLinks = await strapi.service('api::link.link').parentsOfContribution(contribution.id);
-    const childrenLinks = await strapi.service('api::link.link').childrenOfContribution(contribution.id);
+async function addChildrenAndParentsToContribution(contribution, strapi, userContext){
+    const parentLinks = await strapi.service('api::link.link').parentsOfContribution(contribution.id, userContext);
+    const childrenLinks = await strapi.service('api::link.link').childrenOfContribution(contribution.id, userContext);
 
     contribution.children = childrenLinks.map(l => l.child.id);
     contribution.parents = parentLinks.map(l => l.parent.id);
@@ -52,7 +52,7 @@ export default factories.createCoreController('api::contribution.contribution', 
         
         // add direct ancestors and children
         for(let contribution of contributions){
-            await addChildrenAndParentsToContribution(contribution, strapi);
+            await addChildrenAndParentsToContribution(contribution, strapi, userContext);
         }
         
         console.log("contributions", contributions);
@@ -72,7 +72,7 @@ export default factories.createCoreController('api::contribution.contribution', 
             return ctx.notFound("contribution not found", {});
         }
 
-        await addChildrenAndParentsToContribution(entity, strapi);
+        await addChildrenAndParentsToContribution(entity, strapi, userContext);
         
         console.log(entity);
         
@@ -103,7 +103,7 @@ export default factories.createCoreController('api::contribution.contribution', 
         console.log(contributions);
         // add direct ancestors and children
         for(const contribution of contributions){
-            await addChildrenAndParentsToContribution(contribution, strapi);
+            await addChildrenAndParentsToContribution(contribution, strapi, userContext);
         }
         
         ctx.body = {

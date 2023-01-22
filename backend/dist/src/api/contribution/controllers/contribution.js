@@ -2,11 +2,15 @@
 /**
  * contribution controller
  */
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const strapi_1 = require("@strapi/strapi");
-async function addChildrenAndParentsToContribution(contribution, strapi) {
-    const parentLinks = await strapi.service('api::link.link').parentsOfContribution(contribution.id);
-    const childrenLinks = await strapi.service('api::link.link').childrenOfContribution(contribution.id);
+const user_context_1 = __importDefault(require("../../user-context/controllers/user-context"));
+async function addChildrenAndParentsToContribution(contribution, strapi, userContext) {
+    const parentLinks = await strapi.service('api::link.link').parentsOfContribution(contribution.id, userContext);
+    const childrenLinks = await strapi.service('api::link.link').childrenOfContribution(contribution.id, userContext);
     contribution.children = childrenLinks.map(l => l.child.id);
     contribution.parents = parentLinks.map(l => l.parent.id);
 }
@@ -45,7 +49,7 @@ exports.default = strapi_1.factories.createCoreController('api::contribution.con
         });
         // add direct ancestors and children
         for (let contribution of contributions) {
-            await addChildrenAndParentsToContribution(contribution, strapi);
+            await addChildrenAndParentsToContribution(contribution, strapi, userContext);
         }
         console.log("contributions", contributions);
         ctx.body = {
@@ -60,7 +64,7 @@ exports.default = strapi_1.factories.createCoreController('api::contribution.con
         if (!entity) {
             return ctx.notFound("contribution not found", {});
         }
-        await addChildrenAndParentsToContribution(entity, strapi);
+        await addChildrenAndParentsToContribution(entity, strapi, user_context_1.default);
         console.log(entity);
         const sanitizedEntity = await this.sanitizeOutput(entity, ctx);
         ctx.body = sanitizedEntity;
@@ -86,7 +90,7 @@ exports.default = strapi_1.factories.createCoreController('api::contribution.con
         console.log(contributions);
         // add direct ancestors and children
         for (const contribution of contributions) {
-            await addChildrenAndParentsToContribution(contribution, strapi);
+            await addChildrenAndParentsToContribution(contribution, strapi, userContext);
         }
         ctx.body = {
             data: contributions
