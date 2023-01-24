@@ -10,6 +10,15 @@ async function addChildrenAndParentsToContribution(contribution, strapi, userCon
     contribution.children = childrenLinks.map(l => l.child.id);
     contribution.parents = parentLinks.map(l => l.parent.id);
 }
+async function computeNextPerAuthorTextIndexForUser(userContext) {
+    const contributions = await strapi.db.query('api::contribution.contribution').findMany({
+        select: ['id'],
+        where: {
+            'author': userContext.author.id,
+        },
+    });
+    return contributions.length + 1;
+}
 exports.default = strapi_1.factories.createCoreController('api::contribution.contribution', ({ strapi }) => ({
     // Method 2: Wrapping a core action (leaves core logic in place)
     async find(ctx) {
@@ -23,7 +32,7 @@ exports.default = strapi_1.factories.createCoreController('api::contribution.con
         }
         console.log("usercontext", userContext);
         const contributions = await strapi.db.query('api::contribution.contribution').findMany({
-            select: ['id', 'text', 'state', 'publicationDatetime', 'createdAt'],
+            select: ['id', 'text', 'state', 'publicationDatetime', 'createdAt', 'perAuthorTextIndex'],
             where: {
                 $or: [
                     {
@@ -86,7 +95,7 @@ exports.default = strapi_1.factories.createCoreController('api::contribution.con
         }
         console.log("usercontext", userContext);
         const contributions = await strapi.db.query('api::contribution.contribution').findMany({
-            select: ['id', 'text', 'publicationDatetime', 'state', 'createdAt'],
+            select: ['id', 'text', 'publicationDatetime', 'state', 'createdAt', 'perAuthorTextIndex'],
             where: {
                 'author': userContext.author.id,
             },
@@ -127,6 +136,7 @@ exports.default = strapi_1.factories.createCoreController('api::contribution.con
         if (!parentContribution) {
             return ctx.badRequest('invalid parent contribution', {});
         }
+        const nextPerAuthorTextIndex = await computeNextPerAuthorTextIndexForUser(userContext);
         // 1. create new contribution
         const newContribution = await strapi.entityService.create('api::contribution.contribution', {
             data: {
@@ -134,6 +144,7 @@ exports.default = strapi_1.factories.createCoreController('api::contribution.con
                 state: "Editing",
                 text: "",
                 terrain: userContext.author.terrain.id,
+                perAuthorTextIndex: nextPerAuthorTextIndex,
             },
             populate: ['author'],
         });
