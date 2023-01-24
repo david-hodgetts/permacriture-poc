@@ -2,12 +2,8 @@
 /**
  * contribution controller
  */
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const strapi_1 = require("@strapi/strapi");
-const user_context_1 = __importDefault(require("../../user-context/controllers/user-context"));
 async function addChildrenAndParentsToContribution(contribution, strapi, userContext) {
     const parentLinks = await strapi.service('api::link.link').parentsOfContribution(contribution.id, userContext);
     const childrenLinks = await strapi.service('api::link.link').childrenOfContribution(contribution.id, userContext);
@@ -58,13 +54,22 @@ exports.default = strapi_1.factories.createCoreController('api::contribution.con
     },
     // Method 3: Replacing a core action
     async findOne(ctx) {
+        const userId = ctx.state.user.id;
+        let userContext;
+        try {
+            userContext = await strapi.service('api::user-context.user-context').getContext(userId);
+        }
+        catch (e) {
+            return ctx.badRequest("invalid user context", {});
+        }
+        console.log("usercontext", userContext);
         const { id } = ctx.params;
         const { query } = ctx;
         const entity = await strapi.service('api::contribution.contribution').findOne(id, query);
         if (!entity) {
             return ctx.notFound("contribution not found", {});
         }
-        await addChildrenAndParentsToContribution(entity, strapi, user_context_1.default);
+        await addChildrenAndParentsToContribution(entity, strapi, userContext);
         console.log(entity);
         const sanitizedEntity = await this.sanitizeOutput(entity, ctx);
         ctx.body = sanitizedEntity;

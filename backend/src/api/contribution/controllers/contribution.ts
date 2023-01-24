@@ -64,6 +64,14 @@ export default factories.createCoreController('api::contribution.contribution', 
 
     // Method 3: Replacing a core action
     async findOne(ctx) {
+        const userId = ctx.state.user.id;
+        let userContext;
+        try{
+            userContext = await strapi.service('api::user-context.user-context').getContext(userId);
+        }catch (e){
+            return ctx.badRequest("invalid user context", {});
+        }
+        console.log("usercontext", userContext);
         const { id } = ctx.params;
         const { query } = ctx;
 
