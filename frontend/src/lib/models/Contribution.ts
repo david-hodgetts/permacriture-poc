@@ -1,11 +1,10 @@
 import { newDateOrNull } from "$lib/services/dateUtils";
-import { produceDateString } from "$lib/services/textUtils";
+import { hashStr } from "$lib/services/textUtils";
 import type Author from "./Author";
 import { BaseStrapiEntity } from "./BaseStrapiEntity";
 import type { id } from "./Id";
 import { get } from 'svelte/store';
 import UserStore from '$lib/stores/user.store';
-import type User from "./User";
 import userStore from "$lib/stores/user.store";
 
 export enum ContributionState{
@@ -41,8 +40,6 @@ export class Contribution extends BaseStrapiEntity{
 
     public totalCountOfParents:number = 0;
     public totalCountOfChildren:number = 0;
-
-
 
     constructor(obj: any){
         super(obj);
@@ -81,17 +78,32 @@ export class Contribution extends BaseStrapiEntity{
     }
 
     /**
-     * return 2 letter author abbrev
-     * or GR if author not present (assumes is a grain in that case)
+     * define a title property based on the author's nickname + perAuthorTextIndex
      */
     public get title(): string{
         if(!this.author){
             return "Graine";
         }
 
-        const textIndex = this.perAuthorTextIndex ? `-${this.perAuthorTextIndex}` : '';
-
+        const textIndex = this.perAuthorTextIndex ? ` ${this.perAuthorTextIndex}` : '';
         return `${this.author.nickname}${textIndex}`;
+    }
+
+    // define a color from hash of author's nickname
+    get color(): string{
+
+        if(!this.author){
+            return "#00ff00";
+        }
+
+        const toHex = (num: number) => num.toString(16).padStart(2, '0');
+
+        const hash = hashStr(this.author.nickname);
+        const inDomain = hash % Math.pow(2, 24);
+        const red = inDomain & 0xff;
+        const green = (inDomain >> 8) & 0xff;
+        const blue = (inDomain >> 16) & 0xff;
+        return `#${toHex(red)}${toHex(green)}${toHex(blue)}`;
     }
 
     getDirectRelationsOfType(relation: Relation){

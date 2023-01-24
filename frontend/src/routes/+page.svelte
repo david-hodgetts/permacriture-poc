@@ -100,57 +100,61 @@
     />
 {:else}
     <!-- click catcher, closes focused card -->
-    <div class="modal-close" 
-        on:click={() => selectedContribution = null}/>
 
-    <!-- parent contributions -->
-    <div class="top">
-        <ContributionButtonList 
-            contributions={parentContributions}
-            on:contributionSelectionRequest={onContributionSelectionRequest}
+    <div class="modal">
+
+        <!-- parent contributions -->
+        <div class="top">
+            <ContributionButtonList 
+                contributions={parentContributions}
+                on:contributionSelectionRequest={onContributionSelectionRequest}
+                on:endFocusMode={() => selectedContribution = null}
+            />
+        </div>
+
+        <!-- focused contribution card -->
+        <ContributionCard 
+            contribution={selectedContribution} 
+            isFocused={true}
+            on:newContributionRequest={onNewContributionRequest}
         />
+        
+        <!-- child contributions -->
+        <div class="bottom">
+            <ContributionButtonList 
+                contributions={childContributions}
+                on:contributionSelectionRequest={onContributionSelectionRequest}
+                on:endFocusMode={() => selectedContribution = null}
+            />
+        </div>
     </div>
 
-    <!-- focused contribution card -->
-    <ContributionCard 
-        contribution={selectedContribution} 
-        isFocused={true}
-        on:newContributionRequest={onNewContributionRequest}
-    />
-    
-    <!-- child contributions -->
-    <div class="bottom">
-        <ContributionButtonList 
-            contributions={childContributions}
-            on:contributionSelectionRequest={onContributionSelectionRequest}
-        />
-    </div>
 {/if}
 
 
 <style>
-    .modal-close{
+    .modal{
         position: fixed;
-        top: 0;
+        top: var(--navbar-height);
         left: 0;
+        z-index: 2;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        gap: 10px;
+        padding-top: 10px;
+        padding-bottom: 10px;
         width: 100%;
-        height: 100%;
-        z-index: 1;
+        height: calc(100% - var(--navbar-height));
     }
     .top{
-        position: absolute;
-        top:var(--navigation-height);
-        left: 0;
         width: 100%;
-        z-index: 2;
-        pointer-events: none;
+        height: 20%;
     }
     .bottom{
-        position: absolute;
-        bottom:0;
-        left: 0;
         width: 100%;
-        z-index: 3;
+        min-height: 20%;
     }
+    
 </style>
 

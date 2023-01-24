@@ -15,6 +15,6 @@ import Navigation from "$lib/components/Navigation.svelte";
 <style lang="scss">
     main{
         margin-top: var(--navbar-height);
-        height: 100%;
+        height: 100vh;
     }
 </style>

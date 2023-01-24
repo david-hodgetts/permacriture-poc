@@ -1,5 +1,5 @@
 <script lang="ts">
-    import ContributionRoundButton from "./ContributionRoundButton.svelte";
+    import ContributionMiniButton from "./ContributionMiniButton.svelte";
 	import type { Contribution } from "$lib/models/Contribution";
     import { createEventDispatcher } from "svelte";
 
@@ -7,19 +7,21 @@
     
     const dispatch = createEventDispatcher();
 
-    function onClick(e){
+    function onContributionSelectionRequest(e:any){
         dispatch('contributionSelectionRequest', e.detail);
+    }
+
+    function onModalCloseRequest(e:any){
+        dispatch('endFocusMode', {});
     }
 
 </script>
 
-<div class="button-list">
+<div class="button-list" on:click={onModalCloseRequest}>
     {#each contributions as contribution (contribution.id)}
-        <ContributionRoundButton  
-            id={contribution.id} 
-            title={contribution.title}
-            nickname={contribution.author?.nickname}
-            on:click={onClick}   
+        <ContributionMiniButton  
+            contribution={contribution}
+            on:click={onContributionSelectionRequest}   
         /> 
     {/each}
 </div>
@@ -31,7 +33,6 @@
         display: flex;
         flex-direction: row;
         justify-content: space-around;
-        padding-top: 40px;
-        padding-bottom: 40px;
+        height: 100%;
     }
 </style>

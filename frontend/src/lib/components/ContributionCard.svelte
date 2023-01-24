@@ -49,7 +49,6 @@
         }catch(e){
             console.error(e);
         }
-
     }
 </script>
 
@@ -61,11 +60,7 @@
 >
     <div class="content" >
         <header>
-            {#if contribution.author != null}
-                <h2>{contribution.author.nickname}</h2>
-            {:else}
-                <h2>&nbsp</h2>
-            {/if}
+            <h2>{contribution.title}</h2>
             <div class="small-text">{contribution.state}</div>
             {#if contribution.state === ContributionState.PendingPublication}
             <div>
@@ -132,12 +127,7 @@
     }
     
     .focused{
-        position:fixed;
-        top: 25%;
-        left: 0;
-        width: 100%;
-        height: 50%;
-        z-index: 3;
+        flex-grow: 3;
     }
     
     .content{
