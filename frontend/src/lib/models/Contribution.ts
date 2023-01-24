@@ -35,11 +35,14 @@ export class Contribution extends BaseStrapiEntity{
     public text!: string;
     public state!: ContributionState;
     public publicationDatetime!: Date | null;
+    public perAuthorTextIndex!: number | null;
     public children!: id[];
     public parents!: id[];
 
     public totalCountOfParents:number = 0;
     public totalCountOfChildren:number = 0;
+
+
 
     constructor(obj: any){
         super(obj);
@@ -49,6 +52,7 @@ export class Contribution extends BaseStrapiEntity{
         this.text = obj.text;
         this.state = obj.state;
         this.publicationDatetime = newDateOrNull(obj.publicationDatetime);
+        this.perAuthorTextIndex = obj.perAuthorTextIndex;
         this.createdAt = new Date(obj.createdAt);
         this.children = obj.children;
         this.parents = obj.parents;
@@ -80,14 +84,14 @@ export class Contribution extends BaseStrapiEntity{
      * return 2 letter author abbrev
      * or GR if author not present (assumes is a grain in that case)
      */
-    public get authorAbbrev(): string{
+    public get title(): string{
         if(!this.author){
-            return "Gr";
+            return "Graine";
         }
 
-        const firstLetter = this.author.nickname[0].toLocaleUpperCase();
-        const lastLetter = this.author.nickname[this.author.nickname.length - 1];
-        return `${firstLetter}${lastLetter}`;
+        const textIndex = this.perAuthorTextIndex ? `-${this.perAuthorTextIndex}` : '';
+
+        return `${this.author.nickname}${textIndex}`;
     }
 
     getDirectRelationsOfType(relation: Relation){

@@ -1,6 +1,6 @@
 import axios, { AxiosError }  from 'axios';
 import Config from "$lib/services/Config";
-import type { Context, User } from "$lib/models/User";
+import type { Context } from "$lib/models/User";
 import { getJwt } from "$lib/services/LocalStorage";
 import { goto } from "$app/navigation";
 import { Contribution } from "$lib/models/Contribution";
@@ -85,18 +85,6 @@ class StrapiService
             throw e;
         }
     }
-    
-    // async myContributions(): Promise<Contribution[]>{
-    //     const url = `${Config.baseUrl}/api/contributions/mine`;
-    //     try{
-    //         const response = await axios.get(url, axiosOptions());
-    //         // console.log(response);
-    //         return response.data.data.map((entry:any) => new Contribution(entry)) as Contribution[];
-    //     }catch(e){
-    //         errorHandler(e as AxiosError);
-    //         throw e;
-    //     }
-    // }
 
     async createNewContributionFromParent(parentContribution:Contribution): Promise<id>{
         const url = `${Config.baseUrl}/api/contributions`;

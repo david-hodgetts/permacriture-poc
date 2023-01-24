@@ -14,10 +14,11 @@
 </script>
 
 <div class="button-list">
-    {#each contributions as contribution}
+    {#each contributions as contribution (contribution.id)}
         <ContributionRoundButton  
             id={contribution.id} 
-            name={contribution.authorAbbrev}
+            title={contribution.title}
+            nickname={contribution.author?.nickname}
             on:click={onClick}   
         /> 
     {/each}
