@@ -43,6 +43,7 @@
     
     h2{
         color: white;
+        margin: 0;
         border-radius: 20px;
         padding-left: 10px;
         padding-right: 10px;
