@@ -10,7 +10,7 @@
 
 
     function onClick(){
-        dispatch('click', { contributionId: contribution.id });
+        dispatch('contributionSelectionRequest', { contributionId: contribution.id });
     }
 </script>
 

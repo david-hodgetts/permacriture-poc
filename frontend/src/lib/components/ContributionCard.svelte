@@ -1,4 +1,5 @@
 <script lang="ts">
+    import LinkModal from "./LinkModal.svelte";
 	import { goto } from "$app/navigation";
 	import type { Contribution } from "$lib/models/Contribution";
 	import { ContributionState } from "$lib/models/Contribution";
@@ -13,12 +14,10 @@
 
     const maxCharCount = 180;
 
+    let showLinkModal = false;
+
     function sendSelectionRequest(){
         dispatch("cardSelectionRequest", { contributionId: contribution.id });
-    }
-
-    function sendNewContributionRequest(){
-        dispatch("newContributionRequest", { contribution: contribution });
     }
 
     async function handlePublicationRequest(){
@@ -51,6 +50,13 @@
         }
     }
 </script>
+
+<LinkModal 
+    contribution={contribution} 
+    visible={showLinkModal} 
+    on:close={() => showLinkModal = false}
+/>
+
 
 <div 
     class="contribution-card" 
@@ -89,7 +95,7 @@
             <div class="open-detail">&hellip; voir plus</div>
         {/if}
         {#if contribution.state === ContributionState.Published}
-            <button on:click|stopPropagation={sendNewContributionRequest}>new</button>
+            <button on:click|stopPropagation={() => showLinkModal = true}>lier</button>
         {:else if contribution.state === ContributionState.Editing}
             <button on:click|stopPropagation={() => goto(`/editor/${contribution.id}`)}>edit</button>
             <button on:click|stopPropagation={handlePublicationRequest}>publish</button>

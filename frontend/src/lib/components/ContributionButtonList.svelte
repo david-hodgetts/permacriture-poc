@@ -19,6 +19,7 @@
         dispatch('contributionSelectionRequest', e.detail);
     }
 
+    // a bit of a hack to allow users to close the focus mode by clicking on any empty white space
     function onModalCloseRequest(e:any){
         dispatch('endFocusMode', {});
     }
@@ -40,7 +41,7 @@
             <SwiperSlide class="swiper">
                 <ContributionMiniButton  
                     contribution={contribution}
-                    on:click={onContributionSelectionRequest}   
+                    on:contributionSelectionRequest
                 /> 
             </SwiperSlide>
         {/each}

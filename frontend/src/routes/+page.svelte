@@ -40,20 +40,6 @@
         }) as Contribution[];
     }
 
-    async function onNewContributionRequest(e:any){
-        const parentContribution = e.detail.contribution;
-        const newContributionId = await strapiService.createNewContributionFromParent(parentContribution);
-        console.log("new contribution id", newContributionId);
-        if(newContributionId == -1){
-            // TODO: handle error for user
-            console.error("unable to create new contribution");
-            return;
-        }
-
-        // open the editor 
-        goto(`/editor/${newContributionId}`);
-    }
-
     function updateContributions(){
         if(selectedFilter == Filter.all){
             contributions = data.contributions;
@@ -96,7 +82,6 @@
     <ContributionList 
         contributions={contributions} 
         on:cardSelectionRequest={onContributionSelectionRequest} 
-        on:newContributionRequest={onNewContributionRequest}
     />
 {:else}
     <!-- click catcher, closes focused card -->
@@ -116,7 +101,6 @@
         <ContributionCard 
             contribution={selectedContribution} 
             isFocused={true}
-            on:newContributionRequest={onNewContributionRequest}
         />
         
         <!-- child contributions -->
@@ -128,7 +112,6 @@
             />
         </div>
     </div>
-
 {/if}
 
 
