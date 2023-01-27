@@ -38,5 +38,14 @@ exports.default = {
                 middlewares: [],
             },
         },
+        {
+            method: 'PUT',
+            path: '/contributions/add-parent/:id',
+            handler: 'contribution.addParent',
+            config: {
+                policies: ["is-contribution-mine"],
+                middlewares: [],
+            },
+        },
     ],
 };

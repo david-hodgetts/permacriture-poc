@@ -4,7 +4,11 @@
 	import { goto } from "$app/navigation";
 	import { ContributionState, type Contribution } from "$lib/models/Contribution";
 	import { strapiService } from "$lib/services/StrapiService";
-	import { get } from "svelte/store";
+	import { createEventDispatcher } from "svelte";
+
+
+    const dispatch = createEventDispatcher();
+
     export let visible = false;
 
     export let contribution: Contribution;
@@ -12,6 +16,7 @@
     $:{
         if (visible){
             state = State.SelectLinkType;
+            contributions = [];
         }
     }
 
@@ -20,20 +25,19 @@
 
     let contributions: Contribution[] = [];
 
-    // get all published contributions that are not this
-    // and that do not have this contrib as child
+    // get all published contributions except this one
+    // and all its parent
     async function getContributions(): Promise<Contribution[]>{
         return (await strapiService.getContributions()).filter(c => {
-            return c.state == ContributionState.Published &&
-            c.id != contribution.id &&
-            !c.parents.find(id => id === contribution.id);
+            return  c.state == ContributionState.Published &&
+                    c.id != contribution.id && true &&
+                    !contribution.parents.includes(c.id);
         });
     }
 
     async function handleShowSecondaryLinkSelector(){
         state = State.SelectSecondaryLink;
         contributions = await getContributions();
-        console.log("contribs", contributions);
     }
 
     async function createNewContribution(){
@@ -41,7 +45,7 @@
         const parentContribution = contribution;
         const newContributionId = await strapiService.createNewContributionFromParent(parentContribution);
         console.log("new contribution id", newContributionId);
-        if(newContributionId == -1){
+        if(newContributionId === -1){
             // TODO: handle error for user
             console.error("unable to create new contribution");
             return;
@@ -52,9 +56,19 @@
         goto(`/editor/${newContributionId}`);
     }
     
-    function requestSecondaryLinkCreation(e:any){
-        const requestedContributionParent = e.detail;
-        console.log("requestion link to contribution", requestedContributionParent);
+    async function requestSecondaryLinkCreation(e:any){
+        const requestedContributionParentId = e.detail.contributionId;
+        console.log("requestion link to contribution", requestedContributionParentId);
+
+        const newLinkId = await strapiService.addParentToContribution(contribution, requestedContributionParentId);
+        if(newLinkId === -1){
+            // TODO: handle error for user
+            console.error("unable to create new parent link");
+            return;
+        }
+
+        // close modal
+        dispatch("close");
     }
 </script>
 
@@ -68,9 +82,13 @@
     {:else}
         <div class="second-panel">
             <h3>contrib selector</h3>
-            <VerticalContributionMiniList
-                on:contributionSelectionRequest={requestSecondaryLinkCreation}
-                contributions={contributions}/>
+            {#if contributions.length > 0}
+                <VerticalContributionMiniList
+                    on:contributionSelectionRequest={requestSecondaryLinkCreation}
+                    contributions={contributions}/>
+            {:else}
+                <div>Cette contribution n'a pas de candidat auquel se rattacher</div>
+            {/if}
         </div>
     {/if}
 

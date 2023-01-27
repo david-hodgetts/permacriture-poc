@@ -103,6 +103,24 @@ class StrapiService
         }
     }
     
+    async addParentToContribution(contribution:Contribution, parentId: id): Promise<id>{
+        const url = `${Config.baseUrl}/api/contributions/add-parent/${contribution.id}`;
+        
+        try{
+            const payload = { 
+                data:{
+                    parentContributionId: parentId
+                }
+            }
+            const response = await axios.put(url, payload, axiosOptions());
+            console.log("response", response);
+            return response.data.data.id;
+        }catch(e){
+            errorHandler(e as AxiosError);
+            return -1;
+        }
+    }
+    
     async contributionWithId(contributionId: id): Promise<Contribution>{
         const url = `${Config.baseUrl}/api/contributions/${contributionId}?populate[0]=author`;
         try{

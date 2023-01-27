@@ -246,5 +246,72 @@ export default factories.createCoreController('api::contribution.contribution', 
         ctx.body = {
             data: { id: id },
         };
+    },
+
+    /**
+     * adds secondary link to contribution
+     * @param ctx
+     * @returns 
+     */
+    async addParent(ctx){
+        // contribution id from query params
+        const { id } = ctx.params;
+        // extract parentContributionId from request body
+        const parentContributionId = ctx.request.body.data.parentContributionId;
+        console.log("parentContributionId", parentContributionId);
+
+        // check that both ids are different
+        if (id == parentContributionId){
+            return ctx.badRequest("invalid parameters", {});
+        }
+
+        const userId = ctx.state.user.id;
+
+        let userContext;
+        try{
+            userContext = await strapi.service('api::user-context.user-context').getContext(userId);
+        }catch (e){
+            return ctx.badRequest("invalid user context", {});
+        }
+        console.log("usercontext", userContext);
+        
+        // check parentContribution exists and is a valid contrib (ie is in published state)
+        const parentContribution = await strapi.db.query('api::contribution.contribution').findOne({
+            select: ['id'],
+            where: {
+                'id': parentContributionId,
+                'state': 'Published',
+            },
+        });
+        if(!parentContribution){
+            return ctx.badRequest('invalid parent contribution', { });
+        }
+
+
+        // check we don't already have a link between contrib and
+        const maybeAlreadyExistingLink = await strapi.db.query('api::link.link').findOne({
+            select: ['id'],
+            where: {
+                'parent': parentContributionId,
+                'child': id,
+            },
+        });
+
+        if (maybeAlreadyExistingLink){
+            return ctx.badRequest('link betwen contribution and parent already exists', { });
+        }
+        
+        // validations are ok
+        // add the new secondary link
+        const newLink = await strapi.entityService.create('api::link.link', {
+            data: {
+                parent: parentContributionId,
+                child: id,
+            },
+        });
+
+        ctx.body = {
+            data: { id: newLink.id },
+        };
     }
 })); 

@@ -78,8 +78,4 @@
 		background: white;
         z-index: 100;
 	}
-
-	button {
-		display: block;
-	}
 </style>
