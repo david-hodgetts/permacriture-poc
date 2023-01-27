@@ -47,11 +47,7 @@
     <div class="modal-background" on:click={close}></div>
 
     <div class="modal" role="dialog" aria-modal="true" bind:this={modal}>
-        <slot name="header"></slot>
-        <hr>
         <slot></slot>
-        <hr>
-
         <!-- svelte-ignore a11y-autofocus -->
         <!-- <button autofocus on:click={close}>close modal</button> -->
     </div>
@@ -72,8 +68,9 @@
 		left: 50%;
 		top: 50%;
 		width: calc(100vw - 4em);
-		max-width: 32em;
-		max-height: calc(100vh - 4em);
+		height: 100%;
+		/* max-width: 32em; */
+		max-height: calc(100vh - 10em);
 		overflow: auto;
 		transform: translate(-50%,-50%);
 		padding: 1em;

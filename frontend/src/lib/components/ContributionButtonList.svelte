@@ -48,16 +48,6 @@
     </Swiper>
 </div>
 
-<!-- <div class="button-list" on:click={onModalCloseRequest}>
-    {#each contributions as contribution (contribution.id)}
-        <ContributionMiniButton  
-            contribution={contribution}
-            on:click={onContributionSelectionRequest}   
-        /> 
-    {/each}
-</div> -->
-
-
 
 <style>
     .button-list{

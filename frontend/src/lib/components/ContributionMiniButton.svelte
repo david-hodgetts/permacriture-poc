@@ -3,6 +3,8 @@
 	import type { id } from "$lib/models/Id";
 	import { hashStr, truncate } from "$lib/services/textUtils";
     import { createEventDispatcher } from "svelte";
+
+    export let maxHeight:string = ""
     
     const dispatch = createEventDispatcher();
 
@@ -16,6 +18,7 @@
 
 <div 
     class="button no-select" 
+    style="max-height:{maxHeight}"
     on:click|stopPropagation={onClick}
 >
     <div class="content">
