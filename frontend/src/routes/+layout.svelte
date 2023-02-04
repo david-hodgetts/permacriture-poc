@@ -3,14 +3,17 @@
 // export const csr = false;
 // export const prerender = true;
 // export const ssr = false;
+import Notifications from 'svelte-notifications';
 import Navigation from "$lib/components/Navigation.svelte";
 import "../style/app.scss";
 </script>
 
-<Navigation />
-<main>
-    <slot></slot>
-</main>
+<Notifications>
+    <Navigation />
+    <main>
+        <slot></slot>
+    </main>
+</Notifications>
 
 
 <style lang="scss">

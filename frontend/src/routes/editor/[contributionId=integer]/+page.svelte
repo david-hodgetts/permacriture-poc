@@ -3,13 +3,29 @@
     import Editor from "$lib/components/Editor.svelte";
 	import { strapiService } from "$lib/services/StrapiService";
 
+    import { getNotificationsContext } from 'svelte-notifications';
+    import Config from "$lib/services/Config";
+    const { addNotification } = getNotificationsContext();
+
     export let data: PageData;
 
     async function saveText(){
         try{
             await strapiService.updateContribution({ id: data.contribution.id, text: data.contribution.text }) 
+            addNotification({
+                text: "save succesful",
+                position: 'top-center',
+                type: 'success',
+                removeAfter: Config.notificationDuration,
+            });
         }catch(e){
             console.error(e);
+            addNotification({
+                text:e,
+                position: 'top-center',
+                type: 'error',
+                removeAfter: Config.notificationDuration,
+            });
         }
     }
 

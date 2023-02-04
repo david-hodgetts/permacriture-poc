@@ -1,7 +1,6 @@
 <script lang="ts">
     import Quill from 'quill';
 
-
     export let text = "";
     export let placeholder = "enter text";
 
