@@ -22,9 +22,9 @@
     on:click|stopPropagation={onClick}
 >
     <div class="content">
-        <h2 style="background-color:{contribution.color}">{contribution.title}</h2>
+        <h2 style="background-color:{contribution.color}" class="no-select">{contribution.title}</h2>
     
-        <div class="small-text">{truncate(contribution.text, 80)}</div>
+        <div class="small-text no-select">{truncate(contribution.text, 80)}</div>
     </div>
 </div>
 

@@ -207,6 +207,8 @@ exports.default = strapi_1.factories.createCoreController('api::contribution.con
     },
     /**
      * adds secondary link to contribution
+     * this adds the requested contribution (body.data.parentContributionId)
+     * as a parent of the contribution
      * @param ctx
      * @returns
      */

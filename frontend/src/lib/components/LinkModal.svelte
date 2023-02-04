@@ -67,6 +67,10 @@
             return;
         }
 
+
+        // operation was succesful
+        console.log("add link operation successful");
+        
         // close modal
         dispatch("close");
     }

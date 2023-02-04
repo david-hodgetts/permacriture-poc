@@ -249,7 +249,9 @@ export default factories.createCoreController('api::contribution.contribution', 
     },
 
     /**
-     * adds secondary link to contribution
+     * adds secondary link to contribution 
+     * this adds the requested contribution (body.data.parentContributionId) 
+     * as a parent of the contribution
      * @param ctx
      * @returns 
      */

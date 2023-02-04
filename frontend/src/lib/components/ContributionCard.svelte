@@ -66,7 +66,7 @@
 >
     <div class="content" >
         <header>
-            <h2>{contribution.title}</h2>
+            <h2>{contribution.title} ({contribution.id})</h2>
             <div class="small-text">{contribution.state}</div>
             {#if contribution.state === ContributionState.PendingPublication}
             <div>
