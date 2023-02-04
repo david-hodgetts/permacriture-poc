@@ -4,7 +4,7 @@
     export let visible = false;
 
 	const dispatch = createEventDispatcher();
-	const close = () => dispatch('close');
+	const close = () => dispatch('close', {});
 
 	let modal:HTMLElement;
 

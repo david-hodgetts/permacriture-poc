@@ -72,7 +72,7 @@
         console.log("add link operation successful");
         
         // close modal
-        dispatch("close");
+        dispatch("close", {invalidationRequired:true});
     }
 </script>
 

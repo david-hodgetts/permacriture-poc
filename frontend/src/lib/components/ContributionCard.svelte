@@ -1,6 +1,6 @@
 <script lang="ts">
     import LinkModal from "./LinkModal.svelte";
-	import { goto } from "$app/navigation";
+	import { goto, invalidate, invalidateAll } from "$app/navigation";
 	import type { Contribution } from "$lib/models/Contribution";
 	import { ContributionState } from "$lib/models/Contribution";
 	import { strapiService } from "$lib/services/StrapiService";
@@ -49,12 +49,23 @@
             console.error(e);
         }
     }
+
+    async function onModalCloseRequest(e:any){
+        const invalidationRequired = !!e.detail.invalidationRequired;
+        if(invalidationRequired){
+            // TODO: forces state refresh. We should think about a better state management strategy
+            console.log("invalidating route");
+            await invalidateAll();
+            console.log("invalidation complete");
+        }
+        showLinkModal = false;
+    }
 </script>
 
 <LinkModal 
     contribution={contribution} 
     visible={showLinkModal} 
-    on:close={() => showLinkModal = false}
+    on:close={onModalCloseRequest}
 />
 
 
