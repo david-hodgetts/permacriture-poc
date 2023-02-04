@@ -65,6 +65,10 @@ export class Contribution extends BaseStrapiEntity{
         return user?.context.author.id === this.author.id;
     }
 
+    get isGraine(): boolean{
+        return this.author == null;
+    }
+
     get delayInMinutesBeforePublication(): number{
         if(this.state !== ContributionState.PendingPublication){
             return 0;

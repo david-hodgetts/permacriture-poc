@@ -74,10 +74,11 @@
     class:focused={isFocused}
     class:isMine={contribution.isMine}
     on:click|stopPropagation={sendSelectionRequest}
+    on:keydown={() => "silence aly warning"}
 >
     <div class="content" >
         <header>
-            <h2>{contribution.title} ({contribution.id})</h2>
+            <h2>{contribution.title} <div class="small-text">(db-id:{contribution.id})</div></h2>
             <div class="small-text">{contribution.state}</div>
             {#if contribution.state === ContributionState.PendingPublication}
             <div>

@@ -31,6 +31,7 @@
         return (await strapiService.getContributions()).filter(c => {
             return  c.state == ContributionState.Published &&
                     c.id != contribution.id && true &&
+                    !c.isGraine &&
                     !contribution.parents.includes(c.id);
         });
     }
