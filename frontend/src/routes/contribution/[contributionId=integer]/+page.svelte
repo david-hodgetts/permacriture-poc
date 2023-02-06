@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { PageData } from "./$types";
-	import ContributionButtonList from "$lib/components/ContributionButtonList.svelte";
-	import ContributionCard from "$lib/components/ContributionCard.svelte";
+    import ContributionCard from "$lib/components/ContributionCard.svelte";
+	import ContributionMiniCardList from "$lib/components/ContributionMiniCardList.svelte";
 	import { goto } from "$app/navigation";
 
     export let data: PageData;
@@ -21,7 +21,7 @@
 
     <!-- parent contributions -->
     <div class="top">
-        <ContributionButtonList 
+        <ContributionMiniCardList 
             contributions={data.parentContributions}
             showTotalParentCount={true}
             on:contributionSelectionRequest={onContributionSelectionRequest}
@@ -37,7 +37,7 @@
     
     <!-- child contributions -->
     <div class="bottom">
-        <ContributionButtonList 
+        <ContributionMiniCardList 
             contributions={data.childContributions}
             showTotalChildrenCount={true}
             on:contributionSelectionRequest={onContributionSelectionRequest}

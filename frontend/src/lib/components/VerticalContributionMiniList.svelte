@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Contribution } from "$lib/models/Contribution";
-	import ContributionMiniButton from "./ContributionMiniButton.svelte";
+	import ContributionMiniCard from "./ContributionMiniCard.svelte";
     
     import { Swiper, SwiperSlide } from "swiper/svelte";
     import { Pagination } from "swiper";
@@ -27,7 +27,7 @@
     >
         {#each contributions as contribution (contribution.id)}
             <SwiperSlide class="swiper">
-                <ContributionMiniButton  
+                <ContributionMiniCard  
                     contribution={contribution}
                     on:contributionSelectionRequest
                     maxHeight="220px"

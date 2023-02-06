@@ -5,7 +5,7 @@
     import "swiper/css";
     import "swiper/css/pagination";
     
-    import ContributionMiniButton from "./ContributionMiniButton.svelte";
+    import ContributionMiniCard from "./ContributionMiniCard.svelte";
 	import type { Contribution } from "$lib/models/Contribution";
     import { createEventDispatcher } from "svelte";
 
@@ -42,7 +42,7 @@
     >
         {#each contributions as contribution (contribution.id)}
             <SwiperSlide class="swiper">
-                <ContributionMiniButton  
+                <ContributionMiniCard  
                     showTotalParentCount={showTotalParentCount}
                     showTotalChildrenCount={showTotalChildrenCount}
                     contribution={contribution}
