@@ -6,6 +6,9 @@
 	import { strapiService } from "$lib/services/StrapiService";
 	import { createEventDispatcher } from "svelte";
 
+    import { getNotificationsContext } from 'svelte-notifications';
+    import Config from "$lib/services/Config";
+    const { addNotification } = getNotificationsContext();
 
     const dispatch = createEventDispatcher();
 
@@ -50,8 +53,14 @@
         const newContributionId = await strapiService.createNewContributionFromParent(parentContribution);
         console.log("new contribution id", newContributionId);
         if(newContributionId === -1){
-            // TODO: handle error for user
             console.error("unable to create new contribution");
+
+            addNotification({
+                text: "unable to create new contribution",
+                position: "top-center",
+                type: "error",
+                removeAfter: Config.notificationDuration,
+            });
             return;
         }
 
@@ -66,11 +75,15 @@
 
         const newLinkId = await strapiService.addParentToContribution(contribution, requestedContributionParentId);
         if(newLinkId === -1){
-            // TODO: handle error for user
             console.error("unable to create new parent link");
+            addNotification({
+                text: "unable to create new parent link",
+                position: "top-center",
+                type: "error",
+                removeAfter: Config.notificationDuration,
+            });
             return;
         }
-
 
         // operation was succesful
         console.log("add link operation successful");
