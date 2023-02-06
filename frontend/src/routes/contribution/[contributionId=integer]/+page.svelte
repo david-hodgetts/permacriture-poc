@@ -23,6 +23,7 @@
     <div class="top">
         <ContributionButtonList 
             contributions={data.parentContributions}
+            showTotalParentCount={true}
             on:contributionSelectionRequest={onContributionSelectionRequest}
             on:endFocusMode={() => goto("/")}
         />
@@ -38,6 +39,7 @@
     <div class="bottom">
         <ContributionButtonList 
             contributions={data.childContributions}
+            showTotalChildrenCount={true}
             on:contributionSelectionRequest={onContributionSelectionRequest}
             on:endFocusMode={() => goto("/")}
         />

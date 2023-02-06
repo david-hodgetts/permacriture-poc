@@ -5,9 +5,9 @@ import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 
 export const load: PageLoad = async ({ params }) => {
-    console.log(params);
+    // console.log(params);
     const contributionId = parseInt(params.contributionId);
-    console.log(contributionId);
+    // console.log(contributionId);
 
     try{
         const contributions: Contribution[] = await strapiService.getContributions();
@@ -27,6 +27,8 @@ export const load: PageLoad = async ({ params }) => {
         const childContributions = contribution.children.map((id) => {
             return mapOfContributions.get(id);
         }) as Contribution[];
+
+        console.log("counts", parentContributions, childContributions);
 
         return {
             contribution,

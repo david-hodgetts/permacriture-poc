@@ -43,7 +43,7 @@ export class Contribution extends BaseStrapiEntity{
 
     constructor(obj: any){
         super(obj);
-        console.log("item", obj);
+        // console.log("item", obj);
         
         this.author = obj.author;
         this.text = obj.text;

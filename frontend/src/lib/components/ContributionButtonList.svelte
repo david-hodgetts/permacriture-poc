@@ -10,6 +10,8 @@
     import { createEventDispatcher } from "svelte";
 
     export let contributions:Contribution[] = [];
+    export let showTotalParentCount = false;
+    export let showTotalChildrenCount = false;
     
     const dispatch = createEventDispatcher();
 
@@ -26,7 +28,8 @@
 
 </script>
 
-<div class="button-list" on:click={onModalCloseRequest}>
+{#key contributions}
+<div class="button-list" on:click={onModalCloseRequest} on:keydown={()=>{}}>
     <Swiper
         slidesPerView={(contributions.length > MaxSlidesPerView) ? MaxSlidesPerView : contributions.length}
         spaceBetween={30}
@@ -40,6 +43,8 @@
         {#each contributions as contribution (contribution.id)}
             <SwiperSlide class="swiper">
                 <ContributionMiniButton  
+                    showTotalParentCount={showTotalParentCount}
+                    showTotalChildrenCount={showTotalChildrenCount}
                     contribution={contribution}
                     on:contributionSelectionRequest
                 /> 
@@ -48,6 +53,7 @@
     </Swiper>
 </div>
 
+{/key}
 
 <style>
     .button-list{
