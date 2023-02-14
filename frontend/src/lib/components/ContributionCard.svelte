@@ -1,11 +1,15 @@
 <script lang="ts">
     import LinkModal from "./LinkModal.svelte";
-	import { goto, invalidate, invalidateAll } from "$app/navigation";
-	import type { Contribution } from "$lib/models/Contribution";
-	import { ContributionState } from "$lib/models/Contribution";
-	import { strapiService } from "$lib/services/StrapiService";
+    import { goto, invalidate, invalidateAll } from "$app/navigation";
+    import type { Contribution } from "$lib/models/Contribution";
+    import { ContributionState } from "$lib/models/Contribution";
+    import { strapiService } from "$lib/services/StrapiService";
     import { truncate, produceDateString, produceTimeString } from "$lib/services/textUtils";
     import { createEventDispatcher } from "svelte";
+
+    import { getNotificationsContext } from 'svelte-notifications';
+    import Config from "$lib/services/Config";
+    const { addNotification } = getNotificationsContext();
 
     export let contribution: Contribution;
     export let isFocused: boolean = false;
@@ -48,6 +52,28 @@
         }catch(e){
             console.error(e);
         }
+    }
+    
+    async function createNewContribution(){
+
+        const parentContribution = contribution;
+        const newContributionId = await strapiService.createNewContributionFromParent(parentContribution);
+        console.log("new contribution id", newContributionId);
+        if(newContributionId === -1){
+            console.error("unable to create new contribution");
+
+            addNotification({
+                text: "unable to create new contribution",
+                position: "top-center",
+                type: "error",
+                removeAfter: Config.notificationDuration,
+            });
+            return;
+        }
+
+
+        // open the editor 
+        goto(`/editor/${newContributionId}`);
     }
 
     async function onModalCloseRequest(e:any){
@@ -107,9 +133,10 @@
             <div class="open-detail">&hellip; voir plus</div>
         {/if}
         {#if contribution.state === ContributionState.Published}
-            <button on:click|stopPropagation={() => showLinkModal = true}>lier</button>
+            <button on:click|stopPropagation={createNewContribution}>nouvelle contribution</button>
         {:else if contribution.state === ContributionState.Editing}
             <button on:click|stopPropagation={() => goto(`/editor/${contribution.id}`)}>edit</button>
+            <button on:click|stopPropagation={() => showLinkModal = true}>lier à une contribution existante</button>
             <button on:click|stopPropagation={handlePublicationRequest}>publish</button>
             <button on:click|stopPropagation={handleAbandonRequest}>abandon</button>
         {/if}

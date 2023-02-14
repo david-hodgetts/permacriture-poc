@@ -42,7 +42,7 @@ export default {
             path: '/contributions/add-parent/:id',
             handler: 'contribution.addParent',
             config: {
-                policies: [],
+                policies: ["is-contribution-mine", "is-contribution-updatable"],
                 middlewares: [],
             },
         },

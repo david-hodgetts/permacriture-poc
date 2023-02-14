@@ -1,5 +1,5 @@
 /**
- * contribution only modifiable if in Editing state
+ * reject if contribution is not in Editing state
  */
 export default async (policyContext, config, { strapi }) => {
 

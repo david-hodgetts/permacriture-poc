@@ -285,12 +285,12 @@ export default factories.createCoreController('api::contribution.contribution', 
                 'state': 'Published',
             },
         });
+
         if(!parentContribution){
             return ctx.badRequest('invalid parent contribution', { });
         }
 
-
-        // check we don't already have a link between contrib and
+        // check we don't already have a link between contrib and new parent
         const maybeAlreadyExistingLink = await strapi.db.query('api::link.link').findOne({
             select: ['id'],
             where: {

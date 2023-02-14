@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 /**
- * contribution only modifiable if in Editing state
+ * reject if contribution is not in Editing state
  */
 exports.default = async (policyContext, config, { strapi }) => {
     const ctx = strapi.requestContext.get();

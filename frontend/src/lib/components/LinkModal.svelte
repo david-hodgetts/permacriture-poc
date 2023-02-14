@@ -1,10 +1,9 @@
 <script lang="ts">
     import Modal from "./Modal.svelte";
     import VerticalContributionMiniList from "./VerticalContributionMiniList.svelte";
-	import { goto } from "$app/navigation";
-	import { ContributionState, type Contribution } from "$lib/models/Contribution";
-	import { strapiService } from "$lib/services/StrapiService";
-	import { createEventDispatcher } from "svelte";
+    import { ContributionState, type Contribution } from "$lib/models/Contribution";
+    import { strapiService } from "$lib/services/StrapiService";
+    import { createEventDispatcher, onMount } from "svelte";
 
     import { getNotificationsContext } from 'svelte-notifications';
     import Config from "$lib/services/Config";
@@ -13,61 +12,33 @@
     const dispatch = createEventDispatcher();
 
     export let visible = false;
-
     export let contribution: Contribution;
 
     $:{
         if (visible){
-            state = State.SelectLinkType;
             contributions = [];
+            updateContributions();
         }
     }
 
-    enum State { SelectLinkType, SelectSecondaryLink }
-    let state = State.SelectLinkType;
+    async function updateContributions (){
+        contributions = await getContributions();
+        console.log("contributions", contributions);
+    }
+
 
     let contributions: Contribution[] = [];
 
     // get all published contributions except this one
     // and all its parent
     async function getContributions(): Promise<Contribution[]>{
-        // graine contributions can't have secundary links
-        if(contribution.isGraine){
-            return [];
-        }
         return (await strapiService.getContributions()).filter(c => {
             return  c.state == ContributionState.Published &&
-                    c.id != contribution.id && true &&
+                    c.id != contribution.id && 
                     !contribution.parents.includes(c.id);
         });
     }
 
-    async function handleShowSecondaryLinkSelector(){
-        state = State.SelectSecondaryLink;
-        contributions = await getContributions();
-    }
-
-    async function createNewContribution(){
-
-        const parentContribution = contribution;
-        const newContributionId = await strapiService.createNewContributionFromParent(parentContribution);
-        console.log("new contribution id", newContributionId);
-        if(newContributionId === -1){
-            console.error("unable to create new contribution");
-
-            addNotification({
-                text: "unable to create new contribution",
-                position: "top-center",
-                type: "error",
-                removeAfter: Config.notificationDuration,
-            });
-            return;
-        }
-
-
-        // open the editor 
-        goto(`/editor/${newContributionId}`);
-    }
     
     async function requestSecondaryLinkCreation(e:any){
         const requestedContributionParentId = e.detail.contributionId;
@@ -96,28 +67,21 @@
 
 
 <Modal visible={visible} on:close>
-    <h2>lier</h2>
-    {#if state === State.SelectLinkType}
-        <button on:click={createNewContribution}>nouvelle contribution</button>
-        <button on:click={handleShowSecondaryLinkSelector}>lier à une contribution existante</button>
-    {:else}
-        <div class="second-panel">
-            <h3>contrib selector</h3>
-            {#if contributions.length > 0}
-                <VerticalContributionMiniList
-                    on:contributionSelectionRequest={requestSecondaryLinkCreation}
-                    contributions={contributions}/>
-            {:else}
-                <div>Cette contribution n'a pas de candidat auquel se rattacher</div>
-            {/if}
-        </div>
-    {/if}
-
+    <div class="panel">
+        <h3>select new parent</h3>
+        {#if contributions.length > 0}
+            <VerticalContributionMiniList
+                on:contributionSelectionRequest={requestSecondaryLinkCreation}
+                contributions={contributions}/>
+        {:else}
+            <div>Cette contribution n'a pas de candidat auquel se rattacher</div>
+        {/if}
+    </div>
 </Modal>
 
 
 <style>
-    .second-panel{
+    .panel{
         height: 70%;
     }
 </style>
