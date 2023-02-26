@@ -7,6 +7,7 @@ import { Contribution } from "$lib/models/Contribution";
 import type { id } from '$lib/models/Id';
 import type { Link } from '$lib/models/Link';
 import { Graph } from '$lib/models/Graph';
+import type { D3Graph } from '$lib/models/D3Graph';
 
 
 function axiosOptions(optionaJwt: string = "") {
@@ -72,7 +73,6 @@ class StrapiService
         try{
             const response = await axios.get(url, axiosOptions());
             return response.data.data.map((l: any) => {
-                console.log(l);
                 return {
                     id: l.id,
                     parent: l.attributes.parent.data.id,
@@ -182,6 +182,42 @@ class StrapiService
             throw e;
         }
 	}
+
+    async getD3Graph(): Promise<D3Graph> {
+        const contributions = await this.getContributions(); 
+        const links: Link[] = (await strapiService.getLinks()).filter((l: Link) => {
+            // ensure we only get link for contributions that are accessible to current user
+            // TODO: this check should be done in the backend
+            console.log(l);
+            if(l.child == 63){
+
+                const pred = !!contributions.find(c => c.id == l.child) && !!contributions.find(c => c.id == l.parent);
+                console.log("pred", pred);
+            }
+            return !!contributions.find(c => c.id == l.child) && !!contributions.find(c => c.id == l.parent);
+        });
+
+        const d3Links = links.map((l: Link) => {
+            // *source* and *target* attributes must point to index in nodes array
+            // they are in no way linked to a node id!! in D3
+            const parent = contributions.find(c => c.id == l.parent) as Contribution;
+            const parentIndex = contributions.indexOf(parent);
+            
+            const child = contributions.find(c => c.id == l.child) as Contribution;
+            const childIndex = contributions.indexOf(child);
+            return {
+                id: l.id,
+                source: parentIndex,
+                target: childIndex,
+                isFirstLink: l.isFirstLink,
+            };
+        });
+
+        return {
+            nodes: contributions,
+            links: d3Links,
+        };
+    }
 }
 
 export const strapiService = new StrapiService();

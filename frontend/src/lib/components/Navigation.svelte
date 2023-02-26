@@ -8,8 +8,16 @@
 <nav>
     <LoginStatus />
     <ul>
-        <li><a href="/" class:active={$page.url.pathname === "/"}>textes</a></li>
-        <li>carte</li>
+        <li>
+            <a href="/" class:active={$page.url.pathname === "/"}>
+            textes
+            </a>
+        </li>
+        <li>
+            <a href="/map" class:active={$page.url.pathname === "/map" }>
+                carte
+            </a>
+        </li>
     </ul>
 </nav>
 
