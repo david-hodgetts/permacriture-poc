@@ -10,21 +10,40 @@
         console.log("data", data);
 
         const svg = d3.select("svg");
+        
+        const circleRadius = 15;
+
+        svg.append("svg:defs").append("svg:marker")
+        .attr("id", "triangle")
+        .attr("refX", circleRadius + 2) // must a bit bigger than circleRadius
+        .attr("refY", 6) // must be markerWidth / 2
+        .attr("markerUnits", "strokeWidth")
+        .attr("markerWidth", 12)
+        .attr("markerHeight", 12)
+        .attr("viewBox", "0 0 12 12")
+        .attr("orient", "auto")
+        .append("path")
+        .attr("d", "M2,2 L10,6 L2,10 L6,6 L2,2")
+        .style("fill", "black");
+        
         const link = svg
         .selectAll(".link")
         .data(data.graph.links)
         .join("line")
-        .classed("link", true);
+        .classed("link", true)
+        .attr("stroke", (l) => l.isFirstLink ? "#333" : "#ccc")
+        .style("stroke-width", "2px")
+        .attr("marker-end","url(#triangle)");
 
         const node = svg
         .selectAll(".node")
         .data(data.graph.nodes)
         .join("g");
 
-        const circleRadius = 18;
 
         node.append("circle")
         .attr("r", circleRadius)
+        .style("fill", (d:any) => d.color)
         .classed("node", true)
         .classed("fixed", (d:any) => d.fx !== undefined);
 
@@ -40,7 +59,7 @@
         .force("charge", d3.forceManyBody().strength(-20))
         .force("collide", d3.forceCollide().radius((d) => circleRadius * 2))
         .force("center", d3.forceCenter(width / 2, height / 2))
-        .force("link", d3.forceLink(data.graph.links).distance(160))
+        .force("link", d3.forceLink(data.graph.links).distance(l => l.isFirstLink ? 80 : 200))
         .on("tick", tick);
 
         function tick() {
