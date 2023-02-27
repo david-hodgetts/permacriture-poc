@@ -16,6 +16,8 @@
         const svg = d3.select("svg");
         
         const circleRadius = 15;
+        const width = innerWidth;
+        const height = innerHeight;
 
         svg.append("svg:defs").append("svg:marker")
         .attr("id", "triangle")
@@ -43,8 +45,13 @@
         .selectAll(".node")
         .data(data.graph.nodes)
         .join("g")
+        // .attr("fx", (d:any) => {
+        //     if (d.isGraine){
+        //         d.fx = (width / 2) + (Math.random() * 400 - 200);
+        //         d.fy = (height / 2) + (Math.random()) * 400 - 200;
+        //     }
+        // })
         .on("click", (e, d) => {
-            console.log("click", e, d);
             selectedContribution = d as Contribution;
         });
 
@@ -58,8 +65,6 @@
         node.append("text")
         .text((d:any) => d.title);
 
-        const width = innerWidth;
-        const height = innerHeight;
 
         const simulation = d3
         .forceSimulation()
