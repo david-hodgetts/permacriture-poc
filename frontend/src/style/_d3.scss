@@ -3,10 +3,9 @@
 }
 
 .node {
-    cursor: move;
-    fill: #ccc;
-    stroke: #000;
+    cursor: pointer;
     stroke-width: 1.5px;
+    stroke: white;
 }
 
 .node.fixed {

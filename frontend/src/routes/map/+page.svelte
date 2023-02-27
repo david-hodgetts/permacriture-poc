@@ -3,8 +3,12 @@
     import * as d3 from "d3";
     import { forceSimulation } from 'd3';
 	import { onMount } from "svelte";
+	import type { Contribution } from "$lib/models/Contribution";
+    import ContributionCard from "$lib/components/ContributionCard.svelte";
 
     export let data:PageData;
+
+    let selectedContribution:Contribution;
 
     onMount(()=> {
         console.log("data", data);
@@ -38,7 +42,11 @@
         const node = svg
         .selectAll(".node")
         .data(data.graph.nodes)
-        .join("g");
+        .join("g")
+        .on("click", (e, d) => {
+            console.log("click", e, d);
+            selectedContribution = d as Contribution;
+        });
 
 
         node.append("circle")
@@ -56,10 +64,10 @@
         const simulation = d3
         .forceSimulation()
         .nodes(data.graph.nodes)
-        .force("charge", d3.forceManyBody().strength(-20))
+        .force("charge", d3.forceManyBody().strength(-50))
         .force("collide", d3.forceCollide().radius((d) => circleRadius * 2))
         .force("center", d3.forceCenter(width / 2, height / 2))
-        .force("link", d3.forceLink(data.graph.links).distance(l => l.isFirstLink ? 80 : 200))
+        .force("link", d3.forceLink(data.graph.links).distance(l => l.isFirstLink ? 60 : 200))
         .on("tick", tick);
 
         function tick() {
@@ -79,6 +87,10 @@
 
 
 <h1>Map</h1>
+
+{#if selectedContribution}
+    <ContributionCard contribution={selectedContribution} />
+{/if}
 
 <svg></svg>
 
