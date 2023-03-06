@@ -8,6 +8,10 @@
     stroke: white;
 }
 
+.selected circle{
+    fill: #ffaa00 !important;
+}
+
 .node.fixed {
     fill: #f00;
 }

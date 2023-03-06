@@ -51,8 +51,12 @@
         //         d.fy = (height / 2) + (Math.random()) * 400 - 200;
         //     }
         // })
-        .on("click", (e, d) => {
+        .on("click", function(e, d) {
             selectedContribution = d as Contribution;
+
+            // change visual style of selected node
+            svg.selectAll('.selected').classed('selected', false);
+            d3.select(this).classed('selected', true);
         });
 
 
