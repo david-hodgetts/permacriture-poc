@@ -19,19 +19,25 @@
         const width = innerWidth;
         const height = innerHeight;
 
-        svg.append("svg:defs").append("svg:marker")
-        .attr("id", "triangle")
-        .attr("refX", circleRadius + 2) // must a bit bigger than circleRadius
-        .attr("refY", 6) // must be markerWidth / 2
-        .attr("markerUnits", "strokeWidth")
-        .attr("markerWidth", 12)
-        .attr("markerHeight", 12)
-        .attr("viewBox", "0 0 12 12")
-        .attr("orient", "auto")
-        .append("path")
-        .attr("d", "M2,2 L10,6 L2,10 L6,6 L2,2")
-        .style("fill", "black");
-        
+
+        const makeArrow = (idName:string, color: string) => {
+            return svg.append("svg:defs").append("svg:marker")
+                .attr("id", idName)
+                .attr("refX", circleRadius + 2) // must a bit bigger than circleRadius
+                .attr("refY", 6) // must be markerWidth / 2
+                .attr("markerUnits", "strokeWidth")
+                .attr("markerWidth", 12)
+                .attr("markerHeight", 12)
+                .attr("viewBox", "0 0 12 12")
+                .attr("orient", "auto")
+                .append("path")
+                .attr("d", "M2,2 L10,6 L2,10 L6,6 L2,2")
+                .style("fill", color);
+        }
+
+        const arrowBlack = makeArrow("arrow-black", "black");
+        const arrowGrey = makeArrow("arrow-grey", "grey");
+
         const link = svg
         .selectAll(".link")
         .data(data.graph.links)
@@ -39,7 +45,7 @@
         .classed("link", true)
         .attr("stroke", (l) => l.isFirstLink ? "#333" : "#ccc")
         .style("stroke-width", "2px")
-        .attr("marker-end","url(#triangle)");
+        .attr("marker-end", (l) => l.isFirstLink ? "url(#arrow-black)" : "url(#arrow-grey)");
 
         const node = svg
         .selectAll(".node")
