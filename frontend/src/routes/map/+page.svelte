@@ -8,7 +8,9 @@
 
     export let data:PageData;
 
-    let selectedContribution:Contribution;
+    let selectedContribution:Contribution | null;
+
+    let circle: any;
 
     onMount(()=> {
         console.log("data", data);
@@ -19,19 +21,18 @@
         const width = innerWidth;
         const height = innerHeight;
 
-
         const makeArrow = (idName:string, color: string) => {
             return svg.append("svg:defs").append("svg:marker")
                 .attr("id", idName)
                 .attr("refX", circleRadius + 2) // must a bit bigger than circleRadius
-                .attr("refY", 6) // must be markerWidth / 2
+                .attr("refY", 3) // must be markerWidth / 2
                 .attr("markerUnits", "strokeWidth")
-                .attr("markerWidth", 12)
-                .attr("markerHeight", 12)
-                .attr("viewBox", "0 0 12 12")
+                .attr("markerWidth", 6)
+                .attr("markerHeight", 6)
+                .attr("viewBox", "0 0 6 6")
                 .attr("orient", "auto")
                 .append("path")
-                .attr("d", "M2,2 L10,6 L2,10 L6,6 L2,2")
+                .attr("d", "M0,0 l3,3 l-3,3")
                 .style("fill", color);
         }
 
@@ -58,22 +59,25 @@
         //     }
         // })
         .on("click", function(e, d) {
+            e.stopPropagation();
             selectedContribution = d as Contribution;
 
             // change visual style of selected node
             svg.selectAll('.selected').classed('selected', false);
             d3.select(this).classed('selected', true);
+
+           circle.style("fill", "#bbb");
         });
 
 
-        node.append("circle")
+        circle = node.append("circle")
         .attr("r", circleRadius)
         .style("fill", (d:any) => d.color)
         .classed("node", true)
         .classed("fixed", (d:any) => d.fx !== undefined);
 
-        node.append("text")
-        .text((d:any) => d.title);
+        // node.append("text")
+        // .text((d:any) => d.title);
 
 
         const simulation = d3
@@ -97,9 +101,17 @@
             node.attr("transform", (d:any) => `translate(${d.x}, ${d.y})`);
         }
     });
-    
+
+    function deselect(){
+        selectedContribution = null;
+
+        console.log("deselect", circle);
+
+        circle.style("fill", (d:any) => d.color);
+    } 
 </script>
 
+<svelte:body on:click={ deselect }/>
 
 <h1>Map</h1>
 
