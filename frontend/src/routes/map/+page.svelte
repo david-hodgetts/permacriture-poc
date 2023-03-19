@@ -5,6 +5,7 @@
 	import { onMount } from "svelte";
 	import type { Contribution } from "$lib/models/Contribution";
     import ContributionCard from "$lib/components/ContributionCard.svelte";
+	import { newDateOrNull } from "$lib/services/dateUtils";
 
     export let data:PageData;
 
@@ -13,8 +14,6 @@
     let circle: any;
 
     onMount(()=> {
-        console.log("data", data);
-
         const svg = d3.select("svg");
         
         const circleRadius = 15;
@@ -62,11 +61,31 @@
             e.stopPropagation();
             selectedContribution = d as Contribution;
 
+            // clear all state
+            data.graph.nodes.forEach((node:any) => delete(node.d3SelectAsParentOrChild));
+
+            const parents = selectedContribution.parents.map(parentId => {
+                return data.graph.nodes.find(n => n.id == parentId);
+            });
+            parents.forEach((contrib:any) => contrib.d3SelectAsParentOrChild = true);
+            
+            const children = selectedContribution.children.map(childId => {
+                return data.graph.nodes.find(n => n.id == childId);
+            });
+            children.forEach((contrib:any) => contrib.d3SelectAsParentOrChild = true);
+
             // change visual style of selected node
             svg.selectAll('.selected').classed('selected', false);
             d3.select(this).classed('selected', true);
 
-           circle.style("fill", "#bbb");
+            const greyedOutColor = "#eee";
+            circle.style("fill", (d:any) => {
+                // alway preserve color of graine
+                if(d.isGraine){
+                    return d.color;
+                }
+                return d.d3SelectAsParentOrChild ? d.color : greyedOutColor;
+            });
         });
 
 

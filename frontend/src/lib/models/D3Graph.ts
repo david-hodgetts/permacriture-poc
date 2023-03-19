@@ -13,5 +13,5 @@ export interface D3Graph{
         source: number,         // "parent"  // represents the index in the nodes array!!
         target: number,         // "child"   // "
         isFirstLink: boolean,
-    }[]
+    }[], // note to self this notes an array of interface type (do not remove)
 }

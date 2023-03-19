@@ -188,12 +188,7 @@ class StrapiService
         const links: Link[] = (await strapiService.getLinks()).filter((l: Link) => {
             // ensure we only get link for contributions that are accessible to current user
             // TODO: this check should be done in the backend
-            console.log(l);
-            if(l.child == 63){
-
-                const pred = !!contributions.find(c => c.id == l.child) && !!contributions.find(c => c.id == l.parent);
-                console.log("pred", pred);
-            }
+            // console.log(l);
             return !!contributions.find(c => c.id == l.child) && !!contributions.find(c => c.id == l.parent);
         });
 
