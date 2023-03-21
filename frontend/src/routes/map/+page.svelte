@@ -6,6 +6,7 @@
 	import type { Contribution } from "$lib/models/Contribution";
     import ContributionCard from "$lib/components/ContributionCard.svelte";
 	import { newDateOrNull } from "$lib/services/dateUtils";
+	import { goto } from "$app/navigation";
 
     export let data:PageData;
 
@@ -135,7 +136,10 @@
 <h1>Map</h1>
 
 {#if selectedContribution}
-    <ContributionCard contribution={selectedContribution} />
+    <ContributionCard 
+        contribution={selectedContribution} 
+        on:cardSelectionRequest={() => goto(`/contribution/${selectedContribution?.id}`) } 
+    />
 {/if}
 
 <svg></svg>
