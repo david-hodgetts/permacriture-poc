@@ -1,11 +1,12 @@
 <script lang="ts">
+    import Slider from "$lib/components/Slider.svelte";
 	import type { PageData } from "./$types";
     import * as d3 from "d3";
     import { forceSimulation } from 'd3';
 	import { onMount } from "svelte";
 	import type { Contribution } from "$lib/models/Contribution";
     import ContributionCard from "$lib/components/ContributionCard.svelte";
-	import { newDateOrNull } from "$lib/services/dateUtils";
+	// import { newDateOrNull } from "$lib/services/dateUtils";
 	import { goto } from "$app/navigation";
 
     export let data:PageData;
@@ -14,10 +15,15 @@
 
     let circle: any;
 
+    const circleRadius = 15;
+    let simulation:any;
+    let charge = -50;
+    let linkForce = 60;
+    let collisionRadius = circleRadius * 2;
+
     onMount(()=> {
         const svg = d3.select("svg");
         
-        const circleRadius = 15;
         const width = innerWidth;
         const height = innerHeight;
 
@@ -100,13 +106,13 @@
         // .text((d:any) => d.title);
 
 
-        const simulation = d3
+        simulation = d3
         .forceSimulation()
         .nodes(data.graph.nodes)
-        .force("charge", d3.forceManyBody().strength(-50))
-        .force("collide", d3.forceCollide().radius((d) => circleRadius * 2))
+        .force("charge", d3.forceManyBody().strength(charge))
+        .force("collide", d3.forceCollide().radius((d) => collisionRadius))
         .force("center", d3.forceCenter(width / 2, height / 2))
-        .force("link", d3.forceLink(data.graph.links).distance(l => l.isFirstLink ? 60 : 200))
+        .force("link", d3.forceLink(data.graph.links).distance(l => l.isFirstLink ? linkForce : linkForce * 3))
         .on("tick", tick);
 
         function tick() {
@@ -128,7 +134,21 @@
         console.log("deselect", circle);
 
         circle.style("fill", (d:any) => d.color);
-    } 
+    }
+
+    function updateSimulation(){
+        console.log("update simulation------------")
+        console.log("charge", charge);
+        console.log("linkForce", linkForce);
+        console.log("collisionRadius", collisionRadius);
+
+        simulation
+        .force("charge", d3.forceManyBody().strength(charge))
+        .force("collide", d3.forceCollide().radius((d) => collisionRadius))
+        .force("link", d3.forceLink(data.graph.links).distance(l => l.isFirstLink ? linkForce : linkForce * 3))
+        .alpha(1) // reheats sim (goes from 1 to 0)
+        .restart();
+    }
 </script>
 
 <svelte:body on:click={ deselect }/>
@@ -142,6 +162,15 @@
     />
 {/if}
 
+<div class="controls">
+    -- repulsion attraction --
+    <Slider min={-70} value={charge} max={70} on:input={ (e) => { charge = e.detail.value; updateSimulation()} } />
+    link force (link magnitude)
+    <Slider min={0} value={linkForce} max={150} on:input={ (e) => { linkForce = e.detail.value; updateSimulation()} } />
+    collision radius (node vs node)
+    <Slider min={10} value={30} max={60} on:input={ (e) => { collisionRadius = e.detail.value; updateSimulation()} } />
+</div>
+
 <svg></svg>
 
 <style>
@@ -149,5 +178,12 @@
         width: 100%;
         height: 100%;
     }
-
+    .controls{
+        position: fixed;
+        width: 200px;
+        height: 200px;
+        bottom:20px;
+        left: 20px;
+        background-color: rgba(0, 0, 0, 0.1);
+    }
 </style>
