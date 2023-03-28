@@ -53,6 +53,11 @@
         .attr("stroke", (l) => l.isFirstLink ? "#333" : "#ccc")
         .style("stroke-width", "2px")
         .attr("marker-end", (l) => l.isFirstLink ? "url(#arrow-black)" : "url(#arrow-grey)");
+        
+        const drag = d3
+        .drag()
+        .on("start", dragstart)
+        .on("drag", dragged);
 
         const node = svg
         .selectAll(".node")
@@ -64,8 +69,14 @@
         //         d.fy = (height / 2) + (Math.random()) * 400 - 200;
         //     }
         // })
+        .call(drag as any)
         .on("click", function(e, d) {
             e.stopPropagation();
+
+            // remove fixed status set during drag
+            delete d.fx;
+            delete d.fy;
+
             selectedContribution = d as Contribution;
 
             // clear all state
@@ -104,6 +115,21 @@
 
         // node.append("text")
         // .text((d:any) => d.title);
+
+        function dragstart() {
+            d3.select(this).classed("fixed", true);
+        }
+
+        function clamp(x:number, lo: number, hi:number) {
+            return x < lo ? lo : x > hi ? hi : x;
+        }
+
+        function dragged(event:any, d:any) {
+            d.fx = clamp(event.x, 0, width);
+            d.fy = clamp(event.y, 0, height);
+            simulation.alpha(1).restart();
+        }
+
 
 
         simulation = d3
