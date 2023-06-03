@@ -7,6 +7,7 @@ import type { Contribution } from '$lib/models/Contribution';
 
 export const load: PageLoad = async ({ params }) => {
     let contribution: Contribution | null = null;
+    console.log("reload");
     if(params.contributionId){
         const contributionId = parseInt(params.contributionId);
         if(!isNaN(contributionId)){

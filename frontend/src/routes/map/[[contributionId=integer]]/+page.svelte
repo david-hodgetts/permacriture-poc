@@ -13,6 +13,7 @@
 
     let selectedContribution:Contribution | null;
 
+    let svg: any;
     let circle: any;
 
     const circleRadius = 15;
@@ -21,11 +22,25 @@
     let linkForce = 60;
     let collisionRadius = circleRadius * 2;
 
+    $:{
+        if (data.contribution && simulation){
+            select(data.contribution);
+        }
+        
+        if(!data.contribution && simulation){
+            console.log("deselect");
+            deselect();
+        }
+    }
+
     onMount(()=> {
-        const svg = d3.select("svg");
+        console.log("onmount");
+        svg = d3.select("svg");
         
         const width = innerWidth;
         const height = innerHeight;
+
+        console.log("on mount", data);
 
         const makeArrow = (idName:string, color: string) => {
             return svg.append("svg:defs").append("svg:marker")
@@ -162,43 +177,46 @@
 
         // check if we have a selected Contribution coming from the url
         if(data.contribution){
-
-            selectedContribution = data.contribution;
-
-            // clear all state
-            data.graph.nodes.forEach((node:any) => delete(node.d3SelectAsParentOrChild));
-            
-
-            const parents = selectedContribution.parents.map(parentId => {
-                return data.graph.nodes.find(n => n.id == parentId);
-            });
-            parents.forEach((contrib:any) => contrib.d3SelectAsParentOrChild = true);
-            
-            const children = selectedContribution.children.map(childId => {
-                return data.graph.nodes.find(n => n.id == childId);
-            });
-            children.forEach((contrib:any) => contrib.d3SelectAsParentOrChild = true);
-
-            // change visual style of selected node
-            svg.selectAll('.selected').classed('selected', false);
-            // d3.select(this).classed('selected', true);
-            const selectedVisualElement = d3.select(`#contribution_id_${selectedContribution.id}`)
-            selectedVisualElement.classed('selected', true);
-            // remove fixed status set during drag
-            delete (selectedVisualElement as any).fx;
-            delete (selectedVisualElement as any).fy;
-
-            const greyedOutColor = "#eee";
-            circle.style("fill", (d:any) => {
-                // alway preserve color of graine
-                if(d.isGraine){
-                    return d.color;
-                }
-                return d.d3SelectAsParentOrChild ? d.color : greyedOutColor;
-            });
-
+            select(data.contribution);
         }
     });
+
+    function select(contribution: Contribution){
+
+        selectedContribution = contribution;
+
+        // clear all state
+        data.graph.nodes.forEach((node:any) => delete(node.d3SelectAsParentOrChild));
+        
+
+        const parents = selectedContribution.parents.map(parentId => {
+            return data.graph.nodes.find(n => n.id == parentId);
+        });
+        parents.forEach((contrib:any) => contrib.d3SelectAsParentOrChild = true);
+        
+        const children = selectedContribution.children.map(childId => {
+            return data.graph.nodes.find(n => n.id == childId);
+        });
+        children.forEach((contrib:any) => contrib.d3SelectAsParentOrChild = true);
+
+        // change visual style of selected node
+        svg.selectAll('.selected').classed('selected', false);
+        // d3.select(this).classed('selected', true);
+        const selectedVisualElement = d3.select(`#contribution_id_${selectedContribution.id}`)
+        selectedVisualElement.classed('selected', true);
+        // remove fixed status set during drag
+        delete (selectedVisualElement as any).fx;
+        delete (selectedVisualElement as any).fy;
+
+        const greyedOutColor = "#eee";
+        circle.style("fill", (d:any) => {
+            // alway preserve color of graine
+            if(d.isGraine){
+                return d.color;
+            }
+            return d.d3SelectAsParentOrChild ? d.color : greyedOutColor;
+        });
+    }
 
     function deselect(){
         if (selectedContribution){
