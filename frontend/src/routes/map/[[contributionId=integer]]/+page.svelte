@@ -77,37 +77,40 @@
         .on("click", function(e, d) {
             e.stopPropagation();
 
-            // remove fixed status set during drag
-            delete d.fx;
-            delete d.fy;
+            const selectedContributionId = (d as Contribution).id;
+            goto(`/map/${selectedContributionId}`);
 
-            selectedContribution = d as Contribution;
+            // // remove fixed status set during drag
+            // delete d.fx;
+            // delete d.fy;
 
-            // clear all state
-            data.graph.nodes.forEach((node:any) => delete(node.d3SelectAsParentOrChild));
+            // selectedContribution = d as Contribution;
 
-            const parents = selectedContribution.parents.map(parentId => {
-                return data.graph.nodes.find(n => n.id == parentId);
-            });
-            parents.forEach((contrib:any) => contrib.d3SelectAsParentOrChild = true);
+            // // clear all state
+            // data.graph.nodes.forEach((node:any) => delete(node.d3SelectAsParentOrChild));
+
+            // const parents = selectedContribution.parents.map(parentId => {
+            //     return data.graph.nodes.find(n => n.id == parentId);
+            // });
+            // parents.forEach((contrib:any) => contrib.d3SelectAsParentOrChild = true);
             
-            const children = selectedContribution.children.map(childId => {
-                return data.graph.nodes.find(n => n.id == childId);
-            });
-            children.forEach((contrib:any) => contrib.d3SelectAsParentOrChild = true);
+            // const children = selectedContribution.children.map(childId => {
+            //     return data.graph.nodes.find(n => n.id == childId);
+            // });
+            // children.forEach((contrib:any) => contrib.d3SelectAsParentOrChild = true);
 
-            // change visual style of selected node
-            svg.selectAll('.selected').classed('selected', false);
-            d3.select(this).classed('selected', true);
+            // // change visual style of selected node
+            // svg.selectAll('.selected').classed('selected', false);
+            // d3.select(this).classed('selected', true);
 
-            const greyedOutColor = "#eee";
-            circle.style("fill", (d:any) => {
-                // alway preserve color of graine
-                if(d.isGraine){
-                    return d.color;
-                }
-                return d.d3SelectAsParentOrChild ? d.color : greyedOutColor;
-            });
+            // const greyedOutColor = "#eee";
+            // circle.style("fill", (d:any) => {
+            //     // alway preserve color of graine
+            //     if(d.isGraine){
+            //         return d.color;
+            //     }
+            //     return d.d3SelectAsParentOrChild ? d.color : greyedOutColor;
+            // });
         });
 
 
