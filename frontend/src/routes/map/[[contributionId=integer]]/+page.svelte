@@ -198,10 +198,14 @@
     });
 
     function deselect(){
+        if (selectedContribution){
+            const selectedVisualElement = d3.select(`#contribution_id_${selectedContribution.id}`)
+            selectedVisualElement.classed('selected', false);
+        }
+        
         selectedContribution = null;
 
         console.log("deselect", circle);
-
         circle.style("fill", (d:any) => d.color);
     }
 
