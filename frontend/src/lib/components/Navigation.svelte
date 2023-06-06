@@ -2,7 +2,24 @@
     import LoginStatus from "./LoginStatus.svelte";
     import { page } from "$app/stores";
 
-    $: { console.log($page.url.pathname) }
+    // $: { console.log("page.url", $page.url) }
+
+    let mapHref = "/map";
+    $: {
+        const contributionId = extractContributionId($page.url.pathname);
+        if(contributionId){
+           mapHref = `/map/${contributionId}`;
+        }
+    }
+
+    function extractContributionId(pathname: string): string | null{
+        const re = /\/contribution\/(\d+)/;
+        const match = pathname.match(re);
+        if(match){
+            return match[1];
+        }
+        return null;
+    }
 </script>
 
 <nav>
@@ -14,7 +31,7 @@
             </a>
         </li>
         <li>
-            <a href="/map" class:active={$page.url.pathname === "/map" }>
+            <a href={mapHref} class:active={$page.url.pathname === "/map" }>
                 carte
             </a>
         </li>
