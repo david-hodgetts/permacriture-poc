@@ -136,8 +136,13 @@
         .classed("node", true)
         .classed("fixed", (d:any) => d.fx !== undefined);
 
-        // node.append("text")
-        // .text((d:any) => d.title);
+        // adds perAuthorTextIndex in center of nodes
+        node.append("text")
+        .text((d:any) => d.perAuthorTextIndex)
+        .attr("text-anchor", "middle")
+        .attr("y", 5)
+        .attr("alignment-baseline", "central");
+
 
         function dragstart() {
             d3.select(this).classed("fixed", true);
