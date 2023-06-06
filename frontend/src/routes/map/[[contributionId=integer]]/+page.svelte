@@ -57,17 +57,18 @@
                 .style("fill", color);
         }
 
-        const arrowBlack = makeArrow("arrow-black", "black");
-        const arrowGrey = makeArrow("arrow-grey", "grey");
+        const linkColor = "#333";
+
+        const arrowBlack = makeArrow("arrow-black", linkColor);
 
         const link = svg
         .selectAll(".link")
         .data(data.graph.links)
         .join("line")
         .classed("link", true)
-        .attr("stroke", (l) => l.isFirstLink ? "#333" : "#ccc")
+        .attr("stroke", (l) => linkColor)
         .style("stroke-width", "2px")
-        .attr("marker-end", (l) => l.isFirstLink ? "url(#arrow-black)" : "url(#arrow-grey)");
+        .attr("marker-end",  "url(#arrow-black)");
         
         const drag = d3
         .drag()
