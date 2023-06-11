@@ -43,3 +43,23 @@ export function hashStr(str:string): number {
     }
     return hash;
 }
+
+/**
+ * produces a color given a string 
+ * @param any text 
+ * @returns a color 
+ */
+export function stringToColor(input: string): string{
+        if(!input){
+            return "#00ff00";
+        }
+
+        const toHex = (num: number) => num.toString(16).padStart(2, '0');
+
+        const hash = hashStr(input);
+        const inDomain = hash % Math.pow(2, 24);
+        const red = inDomain & 0xff;
+        const green = (inDomain >> 8) & 0xff;
+        const blue = (inDomain >> 16) & 0xff;
+        return `#${toHex(red)}${toHex(green)}${toHex(blue)}`;
+}

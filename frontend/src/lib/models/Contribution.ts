@@ -1,5 +1,5 @@
 import { newDateOrNull } from "$lib/services/dateUtils";
-import { hashStr } from "$lib/services/textUtils";
+import { hashStr, stringToColor } from "$lib/services/textUtils";
 import type Author from "./Author";
 import { BaseStrapiEntity } from "./BaseStrapiEntity";
 import type { id } from "./Id";
@@ -95,19 +95,7 @@ export class Contribution extends BaseStrapiEntity{
 
     // define a color from hash of author's nickname
     get color(): string{
-
-        if(!this.author){
-            return "#00ff00";
-        }
-
-        const toHex = (num: number) => num.toString(16).padStart(2, '0');
-
-        const hash = hashStr(this.author.nickname);
-        const inDomain = hash % Math.pow(2, 24);
-        const red = inDomain & 0xff;
-        const green = (inDomain >> 8) & 0xff;
-        const blue = (inDomain >> 16) & 0xff;
-        return `#${toHex(red)}${toHex(green)}${toHex(blue)}`;
+        return stringToColor(this.author?.nickname || "");
     }
 
     getDirectRelationsOfType(relation: Relation){
