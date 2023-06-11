@@ -14,6 +14,7 @@
     let selectedContribution:Contribution | null;
 
     let svg: any;
+    let rootOfGraph: any; // first g element of svg (root of all nodes)
     let circle: any;
 
     const circleRadius = 15;
@@ -36,6 +37,7 @@
     onMount(()=> {
         console.log("onmount");
         svg = d3.select("svg");
+        rootOfGraph = svg.append("g");
         
         const width = innerWidth;
         const height = innerHeight;
@@ -61,7 +63,7 @@
 
         const arrowBlack = makeArrow("arrow-black", linkColor);
 
-        const link = svg
+        const link = rootOfGraph
         .selectAll(".link")
         .data(data.graph.links)
         .join("line")
@@ -75,7 +77,7 @@
         .on("start", dragstart)
         .on("drag", dragged);
 
-        const node = svg
+        const node = rootOfGraph
         .selectAll(".node")
         .data(data.graph.nodes)
         .join("g")
@@ -168,6 +170,15 @@
         .force("center", d3.forceCenter(width / 2, height / 2))
         .force("link", d3.forceLink(data.graph.links).distance(l => l.isFirstLink ? linkForce : linkForce * 3))
         .on("tick", tick);
+
+        const zoom = d3.zoom().on('zoom', handleZoomAndPan);
+
+        svg.call(zoom);
+
+        function handleZoomAndPan(e: any){
+            // console.log("zoom and pan", e.transform);
+            rootOfGraph.attr('transform', e.transform);
+        }
 
         function tick() {
             link
