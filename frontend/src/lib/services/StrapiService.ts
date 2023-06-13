@@ -8,6 +8,7 @@ import type { id } from '$lib/models/Id';
 import type { Link } from '$lib/models/Link';
 import { Graph } from '$lib/models/Graph';
 import type { D3Graph } from '$lib/models/D3Graph';
+import type Author from '$lib/models/Author';
 
 
 function axiosOptions(optionaJwt: string = "") {
@@ -182,6 +183,19 @@ class StrapiService
             throw e;
         }
 	}
+
+    async getAuthors(): Promise<Author[]> {
+        const url = `${Config.baseUrl}/api/authors`;
+        
+        try{
+            const response = await axios.get(url, axiosOptions());
+            return response.data.data as Author[] ;
+        }catch(e){
+            errorHandler(e as AxiosError);
+            throw e;
+        }
+        
+    }
 
     async getD3Graph(): Promise<D3Graph> {
         const contributions = await this.getContributions(); 

@@ -3,6 +3,7 @@ import { strapiService } from '$lib/services/StrapiService';
 import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 import type { Contribution } from '$lib/models/Contribution';
+import type Author from '$lib/models/Author';
 
 
 export const load: PageLoad = async ({ params }) => {
@@ -21,11 +22,24 @@ export const load: PageLoad = async ({ params }) => {
     }
 
 
+    // get list of authors
+    let authors: Author[] = [];
+    try{
+        authors = await strapiService.getAuthors();
+    }catch(e){
+        console.error(e);
+        throw error(404, 'Not found');
+    }
+
+    console.log("authors", authors);
+
+
     try{
         const graph: D3Graph = await strapiService.getD3Graph();
         return {
             graph,  
             contribution,
+            authors,
         };
     }catch(e){
         console.error(e);

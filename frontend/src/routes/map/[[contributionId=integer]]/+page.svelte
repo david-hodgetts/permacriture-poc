@@ -6,6 +6,7 @@
 	import { onMount } from "svelte";
 	import type { Contribution } from "$lib/models/Contribution";
     import ContributionCard from "$lib/components/ContributionCard.svelte";
+    import AuthorsLegend from "$lib/components/AuthorsLegend.svelte";
 	// import { newDateOrNull } from "$lib/services/dateUtils";
 	import { goto } from "$app/navigation";
 
@@ -281,6 +282,8 @@
     collision radius (node vs node)
     <Slider min={10} value={30} max={60} on:input={ (e) => { collisionRadius = e.detail.value; updateSimulation()} } />
 </div>
+
+<AuthorsLegend authors={data.authors} />
 
 <svg></svg>
 
