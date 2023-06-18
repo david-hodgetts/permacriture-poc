@@ -15,15 +15,16 @@
     
     const dispatch = createEventDispatcher();
 
-    const MaxSlidesPerView = 2;
+    const MaxSlidesPerView = 3;
 
-    function onContributionSelectionRequest(e:any){
-        dispatch('contributionSelectionRequest', e.detail);
-    }
+    // function onContributionSelectionRequest(e:any){
+    //     dispatch('contributionSelectionRequest', e.detail);
+    // }
 
     // a bit of a hack to allow users to close the focus mode by clicking on any empty white space
     function onModalCloseRequest(e:any){
-        dispatch('endFocusMode', {});
+        // disable exit focus mode
+        // dispatch('endFocusMode', {});
     }
 
 </script>
