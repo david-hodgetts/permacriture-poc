@@ -141,7 +141,7 @@
 
         // adds perAuthorTextIndex in center of nodes
         node.append("text")
-        .text((d:any) => d.perAuthorTextIndex)
+        .text((d:any) => d.perAuthorTextIndex != -1 ? d.perAuthorTextIndex : "") // don't show graine authorTextIndex   
         .attr("text-anchor", "middle")
         .attr("y", 5)
         .attr("alignment-baseline", "central");
@@ -160,8 +160,6 @@
             d.fy = clamp(event.y, 0, height);
             simulation.alpha(1).restart();
         }
-
-
 
         simulation = d3
         .forceSimulation()
