@@ -244,6 +244,8 @@
 
         console.log("deselect", circle);
         circle.style("fill", (d:any) => d.color);
+
+        goto("/map");
     }
 
     function updateSimulation(){
