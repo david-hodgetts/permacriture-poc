@@ -7,6 +7,8 @@ import { get } from 'svelte/store';
 import UserStore from '$lib/stores/user.store';
 import userStore from "$lib/stores/user.store";
 
+import { marked } from "marked";
+
 export enum ContributionState{
     Editing = "Editing",
     PendingPublication = "PendingPublication",
@@ -32,6 +34,7 @@ export class Contribution extends BaseStrapiEntity{
     
     public author!: Author | null;
     public text!: string;
+    public textHtml!: string;
     public state!: ContributionState;
     public publicationDatetime!: Date | null;
     public perAuthorTextIndex!: number | null;
@@ -47,6 +50,7 @@ export class Contribution extends BaseStrapiEntity{
         
         this.author = obj.author;
         this.text = obj.text;
+        this.textHtml = marked(obj.text);
         this.state = obj.state;
         this.publicationDatetime = newDateOrNull(obj.publicationDatetime);
         this.perAuthorTextIndex = obj.perAuthorTextIndex;

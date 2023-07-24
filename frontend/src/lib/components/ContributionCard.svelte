@@ -122,9 +122,9 @@
         </header>
         <div class="text">
             {#if !isFocused}
-                {@html truncate(contribution.text, maxCharCount)}
+                {@html truncate(contribution.textHtml, maxCharCount)}
             {:else}
-                {@html contribution.text}
+                {@html contribution.textHtml}
             {/if}
         </div>
     </div>
