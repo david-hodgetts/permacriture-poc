@@ -6,6 +6,12 @@ module.exports = createCoreService('api::user-context.user-context', ({ strapi }
     // Method 1: Creating an entirely new custom service
     // Method 3: Replacing a core service
     async getContext(userId) {
+        const user = await strapi.db.query('plugin::users-permissions.user').findOne({
+            where: { id: userId },
+            populate: ['role'],
+        });
+        const role = user.role.type;
+        // console.log("getting user", user, role);
         const author = await strapi.query('api::author.author').findOne({
             select: ['id', 'nickname'],
             where: {
@@ -18,6 +24,7 @@ module.exports = createCoreService('api::user-context.user-context', ({ strapi }
         const data = {
             userId,
             author,
+            role,
         };
         return data;
     }

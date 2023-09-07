@@ -56,7 +56,7 @@ exports.default = strapi_1.factories.createCoreController('api::contribution.con
         for (let contribution of contributions) {
             await addChildrenAndParentsToContribution(contribution, strapi, userContext);
         }
-        console.log("contributions", contributions);
+        // console.log("contributions", contributions);
         ctx.body = {
             data: contributions
         };
@@ -101,7 +101,7 @@ exports.default = strapi_1.factories.createCoreController('api::contribution.con
             },
             populate: ['author'],
         });
-        console.log(contributions);
+        // console.log(contributions);
         // add direct ancestors and children
         for (const contribution of contributions) {
             await addChildrenAndParentsToContribution(contribution, strapi, userContext);

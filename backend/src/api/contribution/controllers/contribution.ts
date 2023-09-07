@@ -66,7 +66,7 @@ export default factories.createCoreController('api::contribution.contribution', 
             await addChildrenAndParentsToContribution(contribution, strapi, userContext);
         }
         
-        console.log("contributions", contributions);
+        // console.log("contributions", contributions);
 
         ctx.body = {
             data: contributions 
@@ -119,7 +119,7 @@ export default factories.createCoreController('api::contribution.contribution', 
             },
             populate: ['author'],
         });
-        console.log(contributions);
+        // console.log(contributions);
         // add direct ancestors and children
         for(const contribution of contributions){
             await addChildrenAndParentsToContribution(contribution, strapi, userContext);

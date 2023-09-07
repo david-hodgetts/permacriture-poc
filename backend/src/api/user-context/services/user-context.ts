@@ -11,6 +11,13 @@ const { createCoreService } = require('@strapi/strapi').factories;
     
     async getContext(userId: number) {
 
+        const user = await strapi.db.query('plugin::users-permissions.user').findOne({
+                where: { id: userId },
+                populate: ['role'],
+        });
+        const role = user.role.type;
+        // console.log("getting user", user, role);
+
         const author = await strapi.query('api::author.author').findOne({
             select:['id', 'nickname'],
             where: {
@@ -24,6 +31,7 @@ const { createCoreService } = require('@strapi/strapi').factories;
         const data = {
             userId,
             author,
+            role,
         }
 
         return data;
