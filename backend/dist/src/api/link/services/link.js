@@ -4,7 +4,6 @@
  */
 Object.defineProperty(exports, "__esModule", { value: true });
 const strapi_1 = require("@strapi/strapi");
-// export default factories.createCoreService('api::link.link');
 exports.default = strapi_1.factories.createCoreService('api::link.link', ({ strapi }) => ({
     async parentsOfContribution(contributionId, userContext) {
         let data = await strapi.db.query('api::link.link').findMany({

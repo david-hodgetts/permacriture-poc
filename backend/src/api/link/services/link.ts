@@ -3,18 +3,9 @@
  */
 
 import { factories } from '@strapi/strapi';
-import { GenericService } from '@strapi/strapi/lib/core-api/service';
-
-// https://forum.strapi.io/t/strapi-custom-service-types/21977
-export type LinkService = GenericService & {
-    parentsOfContribution?(contributionId: number, userContext:any): void;
-    childrenOfContribution?(contributionId: number, userContext:any): void;
-};
 
 
-
-// export default factories.createCoreService('api::link.link');
-export default factories.createCoreService<LinkService>('api::link.link', ({ strapi }) =>  ({
+export default factories.createCoreService('api::link.link', ({ strapi }) =>  ({
     async parentsOfContribution(contributionId: number, userContext:any) {
 
         let data = await strapi.db.query('api::link.link').findMany({
@@ -61,4 +52,4 @@ export default factories.createCoreService<LinkService>('api::link.link', ({ str
         
         return data;
     },
-}) as LinkService);
+}));
