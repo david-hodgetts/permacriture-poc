@@ -5,8 +5,8 @@
 
 {#if $UserStore.user}
     <p>
-        user {$UserStore.user.context.author.nickname} | {$UserStore.user.context.terrain.title}
-        <a href="/logout">logout</a>
+        cryptonyme {$UserStore.user.context.author.nickname} | {$UserStore.user.context.terrain.title}
+        <a href="/logout">sortir du terrain</a>
     </p>
 {/if}
 

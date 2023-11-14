@@ -61,11 +61,11 @@
 
 </script>
 
-<h2>login</h2>
+<h2>entrer sur le terrain (login)</h2>
 <form on:submit|preventDefault={submit}>
-    <input type="email" label="email" placeholder="your email" bind:value={email}>
-    <input type="password" label="password" placeholder="your password" bind:value={password}>
-    <button type='submit' disabled={!email || !password}>Submit</button>
+    <input type="email" label="email" placeholder="votre courriel" bind:value={email}>
+    <input type="password" label="password" placeholder="votre mot de passe" bind:value={password}>
+    <button type='submit' disabled={!email || !password}>soumettre</button>
 </form>
 
 {#if error}

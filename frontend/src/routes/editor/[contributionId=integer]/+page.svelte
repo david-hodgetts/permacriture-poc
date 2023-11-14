@@ -13,7 +13,7 @@
         try{
             await strapiService.updateContribution({ id: data.contribution.id, text: data.contribution.text }) 
             addNotification({
-                text: "save succesful",
+                text: "sauvegarde réussie",
                 position: 'top-center',
                 type: 'success',
                 removeAfter: Config.notificationDuration,
@@ -21,7 +21,7 @@
         }catch(e){
             console.error(e);
             addNotification({
-                text:e,
+                text: e,
                 position: 'top-center',
                 type: 'error',
                 removeAfter: Config.notificationDuration,
@@ -44,7 +44,7 @@
         text={data.contribution.text}
         on:textchange={onTextChange}
     />
-    <button on:click={saveText}>save</button>
+    <button on:click={saveText}>sauver le texte</button>
 </div>
 
 

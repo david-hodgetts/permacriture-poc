@@ -27,12 +27,12 @@
     <ul>
         <li>
             <a href="/" class:active={$page.url.pathname === "/"}>
-            textes
+            journal
             </a>
         </li>
         <li>
             <a href={mapHref} class:active={$page.url.pathname === "/map" }>
-                carte
+            carte
             </a>
         </li>
     </ul>

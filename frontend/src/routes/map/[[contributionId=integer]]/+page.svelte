@@ -265,8 +265,6 @@
 
 <svelte:body on:click={ deselect }/>
 
-<h1>Map</h1>
-
 {#if selectedContribution}
     <ContributionCard 
         contribution={selectedContribution} 

@@ -23,13 +23,13 @@ function select(selectedFilter: Filter){
         class:active={filter == Filter.all}
         class="button"
         on:click={() => select(Filter.all)}
-    >all</span>
+    >tous les textes</span>
     &nbsp;
     <span 
         class:active={filter == Filter.mine}
         class="button"
         on:click={() => select(Filter.mine)}
-    >mine</span>
+    >mes textes</span>
 </div>
 
 <style>

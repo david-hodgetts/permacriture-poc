@@ -2,6 +2,7 @@
     import LinkModal from "./LinkModal.svelte";
     import { goto, invalidate, invalidateAll } from "$app/navigation";
     import type { Contribution } from "$lib/models/Contribution";
+    import { displayStringForState } from "$lib/models/Contribution";
     import { ContributionState } from "$lib/models/Contribution";
     import { strapiService } from "$lib/services/StrapiService";
     import { truncate, produceDateString, produceTimeString } from "$lib/services/textUtils";
@@ -105,11 +106,11 @@
     <div class="content" >
         <header>
             <h2>{contribution.title} <div class="small-text">(db-id:{contribution.id})</div></h2>
-            <div class="small-text">{contribution.state}</div>
+            <div class="small-text">{displayStringForState(contribution.state)}</div>
             {#if contribution.state === ContributionState.PendingPublication}
             <div>
                 <span>
-                    {`published in ${contribution.delayInMinutesBeforePublication} minutes`}
+                    {`publié dans ${contribution.delayInMinutesBeforePublication} minutes`}
                 </span>
                 <button on:click|stopPropagation={handlePublicationCancelRequest}>cancel</button>
             </div>
@@ -135,10 +136,10 @@
         {#if contribution.state === ContributionState.Published}
             <button on:click|stopPropagation={createNewContribution}>nouvelle contribution</button>
         {:else if contribution.state === ContributionState.Editing}
-            <button on:click|stopPropagation={() => goto(`/editor/${contribution.id}`)}>edit</button>
+            <button on:click|stopPropagation={() => goto(`/editor/${contribution.id}`)}>éditer</button>
             <button on:click|stopPropagation={() => showLinkModal = true}>lier à une contribution existante</button>
-            <button on:click|stopPropagation={handlePublicationRequest}>publish</button>
-            <button on:click|stopPropagation={handleAbandonRequest}>abandon</button>
+            <button on:click|stopPropagation={handlePublicationRequest}>publier</button>
+            <button on:click|stopPropagation={handleAbandonRequest}>abandonner</button>
         {/if}
 
         <div>{contribution.totalCountOfParents} | {contribution.totalCountOfChildren}</div>
