@@ -1,0 +1,29 @@
+[
+    {
+        "title": "test terrain",
+        "description": "",
+        "start": {
+            "year": 2023,
+            "month": 10,
+            "day": 16
+        },
+        "end": {
+            "year": 2023,
+            "month": 11,
+            "day": 31
+        },
+        "contribution_publication_delay": 8,
+        "users":[
+            {
+                "user": { 
+                    "username": "boby",
+                    "email": "boby@test.test",
+                    "password": "123456"
+                },
+                "author":{
+                    "nickname": "boby"
+                }
+            }
+        ]
+    }
+]
