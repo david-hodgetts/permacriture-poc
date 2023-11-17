@@ -1,5 +1,6 @@
 <script lang="ts">
     import LinkModal from "./LinkModal.svelte";
+    import NewContributionModal from "./NewContributionModal.svelte";
     import { goto, invalidate, invalidateAll } from "$app/navigation";
     import type { Contribution } from "$lib/models/Contribution";
     import { displayStringForState } from "$lib/models/Contribution";
@@ -8,8 +9,9 @@
     import { truncate, produceDateString, produceTimeString } from "$lib/services/textUtils";
     import { createEventDispatcher } from "svelte";
 
-    import { getNotificationsContext } from 'svelte-notifications';
     import Config from "$lib/services/Config";
+
+    import { getNotificationsContext } from 'svelte-notifications';
     const { addNotification } = getNotificationsContext();
 
     export let contribution: Contribution;
@@ -20,6 +22,10 @@
     const maxCharCount = 180;
 
     let showLinkModal = false;
+    
+    // new contribution state
+    let showNewContributionModal = false;
+    let newContributionParentContribution: Contribution | null = null;
 
     function sendSelectionRequest(){
         dispatch("cardSelectionRequest", { contributionId: contribution.id });
@@ -55,9 +61,18 @@
         }
     }
     
-    async function createNewContribution(){
+    function onNewContributionModalCloseRequest(){
+        showNewContributionModal = false;
+        newContributionParentContribution = null;
+    }
 
-        const parentContribution = contribution;
+    async function requestNewContribution(){
+        newContributionParentContribution = contribution;
+        showNewContributionModal = true;
+    }
+
+    async function createNewContribution(){
+        const parentContribution = newContributionParentContribution!;
         const newContributionId = await strapiService.createNewContributionFromParent(parentContribution);
         console.log("new contribution id", newContributionId);
         if(newContributionId === -1){
@@ -71,13 +86,15 @@
             });
             return;
         }
-
+        
+        showNewContributionModal = false;
+        newContributionParentContribution = null;
 
         // open the editor 
         goto(`/editor/${newContributionId}`);
     }
 
-    async function onModalCloseRequest(e:any){
+    async function onLinkModalCloseRequest(e:any){
         const invalidationRequired = !!e.detail.invalidationRequired;
         if(invalidationRequired){
             // TODO: forces state refresh. We should think about a better state management strategy
@@ -92,9 +109,16 @@
 <LinkModal 
     contribution={contribution} 
     visible={showLinkModal} 
-    on:close={onModalCloseRequest}
+    on:close={onLinkModalCloseRequest}
 />
 
+<NewContributionModal 
+    visible={showNewContributionModal}
+    parentContribution={newContributionParentContribution}
+    on:ok={createNewContribution}
+    on:close={onNewContributionModalCloseRequest}
+    on:cancel={onNewContributionModalCloseRequest}
+/>
 
 <div 
     class="contribution-card" 
@@ -134,7 +158,7 @@
             <div class="open-detail">&hellip; voir plus</div>
         {/if}
         {#if contribution.state === ContributionState.Published}
-            <button on:click|stopPropagation={createNewContribution}>nouvelle contribution</button>
+            <button on:click|stopPropagation={requestNewContribution}>nouvelle contribution</button>
         {:else if contribution.state === ContributionState.Editing}
             <button on:click|stopPropagation={() => goto(`/editor/${contribution.id}`)}>éditer</button>
             <button on:click|stopPropagation={() => showLinkModal = true}>lier à une contribution existante</button>

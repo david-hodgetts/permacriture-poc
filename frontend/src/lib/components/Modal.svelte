@@ -2,13 +2,14 @@
 	import { createEventDispatcher, onDestroy } from 'svelte';
 
     export let visible = false;
+	export let height = "100%";
 
 	const dispatch = createEventDispatcher();
 	const close = () => dispatch('close', {});
 
 	let modal:HTMLElement;
 
-	const handle_keydown = e => {
+	const handle_keydown = (e:any) => {
         if(!visible){
             return;
         }
@@ -46,7 +47,13 @@
 {#if visible}
     <div class="modal-background" on:click={close}></div>
 
-    <div class="modal" role="dialog" aria-modal="true" bind:this={modal}>
+    <div 
+		class="modal" 
+		role="dialog" 
+		aria-modal="true" 
+		bind:this={modal}
+		style={`--modal-height:${height}`}
+	>
         <slot></slot>
         <!-- svelte-ignore a11y-autofocus -->
         <!-- <button autofocus on:click={close}>close modal</button> -->
@@ -68,7 +75,7 @@
 		left: 50%;
 		top: 50%;
 		width: calc(100vw - 4em);
-		height: 100%;
+		height: var(--modal-height);
 		/* max-width: 32em; */
 		max-height: calc(100vh - 10em);
 		overflow: auto;
