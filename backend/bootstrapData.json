@@ -1,8 +1,8 @@
 [
     {
         "title": "test terrain",
-        "description": "",
-        "start": {
+        "description": "Le terrain «Les racines de Permacriture» s’articule autour des «fondamentaux» qui ont guidé depuis le début l’élaboration de l’application. Ceux-ci sont au nombre de quatre et portent sur le type d’environnement choisi (que nous appelons pour l’heure «terrain»), un environnement à l’écart, réservé aux seules personnes participant à l’expérience et où leurs pensées peuvent s’appuyer les unes sur les autres  ; sur l’importance d’utiliser un cryptonyme (qui ne garantit pas de façon absolue l’anonymat mais qui permet de se défaire pour un temps d’une identité donnée)  ; sur la valorisation du délai ou du retard qui permet à une pensée d’éclore à son rythme ; enfin sur l’importance des liens qui fondent le processus même de l’écriture dans un milieu et pendant un temps donnés – ce qui est le propre d’un terrain sur lequel on puisse se tenir et (se) cultiver ensemble. Le présent terrain se veut l’occasion de tester «sur pièces» ces 4 principes tout en élaborant un réseau de pensées sur le sujet.", 
+        "start": { 
             "year": 2023,
             "month": 10,
             "day": 16
@@ -13,17 +13,28 @@
             "day": 31
         },
         "contribution_publication_delay": 8,
-        "users":[
+        "cryptonims": [
+            "Zut", "Yogi", "Xylographie", "Wagon", "Vocation", "Ulysse", "Tique",
+            "Spirituel", "Racines", "Quitter"
+        ],
+        "grainePublicationDatetime":{
+            "year": 2023,
+            "month": 10,
+            "day": 16
+        },
+        "graines":[
             {
-                "user": { 
-                    "username": "boby",
-                    "email": "boby@test.test",
-                    "password": "123456"
-                },
-                "author":{
-                    "nickname": "boby"
-                }
-            }
+                "text": "**terrain**: a) «L’opacité même de la page représente-t-elle l’impénétrabilité du monde ? Ou bien pourrions-nous imaginer une façon d’écrire et de lire qui pénètre au coeur même du tissage du monde, dans la formation en cours de ses surfaces et de ses textures ? La page, tout comme le sol, pourrait-elle devenir une zone habitable, une zone où l’expérience et l’imagination fusionnent.» (Tim Ingold «Textures de la surface : le sol et la page», 2020)."
+            }, 
+            {
+                "text": "**cryptonyme** : «Nous pensons avec les autres, au milieu d’eux, dans un “entre-deux”. Le “je” devient presque illusoire : chacun s’appuie sur les réflexions d’autrui, dans le dialogue, même silencieux et solitaire.» (Claire Marin, Les débuts, 2023)" 
+            }, 
+            {
+                "text": "**retard** : « L’émotion ne prend plus le temps de la réflexion et du combat intérieur. Tout est épidermique. Tout est réaction. L’acte d’achat, par-delà nécessité ou envie, est devenu impulsion. La polémique, le raccourci le plus sûr pour se faire un nom. Il faut réagir à tout, et vite. On en vient dans l’élan de la course à raconter n’importe quoi sans le penser, juste pour faire parler de soi. On commente les commentaires, sans rien apporter, dans un rétrécissement de la pensée. On ajoute du bruit au bruit. » (Corinne Morel Darleux, Plutôt couler en beauté que flotter sans grâce, 2019)" 
+            }, 
+            {
+                "text": "mise en relation : « La quasi-totalité des développements peuvent être considérés comme des symbioses. Par l’idée de symbiose, nous faisons référence à la capacité des cellules d’une espèce à assister le développement normal du corps d’une autre espèce. » (Scott Gilbert) (…) Pour asseoir toute l’importance de ce type de développement, Gilbert et ses collègues se sont servis de l’expression « symbiopoïese » : codéveloppement inhérent à un holobionte. (Anna Lowenhaupt Tsing, Le champignon de la fin du monde)" 
+            } 
         ]
     }
 ]
