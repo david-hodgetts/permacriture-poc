@@ -8,13 +8,14 @@ import Navigation from "$lib/components/Navigation.svelte";
 import "../style/app.scss";
 </script>
 
-<Notifications>
+<!-- <Notifications>
     <Navigation />
     <main>
         <slot></slot>
     </main>
-</Notifications>
+</Notifications> -->
 
+<slot></slot>
 
 <style lang="scss">
     main{
