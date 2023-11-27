@@ -1,9 +1,10 @@
 <script lang="ts">
+    import QuillIcon from "$lib/icons/QuillIcon.svelte";
+    import MapNavIcon from "$lib/icons/MapNavIcon.svelte";
     import { createEventDispatcher } from "svelte";
     export let isTextSelected = true;
 
     const dispatch = createEventDispatcher();
-
 
 </script>
 
@@ -12,22 +13,20 @@
         class:selected={isTextSelected} 
         on:keypress={() => null}
         on:click={() => dispatch("menu-change", {menu: "text"})}>
-        <div class="content">
             <div class="text">
                 textes
             </div>
-        </div>
+            <QuillIcon selected={isTextSelected} />
     </div>
     <div 
         class="capsule capsule-right" 
         class:selected={!isTextSelected}
         on:keypress={() => null}
         on:click={() => dispatch("menu-change", {menu: "text"})}>
-        <div class="content">
             <div class="text">
                 carte
             </div>
-        </div>
+            <MapNavIcon selected={!isTextSelected}/>
     </div>
 </div>
 
@@ -38,7 +37,7 @@
         display: flex;
         justify-content: center;
         color: var(--color-primary);
-        gap: 16px;
+        gap: 6px;
     }
 
     .capsule{
@@ -48,16 +47,13 @@
         color: var(--color-text-disabled);
         display: flex;
 
-        flex-direction: column;
+        flex-direction: row;
         justify-content: center;
+        align-items: center;
+        gap: 10px;
 
         box-shadow: inset #4208ff09 0px 0px 10px 10px;
         cursor: pointer;
-    }
-
-    .capsule .content{
-        display: flex;
-        justify-content: center;
     }
 
     .capsule-left{
@@ -71,8 +67,21 @@
     .selected{
         background-color: var(--color-accent);
         color: var(--color-primary);
-        font-weight: bold;
         text-decoration: underline;
         cursor: auto;
     }
+
+    .text{
+        font-family: Arial, Helvetica, sans-serif;
+        font-weight: bold;
+        font-size: 16px;
+    }
+
+    .capsule-left .text{
+        padding-left: 8px;
+    }
+
+    /* .capsule-right .text{
+        padding-left: 4px;
+    }  */
 </style>
