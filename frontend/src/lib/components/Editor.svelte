@@ -23,20 +23,24 @@
         });
 
         if(text){
-            editor.setText(text, 'api');
+            // text comes in as raw html 
+            // https://stackoverflow.com/questions/46626633/how-do-you-insert-html-into-a-quilljs
+            const delta = editor.clipboard.convert(text)
+            editor.setContents(delta, 'silent');
         }
 
         editor.focus();
 
-        editor.on('text-change', (delta, oldDelta, source) => {
-            if (source == 'api') {
-                console.log("An API call triggered this change.");
-            } else if (source == 'user') {
-                console.log("A user action triggered this change.");
-            }
+        editor.on('text-change', (delta:any, oldDelta:any, source:any) => {
+            // if (source == 'api') {
+            //     console.log("An API call triggered this change.");
+            // } else if (source == 'user') {
+            //     console.log("A user action triggered this change.");
+            // }
 
             if(source === 'user'){
-                const payload = { detail: { text: editor.getText() }};
+                // const payload = { detail: { text: editor.getText() }};
+                const payload = { detail: { text: editor.root.innerHTML }};
                 node.dispatchEvent(new CustomEvent("textchange", payload));
             }
         });
@@ -49,9 +53,7 @@
 </script>
 
 
-<div use:quillAction={{placeholder}} class="editor" on:textchange>
-
-</div>
+<div use:quillAction={{placeholder}} class="editor" on:textchange></div>
 
 
 
