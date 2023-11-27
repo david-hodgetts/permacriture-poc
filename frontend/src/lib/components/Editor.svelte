@@ -28,7 +28,7 @@
 
         editor.focus();
 
-        editor.on('text-change', (delta, oldDelta, source) => {
+        editor.on('text-change', (delta:any, oldDelta:any, source:any) => {
             if (source == 'api') {
                 console.log("An API call triggered this change.");
             } else if (source == 'user') {
