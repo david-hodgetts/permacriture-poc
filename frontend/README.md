@@ -36,3 +36,8 @@ npm run build
 You can preview the production build with `npm run preview`.
 
 > To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+
+
+## notes
+
+- adobe xd project -> https://xd.adobe.com/view/2747703a-b4bc-44b2-863e-40b20ddc5990-7214/

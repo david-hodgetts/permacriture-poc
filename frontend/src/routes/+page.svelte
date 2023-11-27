@@ -17,6 +17,8 @@
 
     onMount(() => {
         updateContributions();
+        // @ts-ignore
+        console.log("app version", __APP_VERSION__);
     });
 
     function onContributionSelectionRequest(e:any){

@@ -14,9 +14,15 @@
         'strike',
     ];
 
+    const toolbarConfig = [
+        ['bold', 'italic', 'underline', 'strike', 'link', ],
+    ];
+
     function quillAction(node: HTMLElement, { placeholder }: { placeholder:string }){
         const editor = new Quill(node, {
-            modules: {  },
+            modules: { 
+                toolbar: toolbarConfig
+            },
             theme: 'bubble',
             placeholder: placeholder,
             formats: formats,
