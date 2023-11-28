@@ -1,3 +1,6 @@
+//////////
+// Luminari
+
 @font-face {
     font-family: 'Luminari';
     font-style: normal;
@@ -5,23 +8,27 @@
     src: local('Luminari'), url('/fonts/Luminari-Regular.woff') format('woff');
 }
 
+
+//////////
+// Euclid
+
 @font-face {
     font-family: "Euclid";
-    src: url("/fonts/EuclidFlex-Regular-WebS.woff2") format("woff2");
+    src: local('Euclid'), url("/fonts/EuclidFlex-Regular-WebS.woff2") format("woff2");
     font-weight: normal;
     font-style: normal;
 }
 
 @font-face {
     font-family: "Euclid";
-    src: url("/fonts/EuclidFlex-Medium-WebS.woff2") format("woff2");
-    font-weight: medium;
+    src: local('Euclid'),url("/fonts/EuclidFlex-Medium-WebS.woff2") format("woff2");
+    font-weight: 500;
     font-style: normal;
 }
 
 @font-face {
     font-family: "Euclid";
-    src: url("/fonts/EuclidFlex-Bold-WebS.woff2") format("woff2");
+    src: local('Euclid'), url("/fonts/EuclidFlex-Bold-WebS.woff2") format("woff2");
     font-weight: bold;
     font-style: normal;
 }
