@@ -6,6 +6,11 @@ html {
 
 body{
     font-family: "Euclid";
+}
+
+// targets div in which the svelte app gets inserted 
+// ie. direct child of body
+body > div{
     display: flex;
     justify-content: center;
 }
