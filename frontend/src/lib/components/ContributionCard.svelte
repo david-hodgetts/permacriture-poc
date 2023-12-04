@@ -46,15 +46,15 @@
         }
     }
 
-    async function handlePublicationCancelRequest(){
-        try{
-            await strapiService.cancelPublication(contribution);
-            contribution.publicationDatetime = null;
-            contribution.state = ContributionState.Editing;
-        }catch(e){
-            console.error(e);
-        }
-    }
+    // async function handlePublicationCancelRequest(){
+    //     try{
+    //         await strapiService.cancelPublication(contribution);
+    //         contribution.publicationDatetime = null;
+    //         contribution.state = ContributionState.Editing;
+    //     }catch(e){
+    //         console.error(e);
+    //     }
+    // }
 
     async function requestAbandonContribution(){
         showAbandonDialogModal = true;

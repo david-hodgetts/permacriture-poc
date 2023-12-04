@@ -162,16 +162,16 @@ class StrapiService
         }
     }
 	
-    async cancelPublication(contribution: Contribution):Promise<null> {
-        const url = `${Config.baseUrl}/api/contributions/cancel-publication/${contribution.id}`;
-        try{
-            await axios.put(url, {}, axiosOptions());
-            return null;
-        }catch(e){
-            errorHandler(e as AxiosError);
-            throw e;
-        }
-	}
+    // async cancelPublication(contribution: Contribution):Promise<null> {
+    //     const url = `${Config.baseUrl}/api/contributions/cancel-publication/${contribution.id}`;
+    //     try{
+    //         await axios.put(url, {}, axiosOptions());
+    //         return null;
+    //     }catch(e){
+    //         errorHandler(e as AxiosError);
+    //         throw e;
+    //     }
+	// }
 	
     async abandonContribution(contribution: Contribution):Promise<null> {
         const url = `${Config.baseUrl}/api/contributions/abandon/${contribution.id}`;
