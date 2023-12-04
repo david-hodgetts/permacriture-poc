@@ -88,6 +88,21 @@ export class Contribution extends BaseStrapiEntity{
         return this.author == null;
     }
 
+    get remainingTimeBeforePublication(): string{
+        if(this.state !== ContributionState.PendingPublication){
+            return "";
+        }
+        const remainingMinutes = this.delayInMinutesBeforePublication; 
+
+        const minutes = remainingMinutes % 60;
+        const hours = (remainingMinutes - minutes) / 60;
+
+        const hoursStr = hours > 0 ? `${hours.toString()} heures ` : "";
+        const minutesStr = minutes > 0 ? `${minutes.toString()} minutes` : "";
+
+        return `${hoursStr}${minutesStr}`;
+    }
+
     get delayInMinutesBeforePublication(): number{
         if(this.state !== ContributionState.PendingPublication){
             return 0;

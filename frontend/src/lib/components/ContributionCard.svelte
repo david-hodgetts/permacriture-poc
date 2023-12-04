@@ -130,6 +130,7 @@
     on:cancel={onNewContributionModalCloseRequest}
 />
 
+<!-- abandon contribution dialog -->
 <DialogModal
     visible={showAbandonDialogModal}
     content={{
@@ -155,7 +156,7 @@
             {#if contribution.state === ContributionState.PendingPublication}
             <div>
                 <span>
-                    {`publié dans ${contribution.delayInMinutesBeforePublication} minutes`}
+                    {`publié dans ${contribution.remainingTimeBeforePublication}`}
                 </span>
                 <!-- <button on:click|stopPropagation={handlePublicationCancelRequest}>cancel</button> -->
             </div>
