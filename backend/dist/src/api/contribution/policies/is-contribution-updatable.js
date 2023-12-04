@@ -12,7 +12,7 @@ exports.default = async (policyContext, config, { strapi }) => {
             'id': id,
         },
     });
-    if (!contribution || contribution.state !== 'Editing') {
+    if (!contribution || contribution.state === 'Published' || contribution.state === 'Abandoned') {
         return false;
     }
     return true;
