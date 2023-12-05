@@ -1,6 +1,7 @@
 <script lang="ts">
     import LinkModal from "./LinkModal.svelte";
     import NewContributionModal from "./NewContributionModal.svelte";
+    import DialogModal from "./DialogModal.svelte";
     import { goto, invalidate, invalidateAll } from "$app/navigation";
     import type { Contribution } from "$lib/models/Contribution";
     import { displayStringForState } from "$lib/models/Contribution";
@@ -12,6 +13,8 @@
     import Config from "$lib/services/Config";
 
     import { getNotificationsContext } from 'svelte-notifications';
+	import { text } from "svelte/internal";
+	import { interpolateRgbBasisClosed } from "d3";
     const { addNotification } = getNotificationsContext();
 
     export let contribution: Contribution;
@@ -22,6 +25,8 @@
     const maxCharCount = 180;
 
     let showLinkModal = false;
+
+    let showAbandonDialogModal = false;
     
     // new contribution state
     let showNewContributionModal = false;
@@ -41,17 +46,22 @@
         }
     }
 
-    async function handlePublicationCancelRequest(){
-        try{
-            await strapiService.cancelPublication(contribution);
-            contribution.publicationDatetime = null;
-            contribution.state = ContributionState.Editing;
-        }catch(e){
-            console.error(e);
-        }
+    // async function handlePublicationCancelRequest(){
+    //     try{
+    //         await strapiService.cancelPublication(contribution);
+    //         contribution.publicationDatetime = null;
+    //         contribution.state = ContributionState.Editing;
+    //     }catch(e){
+    //         console.error(e);
+    //     }
+    // }
+
+    async function requestAbandonContribution(){
+        showAbandonDialogModal = true;
     }
 
     async function handleAbandonRequest(){
+        showAbandonDialogModal = false;
         try{
             await strapiService.abandonContribution(contribution);
             contribution.publicationDatetime = null;
@@ -120,6 +130,18 @@
     on:cancel={onNewContributionModalCloseRequest}
 />
 
+<!-- abandon contribution dialog -->
+<DialogModal
+    visible={showAbandonDialogModal}
+    content={{
+        text: "êtes-vous sûr de vouloir abandonner cette contribution?",
+        optionA: "oui je suis sûr",
+        optionB: "non je souhaite garder cette contributiuon",
+    }}
+    on:optionA={handleAbandonRequest}
+    on:optionB={() => showAbandonDialogModal = false }
+/>
+
 <div 
     class="contribution-card" 
     class:focused={isFocused}
@@ -134,9 +156,9 @@
             {#if contribution.state === ContributionState.PendingPublication}
             <div>
                 <span>
-                    {`publié dans ${contribution.delayInMinutesBeforePublication} minutes`}
+                    {`publié dans ${contribution.remainingTimeBeforePublication}`}
                 </span>
-                <button on:click|stopPropagation={handlePublicationCancelRequest}>cancel</button>
+                <!-- <button on:click|stopPropagation={handlePublicationCancelRequest}>cancel</button> -->
             </div>
             {:else if contribution.state === ContributionState.Published}
                 <div class="date-time">
@@ -159,11 +181,14 @@
         {/if}
         {#if contribution.state === ContributionState.Published}
             <button on:click|stopPropagation={requestNewContribution}>nouvelle contribution</button>
-        {:else if contribution.state === ContributionState.Editing}
+        {:else if contribution.state === ContributionState.Editing }
             <button on:click|stopPropagation={() => goto(`/editor/${contribution.id}`)}>éditer</button>
             <button on:click|stopPropagation={() => showLinkModal = true}>lier à une contribution existante</button>
             <button on:click|stopPropagation={handlePublicationRequest}>publier</button>
-            <button on:click|stopPropagation={handleAbandonRequest}>abandonner</button>
+            <button on:click|stopPropagation={requestAbandonContribution}>abandonner</button>
+        {:else if contribution.state === ContributionState.PendingPublication }
+            <button on:click|stopPropagation={() => goto(`/editor/${contribution.id}`)}>éditer</button>
+            <button on:click|stopPropagation={requestAbandonContribution}>abandonner</button>
         {/if}
 
         <div>{contribution.totalCountOfParents} | {contribution.totalCountOfChildren}</div>

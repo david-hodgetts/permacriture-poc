@@ -210,24 +210,24 @@ export default factories.createCoreController('api::contribution.contribution', 
         };
     },
     
-    async cancelPublication(ctx){
+    // async cancelPublication(ctx){
 
-        // contribution id from query params
-        const { id } = ctx.params;
-        console.log("cancel publication for contribution id", id);
+    //     // contribution id from query params
+    //     const { id } = ctx.params;
+    //     console.log("cancel publication for contribution id", id);
 
-        await strapi.entityService.update("api::contribution.contribution", id,
-        {
-            data: {
-                'state': 'Editing',
-                'publicationDatetime': null,
-            },
-        });
+    //     await strapi.entityService.update("api::contribution.contribution", id,
+    //     {
+    //         data: {
+    //             'state': 'Editing',
+    //             'publicationDatetime': null,
+    //         },
+    //     });
 
-        ctx.body = {
-            data: { id: id },
-        };
-    },
+    //     ctx.body = {
+    //         data: { id: id },
+    //     };
+    // },
 
     async abandon(ctx){
 

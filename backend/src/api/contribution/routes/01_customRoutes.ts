@@ -19,15 +19,15 @@ export default {
                 middlewares: [],
             },
         },
-        {
-            method: 'PUT',
-            path: '/contributions/cancel-publication/:id',
-            handler: 'contribution.cancelPublication',
-            config: {
-                policies: ["is-contribution-mine", "is-contribution-pending-publication"],
-                middlewares: [],
-            },
-        },
+        // {
+        //     method: 'PUT',
+        //     path: '/contributions/cancel-publication/:id',
+        //     handler: 'contribution.cancelPublication',
+        //     config: {
+        //         policies: ["is-contribution-mine", "is-contribution-pending-publication"],
+        //         middlewares: [],
+        //     },
+        // },
         {
             method: 'PUT',
             path: '/contributions/abandon/:id',
