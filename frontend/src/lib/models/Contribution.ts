@@ -11,7 +11,6 @@ import { marked } from "marked";
 
 export enum ContributionState{
     Editing = "Editing",
-    PendingPublication = "PendingPublication",
     Published = "Published",
     Abandoned = "Abandoned",
 };
@@ -20,8 +19,6 @@ export function displayStringForState(state: ContributionState): string{
     switch(state){
         case ContributionState.Abandoned:
             return "Abandonné";
-        case ContributionState.PendingPublication:
-            return "En attente de publication";
         case ContributionState.Editing:
             return "En cours d'édition";
         case ContributionState.Published:
@@ -88,11 +85,22 @@ export class Contribution extends BaseStrapiEntity{
         return this.author == null;
     }
 
+    get isPublishable(): boolean{
+        if(this.state !== ContributionState.Editing){
+            return false;
+        }
+        const now = new Date();
+        const minDelayBeforePublication = userStore.getUser()!.context.terrain.contribution_min_publication_delay_minutes;
+        const elapsedMillisSinceCreation = (now.getTime() - this.createdAt.getTime());
+        return elapsedMillisSinceCreation >= minDelayBeforePublication * 60 * 1000;
+    }
+
     get remainingTimeBeforePublication(): string{
-        if(this.state !== ContributionState.PendingPublication){
+        if(this.state !== ContributionState.Editing){
             return "";
         }
         const remainingMinutes = this.delayInMinutesBeforePublication; 
+        console.log("remaining minutes", remainingMinutes);
 
         const minutes = remainingMinutes % 60;
         const hours = (remainingMinutes - minutes) / 60;
@@ -104,14 +112,16 @@ export class Contribution extends BaseStrapiEntity{
     }
 
     get delayInMinutesBeforePublication(): number{
-        if(this.state !== ContributionState.PendingPublication){
+        if(this.state !== ContributionState.Editing){
             return 0;
         }
 
-        const delayInMinutes = userStore.getUser()!.context.terrain.contribution_publication_delay * 60;
+
+        const delayInMinutes = userStore.getUser()!.context.terrain.contribution_max_publication_delay_minutes;
+        console.log("this", this.createdAt, delayInMinutes);
 
         const now = new Date();
-        const remainingMillis = (this.publicationDatetime!.getTime() + delayInMinutes * 60 * 1000) - now.getTime();
+        const remainingMillis = (this.createdAt.getTime() + delayInMinutes * 60 * 1000) - now.getTime();
         return Math.round(remainingMillis / 1000 / 60);
     }
 

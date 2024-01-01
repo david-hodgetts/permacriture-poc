@@ -16,6 +16,7 @@ export interface Context
         description: string,
         start: string,
         end: string,
-        contribution_publication_delay: number,
+        contribution_min_publication_delay_minutes: number,
+        contribution_max_publication_delay_minutes: number,
     }
 }
