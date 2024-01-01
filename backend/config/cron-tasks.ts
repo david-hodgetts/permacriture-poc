@@ -18,7 +18,7 @@ export default {
         // console.log("pending contributions ", pendingContributions);
 
         for(const contribution of pendingContributions){
-            const delayMinutes = contribution.terrain.contribution_publication_delay * 60;
+            const delayMinutes = contribution.terrain.contribution_max_publication_delay_minutes;
             const now = new Date();
 
             const elapsedMinutes = (now.getTime() - new Date(contribution.publicationDatetime).getTime()) / 1000 / 60;

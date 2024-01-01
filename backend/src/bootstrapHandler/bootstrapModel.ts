@@ -28,7 +28,8 @@ export interface TerrainJSON{
     description: string;
     start: DayDate;
     end: DayDate;
-    contribution_publication_delay: number; // hours,
+    contribution_min_publication_delay_minutes: number; // min minutes before user can force publication
+    contribution_max_publication_delay_minutes: number; // threshold after which contribution will be automatically published,
 
     cryptonims: string[],
     grainePublicationDatetime: DayDate,
@@ -40,7 +41,8 @@ export interface Terrain{
     description: string;
     start: DayDate;
     end: DayDate;
-    contribution_publication_delay: number; // hours,
+    contribution_min_publication_delay_minutes: number; // min minutes before user can force publication
+    contribution_max_publication_delay_minutes: number; // threshold after which contribution will be automatically published,
 
     users: UserAuthorPair[],
     grainePublicationDatetime: DayDate,
@@ -72,7 +74,8 @@ export function terrainJSONToTerrain(terrainJson:TerrainJSON): Terrain{
         description: terrainJson.description,
         start: terrainJson.start,
         end: terrainJson.end,
-        contribution_publication_delay: terrainJson.contribution_publication_delay,
+        contribution_min_publication_delay_minutes: terrainJson.contribution_min_publication_delay_minutes,
+        contribution_max_publication_delay_minutes: terrainJson.contribution_max_publication_delay_minutes,
         users: terrainJson.cryptonims.map(cryptonimToUserAuthoPair),
         grainePublicationDatetime: terrainJson.grainePublicationDatetime,
         graines: terrainJson.graines

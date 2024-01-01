@@ -818,12 +818,15 @@ export interface ApiTerrainTerrain extends Schema.CollectionType {
     description: Attribute.RichText;
     start: Attribute.Date & Attribute.Required;
     end: Attribute.Date & Attribute.Required;
-    contribution_publication_delay: Attribute.Integer &
+    contribution_max_publication_delay_minutes: Attribute.Integer &
       Attribute.Required &
       Attribute.SetMinMax<{
         min: 0;
       }> &
-      Attribute.DefaultTo<24>;
+      Attribute.DefaultTo<2880>;
+    contribution_min_publication_delay_minutes: Attribute.Integer &
+      Attribute.Required &
+      Attribute.DefaultTo<480>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

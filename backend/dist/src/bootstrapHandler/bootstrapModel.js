@@ -23,7 +23,8 @@ function terrainJSONToTerrain(terrainJson) {
         description: terrainJson.description,
         start: terrainJson.start,
         end: terrainJson.end,
-        contribution_publication_delay: terrainJson.contribution_publication_delay,
+        contribution_min_publication_delay_minutes: terrainJson.contribution_min_publication_delay_minutes,
+        contribution_max_publication_delay_minutes: terrainJson.contribution_max_publication_delay_minutes,
         users: terrainJson.cryptonims.map(cryptonimToUserAuthoPair),
         grainePublicationDatetime: terrainJson.grainePublicationDatetime,
         graines: terrainJson.graines
