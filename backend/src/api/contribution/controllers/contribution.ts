@@ -200,7 +200,7 @@ export default factories.createCoreController('api::contribution.contribution', 
         await strapi.entityService.update("api::contribution.contribution", id,
         {
             data: {
-                'state': 'PendingPublication',
+                'state': 'Published',
                 'publicationDatetime': new Date(),
             },
         });

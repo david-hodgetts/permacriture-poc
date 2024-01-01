@@ -746,9 +746,7 @@ export interface ApiContributionContribution extends Schema.CollectionType {
       'oneToOne',
       'api::author.author'
     >;
-    state: Attribute.Enumeration<
-      ['Editing', 'PendingPublication', 'Published', 'Abandoned']
-    > &
+    state: Attribute.Enumeration<['Editing', 'Published', 'Abandoned']> &
       Attribute.Required;
     perAuthorTextIndex: Attribute.Integer &
       Attribute.Required &
