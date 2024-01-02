@@ -13,8 +13,6 @@
     import Config from "$lib/services/Config";
 
     import { getNotificationsContext } from 'svelte-notifications';
-	import { text } from "svelte/internal";
-	import { interpolateRgbBasisClosed } from "d3";
     const { addNotification } = getNotificationsContext();
 
     export let contribution: Contribution;

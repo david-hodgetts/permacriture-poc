@@ -9,6 +9,13 @@ import userStore from "$lib/stores/user.store";
 
 import { marked } from "marked";
 
+
+// remove warnings
+marked.setOptions({
+    mangle: false,
+    headerIds: false,
+});
+
 export enum ContributionState{
     Editing = "Editing",
     Published = "Published",
@@ -100,7 +107,7 @@ export class Contribution extends BaseStrapiEntity{
             return "";
         }
         const remainingMinutes = this.delayInMinutesBeforePublication; 
-        console.log("remaining minutes", remainingMinutes);
+        // console.log("remaining minutes", remainingMinutes);
 
         const minutes = remainingMinutes % 60;
         const hours = (remainingMinutes - minutes) / 60;
@@ -116,9 +123,7 @@ export class Contribution extends BaseStrapiEntity{
             return 0;
         }
 
-
         const delayInMinutes = userStore.getUser()!.context.terrain.contribution_max_publication_delay_minutes;
-        console.log("this", this.createdAt, delayInMinutes);
 
         const now = new Date();
         const remainingMillis = (this.createdAt.getTime() + delayInMinutes * 60 * 1000) - now.getTime();

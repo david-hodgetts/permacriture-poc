@@ -18,8 +18,7 @@ exports.default = {
             const maxDelayInMinutesBeforePublication = contribution.terrain.contribution_max_publication_delay_minutes;
             const now = new Date();
             const elapsedMinutes = (now.getTime() - new Date(contribution.createdAt).getTime()) / 1000 / 60;
-            console.log(contribution);
-            console.log(`elapsed min ${elapsedMinutes} maxDelayBeforePubInMinutes ${maxDelayInMinutesBeforePublication}`);
+            // console.log(`elapsed min ${elapsedMinutes} maxDelayBeforePubInMinutes ${maxDelayInMinutesBeforePublication}`);
             if (elapsedMinutes > maxDelayInMinutesBeforePublication) {
                 const publicationDate = new Date();
                 await strapi.db.query('api::contribution.contribution').update({
