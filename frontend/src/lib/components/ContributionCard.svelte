@@ -41,6 +41,12 @@
             contribution.state = ContributionState.Published;
         }catch(e){
             console.error(e);
+            addNotification({
+                text: "unable to publish contribution",
+                position: "top-center",
+                type: "error",
+                removeAfter: Config.notificationDuration,
+            });
         }
     }
 
@@ -56,6 +62,12 @@
             contribution.state = ContributionState.Abandoned;
         }catch(e){
             console.error(e);
+            addNotification({
+                text: "unable to abandon contribution",
+                position: "top-center",
+                type: "error",
+                removeAfter: Config.notificationDuration,
+            });
         }
     }
     
