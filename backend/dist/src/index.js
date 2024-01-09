@@ -131,7 +131,8 @@ exports.default = {
                         description: terrain.description,
                         start: (0, bootstrapModel_1.dayDateToDate)(terrain.start),
                         end: (0, bootstrapModel_1.dayDateToDate)(terrain.end),
-                        contribution_publication_delay: terrain.contribution_publication_delay,
+                        contribution_min_publication_delay_minutes: terrain.contribution_min_publication_delay_minutes,
+                        contribution_max_publication_delay_minutes: terrain.contribution_max_publication_delay_minutes,
                     }
                 });
                 // use this collection to collect all user/author pairs

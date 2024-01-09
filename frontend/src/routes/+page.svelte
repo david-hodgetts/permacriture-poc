@@ -3,22 +3,31 @@
     import ContributionList from "$lib/components/ContributionList.svelte"
     import ListFilter from "$lib/components/ListFilter.svelte";
 
-	import type { PageData } from "./$types";
 	import { Order, Filter, type Contribution } from "$lib/models/Contribution";
 	import { goto } from "$app/navigation";
-	import { onMount } from "svelte";
-
-    export let data: PageData;
+	import { onDestroy, onMount } from "svelte";
+	import { strapiService } from "$lib/services/StrapiService";
+	import Config from "$lib/services/Config";
+    
+    import { getNotificationsContext } from 'svelte-notifications';
+    const { addNotification } = getNotificationsContext();
 
     let contributions: Contribution[] = [];
 
     let order = Order.Descending;
     let selectedFilter = Filter.all;
 
+    let timeoutId:number = -1;
+
     onMount(() => {
-        updateContributions();
         // @ts-ignore
         console.log("app version", __APP_VERSION__);
+        
+        updateContributions();
+    });
+
+    onDestroy(() => {
+        window.clearTimeout(timeoutId);
     });
 
     function onContributionSelectionRequest(e:any){
@@ -26,12 +35,34 @@
         goto(`/contribution/${contributionId}`);
     }
 
-    function updateContributions(){
-        if(selectedFilter == Filter.all){
-            contributions = data.contributions;
-        }else{
-            contributions = data.contributions.filter(c => c.isMine);
+    async function getContributions():Promise<Contribution[]>
+    {
+        try{
+            const newContributions: Contribution[] = await strapiService.getContributions();
+            return newContributions;
+        }catch(e){
+            console.error(e);
+            addNotification({
+                text: "unable to retrieve contributions",
+                position: "top-center",
+                type: "error",
+                removeAfter: Config.notificationDuration,
+            });
+
+            // return old contributions
+            return contributions;
         }
+    }
+
+    async function updateContributions(){
+        const newContributions = await getContributions(); 
+        if(selectedFilter == Filter.all){
+            contributions = newContributions;
+        }else{
+            contributions = newContributions.filter(c => c.isMine);
+        }
+
+        console.log("contributions updated");
 
         contributions = contributions.sort((a:Contribution, b: Contribution) => {
             const date_A = a.publicationDatetime || a.createdAt;
@@ -43,6 +74,8 @@
                 return date_B.getTime() - date_A.getTime();
             }
         });
+
+        timeoutId = window.setTimeout(updateContributions, Config.updateRate);
     }
 
 	function onOrderInvertRequest(e: CustomEvent<any>): void {

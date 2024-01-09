@@ -152,7 +152,8 @@ export default {
                         description: terrain.description,
                         start: dayDateToDate(terrain.start),
                         end: dayDateToDate(terrain.end),
-                        contribution_publication_delay: terrain.contribution_publication_delay,
+                        contribution_min_publication_delay_minutes: terrain.contribution_min_publication_delay_minutes,
+                        contribution_max_publication_delay_minutes: terrain.contribution_max_publication_delay_minutes,
                     }
                 });
                 

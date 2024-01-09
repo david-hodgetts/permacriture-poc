@@ -1,7 +1,6 @@
 <script lang="ts">
 	import type { Contribution } from "$lib/models/Contribution";
     import ContributionCard from "./ContributionCard.svelte";
-    import { createEventDispatcher } from 'svelte';
 
     export let contributions:Contribution[] = [];
 </script>

@@ -169,7 +169,7 @@ exports.default = strapi_1.factories.createCoreController('api::contribution.con
         console.log("publish for contribution id", id);
         await strapi.entityService.update("api::contribution.contribution", id, {
             data: {
-                'state': 'PendingPublication',
+                'state': 'Published',
                 'publicationDatetime': new Date(),
             },
         });

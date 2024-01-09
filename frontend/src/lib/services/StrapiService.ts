@@ -59,8 +59,8 @@ class StrapiService
             const response = await axios.get(url, axiosOptions());
             let contributions = response.data.data.map((item: any) => new Contribution(item)) as Contribution[];
 
-            const graph = new Graph(contributions);
-            contributions = graph.addCompleteChildParentCountToContributions();
+            // const graph = new Graph(contributions);
+            // contributions = graph.addCompleteChildParentCountToContributions();
 
             return contributions;
         }catch(e){

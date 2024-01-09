@@ -12,7 +12,8 @@
             "month": 11,
             "day": 31
         },
-        "contribution_publication_delay": 8,
+        "contribution_min_publication_delay_minutes": 480,
+        "contribution_max_publication_delay_minutes": 2880,
         "cryptonims": [
             "Zut", "Yogi", "Xylographie", "Wagon", "Vocation", "Ulysse", "Tique",
             "Spirituel", "Racines", "Quitter"

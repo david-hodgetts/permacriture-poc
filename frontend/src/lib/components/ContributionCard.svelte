@@ -13,8 +13,6 @@
     import Config from "$lib/services/Config";
 
     import { getNotificationsContext } from 'svelte-notifications';
-	import { text } from "svelte/internal";
-	import { interpolateRgbBasisClosed } from "d3";
     const { addNotification } = getNotificationsContext();
 
     export let contribution: Contribution;
@@ -40,21 +38,17 @@
         try{
             await strapiService.publishContribution(contribution);
             contribution.publicationDatetime = new Date();
-            contribution.state = ContributionState.PendingPublication;
+            contribution.state = ContributionState.Published;
         }catch(e){
             console.error(e);
+            addNotification({
+                text: "unable to publish contribution",
+                position: "top-center",
+                type: "error",
+                removeAfter: Config.notificationDuration,
+            });
         }
     }
-
-    // async function handlePublicationCancelRequest(){
-    //     try{
-    //         await strapiService.cancelPublication(contribution);
-    //         contribution.publicationDatetime = null;
-    //         contribution.state = ContributionState.Editing;
-    //     }catch(e){
-    //         console.error(e);
-    //     }
-    // }
 
     async function requestAbandonContribution(){
         showAbandonDialogModal = true;
@@ -68,6 +62,12 @@
             contribution.state = ContributionState.Abandoned;
         }catch(e){
             console.error(e);
+            addNotification({
+                text: "unable to abandon contribution",
+                position: "top-center",
+                type: "error",
+                removeAfter: Config.notificationDuration,
+            });
         }
     }
     
@@ -153,7 +153,7 @@
         <header>
             <h2>{contribution.title} <div class="small-text">(db-id:{contribution.id})</div></h2>
             <div class="small-text">{displayStringForState(contribution.state)}</div>
-            {#if contribution.state === ContributionState.PendingPublication}
+            {#if contribution.state === ContributionState.Editing}
             <div>
                 <span>
                     {`publié dans ${contribution.remainingTimeBeforePublication}`}
@@ -184,14 +184,13 @@
         {:else if contribution.state === ContributionState.Editing }
             <button on:click|stopPropagation={() => goto(`/editor/${contribution.id}`)}>éditer</button>
             <button on:click|stopPropagation={() => showLinkModal = true}>lier à une contribution existante</button>
-            <button on:click|stopPropagation={handlePublicationRequest}>publier</button>
-            <button on:click|stopPropagation={requestAbandonContribution}>abandonner</button>
-        {:else if contribution.state === ContributionState.PendingPublication }
-            <button on:click|stopPropagation={() => goto(`/editor/${contribution.id}`)}>éditer</button>
+            {#if contribution.isPublishable}
+                <button on:click|stopPropagation={handlePublicationRequest}>publier maintenant</button>
+            {/if}
             <button on:click|stopPropagation={requestAbandonContribution}>abandonner</button>
         {/if}
 
-        <div>{contribution.totalCountOfParents} | {contribution.totalCountOfChildren}</div>
+        <div>{contribution.parents.length} | {contribution.children.length}</div>
     </footer>
 </div>
 

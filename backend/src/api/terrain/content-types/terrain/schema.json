@@ -28,11 +28,16 @@
       "type": "date",
       "required": true
     },
-    "contribution_publication_delay": {
+    "contribution_max_publication_delay_minutes": {
       "type": "integer",
-      "default": 24,
+      "default": 2880,
       "required": true,
       "min": 0
+    },
+    "contribution_min_publication_delay_minutes": {
+      "type": "integer",
+      "required": true,
+      "default": 480
     }
   }
 }

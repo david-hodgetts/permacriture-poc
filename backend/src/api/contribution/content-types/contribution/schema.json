@@ -32,7 +32,6 @@
       "type": "enumeration",
       "enum": [
         "Editing",
-        "PendingPublication",
         "Published",
         "Abandoned"
       ],

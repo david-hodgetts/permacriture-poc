@@ -8,9 +8,9 @@ export default {
         // For each contribution, check if it should change state
 
         const pendingContributions = await strapi.db.query('api::contribution.contribution').findMany({
-            select: [ 'state', 'publicationDatetime'],
+            select: [ 'state', 'createdAt'],
             where:{
-                'state': 'PendingPublication',
+                'state': 'Editing',
             },
             populate: ['terrain'],
         });
@@ -18,13 +18,14 @@ export default {
         // console.log("pending contributions ", pendingContributions);
 
         for(const contribution of pendingContributions){
-            const delayMinutes = contribution.terrain.contribution_publication_delay * 60;
+            const maxDelayInMinutesBeforePublication = contribution.terrain.contribution_max_publication_delay_minutes;
             const now = new Date();
 
-            const elapsedMinutes = (now.getTime() - new Date(contribution.publicationDatetime).getTime()) / 1000 / 60;
-            // console.log(`delay minutes ${delayMinutes} elapsed ${elapsedMinutes}`);
+            const elapsedMinutes = (now.getTime() - new Date(contribution.createdAt).getTime()) / 1000 / 60;
 
-            if(elapsedMinutes > delayMinutes){
+            // console.log(`elapsed min ${elapsedMinutes} maxDelayBeforePubInMinutes ${maxDelayInMinutesBeforePublication}`);
+
+            if(elapsedMinutes > maxDelayInMinutesBeforePublication){
                 const publicationDate = new Date();
                 await strapi.db.query('api::contribution.contribution').update({
                     where:{
