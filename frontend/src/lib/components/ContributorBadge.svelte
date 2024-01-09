@@ -1,20 +1,19 @@
 <script lang="ts">
-	import { BadgeSize } from "$lib/components-utils/Badge";
+	import { BadgeRole } from "$lib/components-utils/Badge";
 
     export let color="#ffffff";
     export let text = "";
-    export let size:BadgeSize = BadgeSize.Big;
+    export let role:BadgeRole = BadgeRole.List;
 
-    let sizePx = (size == BadgeSize.Big ? 37 : 22);
+    let sizePx = (role == BadgeRole.List ? 31 : 54);
 
-    let fontSize = (size == BadgeSize.Big ? 15 : 10);
- 
+    let fontSize = (role == BadgeRole.List ? 15 : 25);
 
 </script>
 
 <div 
     class="badge"
-    class:small={size == BadgeSize.Small} 
+    class:small={role == BadgeRole.List} 
     style="background-color: {color}; width: {sizePx}px; height: {sizePx}px;"
 >
     <div 
@@ -27,7 +26,7 @@
 
 <style>
     .badge{
-        border-radius: 50%;
+        border-radius: 9px;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -35,7 +34,7 @@
     }    
 
     .text{
-        font-family: Luminari;
+        font-weight: bold;
         color: white;
     }
 </style>
