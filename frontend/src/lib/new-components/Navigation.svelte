@@ -14,6 +14,7 @@
         display: flex;
         flex-direction: column;
         justify-content: center;
+        background-color: var(--color-background-app);
         gap: 10px;
         width: 100%;
         position: fixed;

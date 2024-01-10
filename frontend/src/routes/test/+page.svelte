@@ -7,7 +7,7 @@
 
     <ContributorBadge text="B1" color="red"/>
     <ContributorBadge role={BadgeRole.Map} text="B1" color="red"/>
-    <!-- <PublishedContributionCard /> -->
+    <PublishedContributionCard />
 
 <style>
 </style>
