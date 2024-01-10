@@ -1,4 +1,7 @@
 <script lang="ts">
+	import type { Contribution } from "$lib/models/Contribution";
+
+   export let contribution: Contribution;
    export let height: number; 
 </script>
 
@@ -11,7 +14,6 @@
     .card{
         width: 100%;
         background-color: var(--color-secondary);
-        border-radius: 10px;
-
+        border-radius: 16px;
     }
 </style>
