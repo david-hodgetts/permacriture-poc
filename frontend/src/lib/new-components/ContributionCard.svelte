@@ -1,6 +1,7 @@
 <script lang="ts">
     import ContributionCardBackground from "./ContributionCard/ContributionCardBackground.svelte";
     import Counter from './ContributionCard/Counter.svelte';
+    import BottomCounter from "./ContributionCard/BottomCounter.svelte";
 	import { ContributionState, type Contribution } from "$lib/models/Contribution";
 
     export let contribution: Contribution;
@@ -20,6 +21,9 @@
         {/if}
     </div>
     <ContributionCardBackground contribution={contribution} height={cardHeight}/>
+    <div class="bottom-decoration">
+        <BottomCounter count={contribution.parents.length} />
+    </div>
 </div>
 
 
@@ -27,7 +31,7 @@
     .contribution-card{
         width: 100%;
     }
-    .top-decoration{
+    .top-decoration, .bottom-decoration{
         display: flex;
     }
     .link-to-contribution{

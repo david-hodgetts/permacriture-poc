@@ -18,6 +18,7 @@
         gap: 10px;
         width: 100%;
         position: fixed;
+        z-index: 1000;
         top:0;
         left: 0;
         padding-bottom: 10px;

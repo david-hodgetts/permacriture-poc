@@ -20,7 +20,7 @@
     }
     .count-rect{
         position:absolute;
-        top: -5px;
+        top: 5px;
         right: -5px;
         width: 32px;
         height: 32px;
@@ -43,6 +43,7 @@
     img{
         width: 42px;
         height: 35px;
+        transform: scaleY(-1);
     }
     .num{
         font-size: 18px;
