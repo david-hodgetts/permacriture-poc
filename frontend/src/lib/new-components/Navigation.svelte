@@ -14,7 +14,6 @@
         display: flex;
         flex-direction: column;
         justify-content: center;
-        background-color: var(--color-primary);
         gap: 10px;
         width: 100%;
         position: fixed;

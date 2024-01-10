@@ -2,7 +2,7 @@
     import QuillIcon from "$lib/icons/QuillIcon.svelte";
     import MapNavIcon from "$lib/icons/MapNavIcon.svelte";
     import { createEventDispatcher } from "svelte";
-    export let isTextSelected = true;
+    export let isJournalSelected = true;
 
     const dispatch = createEventDispatcher();
 
@@ -10,23 +10,23 @@
 
 <div class="row">
     <div class="capsule capsule-left" 
-        class:selected={isTextSelected} 
+        class:selected={isJournalSelected} 
         on:keypress={() => null}
-        on:click={() => dispatch("menu-change", {menu: "text"})}>
+        on:click={() => dispatch("menu-change", {menu: "journal"})}>
             <div class="text">
-                textes
+                journal
             </div>
-            <QuillIcon selected={isTextSelected} />
+            <QuillIcon selected={isJournalSelected} />
     </div>
     <div 
-        class="capsule capsule-right" 
-        class:selected={!isTextSelected}
+        class="capsule" 
+        class:selected={!isJournalSelected}
         on:keypress={() => null}
-        on:click={() => dispatch("menu-change", {menu: "text"})}>
+        on:click={() => dispatch("menu-change", {menu: "map"})}>
             <div class="text">
                 carte
             </div>
-            <MapNavIcon selected={!isTextSelected}/>
+            <MapNavIcon selected={!isJournalSelected}/>
     </div>
 </div>
 
@@ -36,15 +36,15 @@
         margin-top: 23px;
         display: flex;
         justify-content: center;
-        color: var(--color-primary);
+        /* color: var(--color-text-default); */
         gap: 6px;
     }
 
     .capsule{
-        width:95px;
+        width:97px;
         height: 38px;
-        background-color: var(--color-secondary);
-        color: var(--color-text-disabled);
+        background-color: var(--color-background-default);
+        color: var(--color-text-default);
         display: flex;
 
         flex-direction: row;
@@ -52,21 +52,19 @@
         align-items: center;
         gap: 10px;
 
-        box-shadow: inset #4208ff09 0px 0px 10px 10px;
+        box-shadow: #54599012 0px 0px 10px 10px;
+        border-radius: 9px;
         cursor: pointer;
     }
 
     .capsule-left{
-        border-radius: 38px 7px 7px 38px; /* top-left | top-right | bottom-right | bottom-left */
+        gap: 5px
     }
 
-    .capsule-right{
-        border-radius: 7px 38px 38px 7px; /* top-left | top-right | bottom-right | bottom-left */
-    }
 
     .selected{
-        background-color: var(--color-accent);
-        color: var(--color-primary);
+        background-color: var(--color-background-accent);
+        color: var(--color-text-selected);
         text-decoration: underline;
         cursor: auto;
     }

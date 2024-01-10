@@ -1,4 +1,3 @@
-
 <script lang="ts">
     export let selected = true;
 </script>
@@ -7,13 +6,16 @@
 
 <style>
     svg{
-        fill: var(--color-text-disabled);
-
         width: 24.32px;
         height: 25.72px;
     }
-
-    .selected{
-        fill: var(--color-primary);
+    
+    path{
+        fill: var(--color-text-default);
     }
+
+    .selected path{
+        fill:var(--color-background-default)
+    }
+
 </style>
