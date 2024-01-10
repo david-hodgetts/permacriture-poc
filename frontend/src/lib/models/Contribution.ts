@@ -49,6 +49,12 @@ export enum Relation{
     Child,
 }
 
+const userColors = [
+    "#707070", "#C95454", "#6C7B5B", "#585858",
+];
+
+
+
 export class Contribution extends BaseStrapiEntity{
     
     public author!: Author | null;
@@ -131,6 +137,18 @@ export class Contribution extends BaseStrapiEntity{
     }
 
     /**
+     * generates text for contributor badge, based on first letter of nickname + perAuthorTextIndex
+     */
+    public get badgeText(): string{
+        if(!this.author){
+            return "G";
+        }
+
+        const textIndex = this.perAuthorTextIndex ? ` ${this.perAuthorTextIndex}` : '';
+        return `${this.author.nickname[0]}${textIndex}`;
+    }
+
+    /**
      * define a title property based on the author's nickname + perAuthorTextIndex
      */
     public get title(): string{
@@ -142,9 +160,19 @@ export class Contribution extends BaseStrapiEntity{
         return `${this.author.nickname}${textIndex}`;
     }
 
-    // define a color from hash of author's nickname
+    // define a 
     get color(): string{
-        return stringToColor(this.author?.nickname || "");
+        if(this.isGraine){
+            return "#fff";
+        }
+
+        let colorIndex = 0;
+
+        if(this.author && this.author.nickname.length > 0){
+            colorIndex = this.author!.nickname.charCodeAt(0);
+        }
+
+        return userColors[colorIndex];
     }
 
     getDirectRelationsOfType(relation: Relation){
