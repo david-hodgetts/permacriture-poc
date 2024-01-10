@@ -18,8 +18,8 @@
     }
     .selected{
         border-radius: 20px;
-        border: 2px solid var(--color-primary);
-        background-color: var(--color-secondary);
+        border: 2px solid var(--color-text-default);
+        background-color: var(--color-background-default);
         display: flex;
         justify-content: center;
         align-items: center;
@@ -28,11 +28,11 @@
         width: 10px;
         height: 10px;
         border-radius: 10px;
-        background-color: var(--color-primary);
+        background-color: var(--color-text-default);
     }
     .unselected{
         border-radius: 20px;
-        border: 2px solid var(--color-primary);
+        border: 2px solid var(--color-text-default);
     }
 
 </style>

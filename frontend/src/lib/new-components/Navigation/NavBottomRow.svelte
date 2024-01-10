@@ -10,11 +10,11 @@
     <div class="capsule">
         <div class="item left" class:selected={isPublished}>
             <NavDot isSelected={isPublished} />
-            <div>publiés</div>
+            <div>tous les textes</div>
         </div>
         <div class="item right" class:selected={!isPublished}>
             <NavDot isSelected={!isPublished} />
-            <div>en cours</div>
+            <div>mes textes</div>
         </div>
     </div>
 </div>
@@ -29,10 +29,10 @@
     }
 
     .capsule{
-        width: 221px;
+        width: 316px;
         height: 43px;
-        background-color: var(--color-secondary);
-        color: var(--color-text-primary);
+        background-color: var(--color-background-default);
+        color: var(--color-text-default);
         border-radius: 43px;
         display: flex;
         justify-content: space-between;
