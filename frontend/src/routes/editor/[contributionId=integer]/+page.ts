@@ -16,7 +16,7 @@ export const load: PageLoad = async ({ params }) => {
     }catch(e){
 
         // FIX: improve error handling 
-        throw error(404, 'Not found');
+        error(404, 'Not found');
     }
 
 }

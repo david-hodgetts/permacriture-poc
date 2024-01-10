@@ -16,7 +16,7 @@ export const load: PageLoad = async ({ params }) => {
                 contribution = await strapiService.contributionWithId(contributionId);
             }catch(e){
                 console.error(e);
-                throw error(404, 'Not found');
+                error(404, 'Not found');
             }
         }
     }
@@ -28,7 +28,7 @@ export const load: PageLoad = async ({ params }) => {
         authors = await strapiService.getAuthors();
     }catch(e){
         console.error(e);
-        throw error(404, 'Not found');
+        error(404, 'Not found');
     }
 
     console.log("authors", authors);
@@ -44,6 +44,6 @@ export const load: PageLoad = async ({ params }) => {
     }catch(e){
         console.error(e);
         // FIX: improve error handling 
-        throw error(404, 'Not found');
+        error(404, 'Not found');
     }
 }
