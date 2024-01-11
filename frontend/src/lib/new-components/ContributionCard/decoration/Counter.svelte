@@ -1,12 +1,12 @@
 <script lang="ts">
-    import LinkToMeDecoration from "./LinkToMeDecoration.svelte";
+    import LinkToMeIcon from "../LinkToMeIcon.svelte";
     export let count: number;
     export let isGraine:boolean;
 </script>
 
 <div class="counter">
     <!-- <img src="/images/linkToMe.svg" alt=""> -->
-    <LinkToMeDecoration isGraine={isGraine} />
+    <LinkToMeIcon isGraine={isGraine} />
     <div class="count-rect" class:graineRect={isGraine}>
         <div class="count-bg" class:graineBg={isGraine}>
             <div class="num" class:graineText={isGraine}>{count}</div>

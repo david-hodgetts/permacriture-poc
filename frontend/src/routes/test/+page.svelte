@@ -17,13 +17,10 @@
         "parents": []
     }
 
-
-    const testContributionGraine = new Contribution(graineContributionData)
-
     const publishedContributionData = {
         "publicationDatetime": "2023-12-04T11:03:40.442Z",
         "id": 9,
-        "text": "<p>pipou framboise</p>",
+        "text": "<p>pipo framboise célery</p>",
         "state": "Published",
         "createdAt": "2023-12-04T11:03:25.803Z",
         "perAuthorTextIndex": 3,
@@ -40,15 +37,38 @@
             1
         ]
     };
+    
+    const editingContributionData = {
+        "publicationDatetime": "2023-12-04T11:03:40.442Z",
+        "id": 10,
+        "text": "**terrain**: a) «L’opacité même de la page représente-t-elle l’impénétrabilité du monde ? Ou bien pourrions-nous imaginer une façon d’écrire et de lire qui pénètre au coeur même du tissage du monde, dans la formation en cours de ses surfaces et de ses textures ? La page, tout comme le sol, pourrait-elle devenir une zone habitable, une zone où l’expérience et l’imagination fusionnent.» (Tim Ingold «Textures de la surface : le sol et la page», 2020).",
+        "state": "Editing",
+        "createdAt": "2023-12-04T11:03:25.803Z",
+        "perAuthorTextIndex": 3,
+        "author": {
+            "id": 4,
+            "nickname": "Wagon",
+            "createdAt": "2023-12-04T09:17:48.761Z",
+            "updatedAt": "2023-12-04T09:17:48.761Z"
+        },
+        "children": [
+            10
+        ],
+        "parents": [
+            1
+        ]
+    };
 
-    const testPublishedContribution = new Contribution(publishedContributionData);
+    const testContributionGraine = new Contribution(graineContributionData)
+    const testContributionPublished = new Contribution(publishedContributionData);
+    const testContributionEditing = new Contribution(editingContributionData);
 </script>
 
     <ContributorBadge text="B1" backgroundColor="red"/>
     <ContributorBadge role={BadgeRole.Map} text="B1" backgroundColor="red"/>
     <div class="list">
-
-        <ContributionCard contribution={testPublishedContribution}/>
+        <ContributionCard contribution={testContributionEditing}/>
+        <ContributionCard contribution={testContributionPublished}/>
         <ContributionCard contribution={testContributionGraine}/>
     </div>
 
