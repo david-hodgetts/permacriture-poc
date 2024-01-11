@@ -13,7 +13,7 @@
 
     <div class="top-decoration">
         {#if contribution.state === ContributionState.Published}
-            <Counter count={contribution.children.length} />
+            <Counter count={contribution.children.length} isGraine={contribution.isGraine}/>
             <div class="link-to-contribution">
                 <img src="/images/linkToMe.svg" alt="">
                 <div class="text">se perlier</div>

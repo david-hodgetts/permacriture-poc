@@ -72,6 +72,7 @@ export class Contribution extends BaseStrapiEntity{
     constructor(obj: any){
         super(obj);
         // console.log("item", obj);
+        // console.log("item", JSON.stringify(obj, null, 2));
         
         this.author = obj.author;
         this.text = obj.text;
@@ -148,12 +149,20 @@ export class Contribution extends BaseStrapiEntity{
         return `${this.author.nickname[0]}${textIndex}`;
     }
 
+    public get nickname():string{
+        if(this.isGraine){
+            return "Terreau";
+        }
+
+        return this.author!.nickname;
+    }
+
     /**
      * define a title property based on the author's nickname + perAuthorTextIndex
      */
     public get title(): string{
         if(!this.author){
-            return "Graine";
+            return "Terreau";
         }
 
         const textIndex = this.perAuthorTextIndex ? ` ${this.perAuthorTextIndex}` : '';

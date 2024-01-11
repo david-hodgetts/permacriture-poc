@@ -1,4 +1,5 @@
 <script lang="ts">
+    import Header from "./Header.svelte";
 	import type { Contribution } from "$lib/models/Contribution";
 
    export let contribution: Contribution;
@@ -6,7 +7,7 @@
 </script>
 
 <div class="card" style={`height:${height}px`}>
-    <slot></slot>
+    <Header contribution={contribution} />
 </div>
 
 

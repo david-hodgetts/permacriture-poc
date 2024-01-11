@@ -1,12 +1,15 @@
 <script lang="ts">
+    import LinkToMeDecoration from "./LinkToMeDecoration.svelte";
     export let count: number;
+    export let isGraine:boolean;
 </script>
 
 <div class="counter">
-    <img src="/images/linkToMe.svg" alt="">
-    <div class="count-rect">
-        <div class="count-bg">
-            <div class="num">{count}</div>
+    <!-- <img src="/images/linkToMe.svg" alt=""> -->
+    <LinkToMeDecoration isGraine={isGraine} />
+    <div class="count-rect" class:graineRect={isGraine}>
+        <div class="count-bg" class:graineBg={isGraine}>
+            <div class="num" class:graineText={isGraine}>{count}</div>
         </div>
     </div>
 </div>
@@ -40,13 +43,19 @@
         justify-content: center;
         align-items: center;
     }
-    img{
-        width: 42px;
-        height: 35px;
-    }
     .num{
         font-size: 18px;
         font-weight: bold;
         color: var(--color-text-selected);
+    }
+
+    .graineText{
+        color: var(--color-background-accent);
+    }
+    .graineBg{
+        background-color: var(--color-text-selected);
+    }
+    .graineRect{
+        background-color: var(--color-background-accent);
     }
 </style>

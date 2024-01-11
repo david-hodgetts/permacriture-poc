@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { BadgeRole } from "$lib/components-utils/Badge";
 
-    export let color="#ffffff";
+    export let backgroundColor="#000";
+    export let isGraine = false;
     export let text = "";
     export let role:BadgeRole = BadgeRole.List;
 
@@ -14,10 +15,11 @@
 <div 
     class="badge"
     class:small={role == BadgeRole.List} 
-    style="background-color: {color}; width: {sizePx}px; height: {sizePx}px;"
+    style="background-color: {backgroundColor}; width: {sizePx}px; height: {sizePx}px;"
 >
     <div 
         class="text"
+        class:textGraine={isGraine}
         style="font-size: {fontSize}px;"
     >
         {text.toUpperCase()}
@@ -30,11 +32,16 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        filter: drop-shadow(0px 3px 6px #00000029);
+        /* filter: drop-shadow(0px 3px 6px #00000029); */
     }    
 
     .text{
+        color: var(--color-text-selected);
         font-weight: bold;
-        color: white;
+        letter-spacing: -1px;
+    }
+
+    .textGraine{
+        color: var(--color-background-accent);
     }
 </style>
