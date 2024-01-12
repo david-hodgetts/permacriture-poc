@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { createEventDispatcher, onDestroy } from 'svelte';
+	import { fade } from 'svelte/transition';
     export let visible = false;
 
 	const dispatch = createEventDispatcher();
@@ -11,15 +12,11 @@
         // prevent scrolling of body
         if(visible){
             
-            console.log("modal visible setup");
-            console.log("scroll y ", window.scrollY);
             const scrollY = window.scrollY;
             document.body.style.position = 'fixed';
-            console.log("interpolated ", scrollY + "px");
             document.body.style.top = `-${scrollY}px`;
             document.body.style.width = `100vw`;
         }else{
-            console.log("modal invisible teardown");
             const scrollY = document.body.style.top;
             document.body.style.position = '';
             document.body.style.top = '';
@@ -65,13 +62,21 @@
 
 <svelte:window on:keydown={handle_keydown}/>
 {#if visible}
-    <div class="modal-background" on:click={close}></div>
+    <div 
+		class="modal-background" 
+		on:click={close}
+		on:keydown={() => {}}
+		role="button"
+		tabindex=0
+		transition:fade={{duration:200}}
+	></div>
 
     <div 
 		class="modal" 
 		role="dialog" 
 		aria-modal="true" 
 		bind:this={modal}
+		transition:fade={{duration:150}}
 	>
         <slot></slot>
         <!-- svelte-ignore a11y-autofocus -->
