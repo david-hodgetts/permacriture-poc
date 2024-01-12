@@ -21,7 +21,7 @@
         margin-top: var(--navbar-height);
         height: 100vh;
         width: 100%;
-        max-width: 700px;
+        max-width: var(--app-max-width);
         margin-left: var(--app-col-margin);
         margin-right: var(--app-col-margin);
     }

@@ -3,7 +3,11 @@
     import Navigation from "$lib/new-components/Navigation.svelte";
     import ContributorBadge from "$lib/components/ContributorBadge.svelte";
     import ContributionCard from "$lib/new-components/ContributionCard.svelte";
+    import DialogModal from "$lib/new-components/Modals/DialogModal.svelte";
+    import Button from "$lib/new-components/Button.svelte";
 	import { Contribution } from "$lib/models/Contribution";
+
+    let modalIsVisible = false;
 
     const graineContributionData = {
         "publicationDatetime": "2023-11-15T23:00:00.000Z",
@@ -64,6 +68,15 @@
     const testContributionEditing = new Contribution(editingContributionData);
 </script>
 
+    <DialogModal 
+        title="Voulez-vous abandonner le texte en cours ?"
+        subTitle="ce texte sera définitivement supprimé"
+        visible={modalIsVisible} 
+        on:close={() => modalIsVisible = false}
+        on:dialogAccepted={() => modalIsVisible = false}
+        >
+    </DialogModal>
+
     <ContributorBadge text="B1" backgroundColor="red"/>
     <ContributorBadge role={BadgeRole.Map} text="B1" backgroundColor="red"/>
     <div class="list">
@@ -71,6 +84,8 @@
         <ContributionCard contribution={testContributionPublished}/>
         <ContributionCard contribution={testContributionGraine}/>
     </div>
+
+    <Button on:click={() => modalIsVisible = true}>open modal</Button>
 
 <style>
     .list{

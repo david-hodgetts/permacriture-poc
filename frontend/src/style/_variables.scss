@@ -4,6 +4,8 @@
     --navbar-height: 125px;
     --navbar-height-map: 70px;
     --app-col-margin: 8px;
+    --app-max-width: 640px;
+    --app-modal-margin: calc(var(--app-col-margin)* 2);
     --font-size: 18px;
     --font-size-small: 14px;
     --font-size-super-small: 13px;
@@ -25,8 +27,10 @@
     --color-background-editing: #EDEDED; 
     --color-background-default: #fff;
     --color-background-accent: #525EF5;
+    --color-background-danger: #C95454;
     
     --color-text-selected: #fff;
     --color-text-default: #585858;
     --color-text-faded: #9B9B9B;
+    --color-text-modal: #CCCCCC;
 }
