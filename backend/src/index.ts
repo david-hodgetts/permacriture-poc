@@ -134,6 +134,7 @@ export default {
             process.exit(1);
         }
 
+        console.log("-----------------------------");
         console.log("Starting bootstrap process");
         console.log("ingesting new terrains...");
 
@@ -174,13 +175,14 @@ export default {
                 }
 
                 // add graines
-                for(const graine of terrain.graines){
+                for(const [index, graine] of terrain.graines.entries()){
                     try{
                         await strapi.db.query("api::contribution.contribution").create({
                             data:{
                                 text: graine.text,
                                 terrain: newTerrain.id,
                                 state: "Published",
+                                perAuthorTextIndex: index + 1,
                                 publicationDatetime: dayDateToDate(terrain.grainePublicationDatetime),
                             },
                             populate:["terrain"],

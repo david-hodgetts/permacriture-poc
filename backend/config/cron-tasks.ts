@@ -6,7 +6,6 @@ export default {
   
     '* * * * *': async ({ strapi }) => {
         // For each contribution, check if it should change state
-
         const pendingContributions = await strapi.db.query('api::contribution.contribution').findMany({
             select: [ 'state', 'createdAt'],
             where:{
@@ -15,7 +14,7 @@ export default {
             populate: ['terrain'],
         });
 
-        // console.log("pending contributions ", pendingContributions);
+        console.log("pending contributions ", pendingContributions);
 
         for(const contribution of pendingContributions){
             const maxDelayInMinutesBeforePublication = contribution.terrain.contribution_max_publication_delay_minutes;
