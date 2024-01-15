@@ -13,7 +13,7 @@ exports.default = {
             },
             populate: ['terrain'],
         });
-        console.log("pending contributions ", pendingContributions);
+        // console.log("pending contributions ", pendingContributions);
         for (const contribution of pendingContributions) {
             const maxDelayInMinutesBeforePublication = contribution.terrain.contribution_max_publication_delay_minutes;
             const now = new Date();
