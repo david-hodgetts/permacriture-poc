@@ -16,7 +16,7 @@
         "text": "**terrain**: a) «L’opacité même de la page représente-t-elle l’impénétrabilité du monde ? Ou bien pourrions-nous imaginer une façon d’écrire et de lire qui pénètre au coeur même du tissage du monde, dans la formation en cours de ses surfaces et de ses textures ? La page, tout comme le sol, pourrait-elle devenir une zone habitable, une zone où l’expérience et l’imagination fusionnent.» (Tim Ingold «Textures de la surface : le sol et la page», 2020).",
         "state": "Published",
         "createdAt": "2023-12-04T09:17:49.284Z",
-        "perAuthorTextIndex": -1,
+        "perAuthorTextIndex": 1,
         "author": null,
         "children": [],
         "parents": []

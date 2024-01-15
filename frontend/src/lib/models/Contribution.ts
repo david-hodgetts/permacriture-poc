@@ -141,12 +141,12 @@ export class Contribution extends BaseStrapiEntity{
      * generates text for contributor badge, based on first letter of nickname + perAuthorTextIndex
      */
     public get badgeText(): string{
-        if(!this.author){
-            return "G";
+        if(this.isGraine){
+            return `T${this.perAuthorTextIndex}`;
         }
 
         const textIndex = this.perAuthorTextIndex ? ` ${this.perAuthorTextIndex}` : '';
-        return `${this.author.nickname[0]}${textIndex}`;
+        return `${this.author!.nickname[0]}${textIndex}`;
     }
 
     public get nickname():string{
@@ -161,12 +161,12 @@ export class Contribution extends BaseStrapiEntity{
      * define a title property based on the author's nickname + perAuthorTextIndex
      */
     public get title(): string{
-        if(!this.author){
+        if(this.isGraine){
             return "Terreau";
         }
 
         const textIndex = this.perAuthorTextIndex ? ` ${this.perAuthorTextIndex}` : '';
-        return `${this.author.nickname}${textIndex}`;
+        return `${this.author!.nickname}${textIndex}`;
     }
 
     // define a 
