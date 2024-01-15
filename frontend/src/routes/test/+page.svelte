@@ -4,6 +4,7 @@
     import ContributorBadge from "$lib/components/ContributorBadge.svelte";
     import ContributionCard from "$lib/new-components/ContributionCard.svelte";
     import DialogModal from "$lib/new-components/Modals/DialogModal.svelte";
+    import Footer from "$lib/new-components/Footer.svelte";
     import Button from "$lib/new-components/Button.svelte";
 	import { Contribution } from "$lib/models/Contribution";
 
@@ -86,6 +87,8 @@
     </div>
 
     <Button on:click={() => modalIsVisible = true}>open modal</Button>
+
+    <Footer/>
 
 <style>
     .list{
