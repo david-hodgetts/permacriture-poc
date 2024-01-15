@@ -1,25 +1,36 @@
 <script lang="ts">
     import NavDot from "$lib/icons/NavDot.svelte";
-    import { createEventDispatcher } from "svelte";
-    const dispatch = createEventDispatcher();
+    import { page } from "$app/stores";
     
-    export let isPublished = true; 
+    $: isMine = !!$page.url.searchParams.get("mes-textes"); 
 </script>
 
-<div class="row">
+<div class="row no-select">
     <div class="capsule">
-        <div class="item left" class:selected={isPublished}>
-            <NavDot isSelected={isPublished} />
-            <div>tous les textes</div>
-        </div>
-        <div class="item right" class:selected={!isPublished}>
-            <NavDot isSelected={!isPublished} />
-            <div>mes textes</div>
-        </div>
+        <a href="/" class:link-inactive={!isMine}>
+            <div class="item left" class:selected={!isMine}>
+                <NavDot isSelected={!isMine} />
+                <div class="text">tous les textes</div>
+            </div>
+        </a>
+        <a href="/?mes-textes=1" class:link-inactive={isMine}>
+            <div class="item right" class:selected={isMine}>
+                <NavDot isSelected={isMine} />
+                <div class="text">mes textes</div>
+            </div>
+        </a>
     </div>
 </div>
 
 <style>
+
+    a{
+        text-decoration: none;
+    }
+    
+    .link-inactive{
+        pointer-events: none;
+    }
 
     .row{
         display: flex;
@@ -59,6 +70,10 @@
 
     .right{
         padding-right: 17px;
+    }
+
+    .text{
+        color: var(--color-text-default);
     }
 
 </style>

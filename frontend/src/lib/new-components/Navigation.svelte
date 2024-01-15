@@ -1,8 +1,6 @@
 <script lang="ts">
     import NavTopRow from "./Navigation/NavTopRow.svelte";
     import NavBottomRow from "./Navigation/NavBottomRow.svelte";
-
-
 </script>
 
 <div class="navigation">
