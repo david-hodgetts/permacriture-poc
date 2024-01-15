@@ -1,36 +1,42 @@
 <script lang="ts">
     import QuillIcon from "$lib/icons/QuillIcon.svelte";
     import MapNavIcon from "$lib/icons/MapNavIcon.svelte";
+    import { page } from "$app/stores";
     import { createEventDispatcher } from "svelte";
-    export let isJournalSelected = true;
 
-    const dispatch = createEventDispatcher();
+    $: isJournalSelected = $page.url.pathname === '/';
 
 </script>
 
 <div class="row">
-    <div class="capsule capsule-left" 
-        class:selected={isJournalSelected} 
-        on:keypress={() => null}
-        on:click={() => dispatch("menu-change", {menu: "journal"})}>
-            <div class="text">
-                journal
-            </div>
-            <QuillIcon selected={isJournalSelected} />
-    </div>
-    <div 
-        class="capsule" 
-        class:selected={!isJournalSelected}
-        on:keypress={() => null}
-        on:click={() => dispatch("menu-change", {menu: "map"})}>
-            <div class="text">
-                carte
-            </div>
-            <MapNavIcon selected={!isJournalSelected}/>
-    </div>
+    <a href="/" class:link-inactive={isJournalSelected}>
+        <div class="capsule capsule-left" 
+            class:selected={isJournalSelected} 
+            >
+                    <div class="text no-select">
+                        journal
+                    </div>
+                    <QuillIcon selected={isJournalSelected} />
+        </div>
+    </a>
+    <a href="/map" class:link-inactive={!isJournalSelected}>
+        <div 
+            class="capsule" 
+            class:selected={!isJournalSelected}
+            >
+                <div class="text no-select">
+                    carte
+                </div>
+                <MapNavIcon selected={!isJournalSelected}/>
+        </div>
+    </a>
 </div>
 
 <style>
+
+    .link-inactive{
+        pointer-events: none;
+    }
 
     .row{
         margin-top: 23px;
