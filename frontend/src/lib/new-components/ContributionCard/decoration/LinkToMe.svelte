@@ -5,7 +5,6 @@
 </script>
 
 <div class="link-to-contribution no-select" on:click on:keydown={() => null} role="button" tabindex=0>
-    <!-- <img src="/images/linkToMe.svg" alt=""> -->
     <LinkToMeIcon isGraine={isGraine} />
     <div class="text" class:graine={isGraine}>perlier</div>
 </div>
