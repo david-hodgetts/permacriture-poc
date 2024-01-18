@@ -19,7 +19,7 @@
 <style lang="scss">
     main{
         margin-top: var(--navbar-height);
-        height: 100vh;
+        height: calc(100svh - var(--navbar-height));
         width: 100%;
         max-width: var(--app-max-width);
         margin-left: var(--app-col-margin);
@@ -29,5 +29,4 @@
     .map-page{
         margin-top: var(--navbar-height-map);
     }
-
 </style>

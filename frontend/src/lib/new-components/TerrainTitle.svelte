@@ -42,7 +42,6 @@
     });
 
     function close(){
-        console.log("closing terrain title");
         modalIsOpen = false;
     }
 </script>
