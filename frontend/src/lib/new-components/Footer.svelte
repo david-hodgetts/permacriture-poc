@@ -5,6 +5,12 @@
     // @ts-ignore
     const appVersion = __APP_VERSION__;
 
+    $: {
+        if(!$UserStore.user){
+            goto('/login');
+        }   
+    }
+
 </script>
 
 

@@ -11,7 +11,7 @@ export function colorForAuthor(author: Author){
     let colorIndex = 0;
 
     if (author && author.nickname.length > 0) {
-        colorIndex = author!.nickname.charCodeAt(0);
+        colorIndex = author!.nickname.charCodeAt(0) % authorColors.length;
     }
 
     return authorColors[colorIndex];

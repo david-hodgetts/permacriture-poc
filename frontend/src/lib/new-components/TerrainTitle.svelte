@@ -5,10 +5,15 @@
     import UserStore from '$lib/stores/user.store';
 	import { onMount } from 'svelte';
 	import { fade } from 'svelte/transition';
+	import { goto } from '$app/navigation';
 
-    let modalIsOpen = true;
+    let modalIsOpen = false;
 
-    $: console.log("modal state", modalIsOpen);
+    $: {
+        if(!$UserStore.user){
+            goto('/login');
+        }   
+    }
 
     let authors: Author[] = [];
     
@@ -18,7 +23,7 @@
             const scrollY = window.scrollY;
             document.body.style.position = 'fixed';
             document.body.style.top = `-${scrollY}px`;
-            document.body.style.width = `100vw`;
+            document.body.style.width = `100%`;
         }else{
             const scrollY = document.body.style.top;
             document.body.style.position = '';
@@ -93,7 +98,7 @@
     }
 
     .author-list-background{
-        /* position:relative; */
+        position:relative;
         width: 221px;
         height: 150px;
         border-radius: 10px;

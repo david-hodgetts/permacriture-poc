@@ -2,7 +2,6 @@
     import ContributionCardBackground from "./ContributionCard/ContributionCardBackground.svelte";
     import Counter from './ContributionCard/decoration/Counter.svelte';
     import LinkToMe from "./ContributionCard/decoration/LinkToMe.svelte";
-    import LinkToMeDecoration from "./ContributionCard/LinkToMeIcon.svelte";
     import BottomCounter from "./ContributionCard/decoration/BottomCounter.svelte";
 	import { ContributionState, type Contribution } from "$lib/models/Contribution";
 

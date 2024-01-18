@@ -2,8 +2,6 @@
     import Header from "./Header.svelte";
     import Footer from "./Footer.svelte";
 	import { ContributionState, type Contribution } from "$lib/models/Contribution";
-    import { truncate, } from "$lib/services/textUtils";
-	import { max } from "d3";
 
     export let contribution: Contribution;
     export let height: number; 

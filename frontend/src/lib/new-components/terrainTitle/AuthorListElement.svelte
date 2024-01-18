@@ -3,10 +3,9 @@
 	import type Author from "$lib/models/Author";
 	import { colorForAuthor } from "$lib/models/Author";
     export let author:Author;
-
+    
     $: color = colorForAuthor(author);
 
-    $: console.log("color", color);
 </script>
 
 <div class="element">

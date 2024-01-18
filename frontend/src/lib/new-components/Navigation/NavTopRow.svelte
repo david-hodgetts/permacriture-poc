@@ -67,7 +67,6 @@
         gap: 5px
     }
 
-
     .selected{
         background-color: var(--color-background-accent);
         color: var(--color-text-selected);
@@ -85,7 +84,8 @@
         padding-left: 8px;
     }
 
-    /* .capsule-right .text{
-        padding-left: 4px;
-    }  */
+    a{
+        text-decoration: none;
+    }
+
 </style>

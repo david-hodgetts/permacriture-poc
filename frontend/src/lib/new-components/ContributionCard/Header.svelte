@@ -1,7 +1,6 @@
 <script lang="ts">
     import ContributorBadge from "$lib/components/ContributorBadge.svelte";
 	import { ContributionState, type Contribution } from "$lib/models/Contribution";
-	import ContributionCard from "../ContributionCard.svelte";
 
     export let contribution: Contribution;
 
