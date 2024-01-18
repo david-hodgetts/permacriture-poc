@@ -134,6 +134,10 @@ export class Contribution extends BaseStrapiEntity{
 
         const now = new Date();
         const remainingMillis = (this.createdAt.getTime() + delayInMinutes * 60 * 1000) - now.getTime();
+        // check for negative values (should not happen)
+        if(remainingMillis < 0){
+            return 0;
+        }
         return Math.round(remainingMillis / 1000 / 60);
     }
 

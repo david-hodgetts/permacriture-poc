@@ -7,7 +7,7 @@
 
     const badgeTextColor = contribution.isGraine ? "#000" : "#fff";
 
-    function formatPublicationDate(contribution:Contribution): string{
+    function formatPublicationDate(contribution: Contribution): string{
         if(!contribution || !contribution.publicationDatetime){
             return "";
         }
@@ -19,7 +19,7 @@
         return `${day}/${month}/${year}`;
     }
 
-    function formatPublicationTime(contribution): string{
+    function formatPublicationTime(contribution: Contribution): string{
         if(!contribution || !contribution.publicationDatetime){
             return "";
         }
@@ -28,6 +28,17 @@
         const minutes = contribution.publicationDatetime.getMinutes().toString().padStart(2, '0');
 
         return `${hours}h${minutes}`;
+    }
+
+    function formatDelayToPublication(contribution: Contribution): string{
+        const totalMinutes = contribution.delayInMinutesBeforePublication;
+
+        const hours = Math.floor(totalMinutes / 60);
+        const minutes = totalMinutes % 60;
+
+        const minutesString = minutes == 0 ? '' : `${minutes}`;
+
+        return `${hours}h${minutesString}`
     }
 </script>
 
@@ -44,7 +55,7 @@
 
     {#if contribution.state == ContributionState.Editing}
         <div class="editingTimeout">
-            <span>to be done</span>
+            <span>{formatDelayToPublication(contribution)}</span>
         </div>
     {:else if contribution.state == ContributionState.Published && !contribution.isGraine}
         <div class="publicationDatetime">
@@ -84,6 +95,7 @@
         top: 1px;
         font-weight: bold;
         font-size: 13px;
+        color: var(--color-text-faded);
     }
 
     .publicationDatetime{
