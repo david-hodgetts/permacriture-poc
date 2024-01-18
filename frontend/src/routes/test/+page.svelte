@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { BadgeRole } from "$lib/components-utils/Badge";
     import Navigation from "$lib/new-components/Navigation.svelte";
+    import TerrainTitle from "$lib/new-components/TerrainTitle.svelte";
     import ContributorBadge from "$lib/components/ContributorBadge.svelte";
     import ContributionCard from "$lib/new-components/ContributionCard.svelte";
     import DialogModal from "$lib/new-components/Modals/DialogModal.svelte";
@@ -77,6 +78,8 @@
         on:dialogAccepted={() => modalIsVisible = false}
         >
     </DialogModal>
+
+    <TerrainTitle />
 
     <ContributorBadge text="B1" backgroundColor="red"/>
     <ContributorBadge role={BadgeRole.Map} text="B1" backgroundColor="red"/>

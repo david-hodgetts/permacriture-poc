@@ -11,7 +11,6 @@
     $:{
         // prevent scrolling of body
         if(visible){
-            
             const scrollY = window.scrollY;
             document.body.style.position = 'fixed';
             document.body.style.top = `-${scrollY}px`;
