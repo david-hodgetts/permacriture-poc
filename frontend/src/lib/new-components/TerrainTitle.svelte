@@ -1,11 +1,12 @@
 <script lang="ts">
+    import AuthorListElement from './terrainTitle/AuthorListElement.svelte';
 	import type Author from '$lib/models/Author';
 	import { strapiService } from '$lib/services/StrapiService';
     import UserStore from '$lib/stores/user.store';
 	import { onMount } from 'svelte';
 	import { fade } from 'svelte/transition';
 
-    let modalIsOpen = false;
+    let modalIsOpen = true;
 
     $: console.log("modal state", modalIsOpen);
 
@@ -29,6 +30,7 @@
     onMount(async () => {
         try{
             authors = await strapiService.getAuthors();
+            authors = authors.sort((a, b) => a.nickname.localeCompare(b.nickname));
         }catch(e){
             console.error(e);
         }
@@ -56,13 +58,9 @@
         <div class="author-list" transition:fade={{duration:200}}>
             <div class="arrow-up"></div>
             <div class="author-list-background">
-                <ul>
-                    {#each authors as author}
-                        <li>
-                            {author.nickname}
-                        </li>
-                    {/each}
-                </ul>
+                {#each authors as author}
+                    <AuthorListElement author={author} />
+                {/each}
             </div>
         </div>
     {/if}
@@ -97,19 +95,27 @@
     .author-list-background{
         /* position:relative; */
         width: 221px;
-        height: 134px;
+        height: 150px;
         border-radius: 10px;
         background-color: var(--color-background-default);
-        overflow: scroll;
+        overflow-y: scroll;
         filter: drop-shadow(0px 9px 10px #cbcbcb);
+        padding-left: 20px;
+
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        padding-top: 15px;
+        padding-bottom: 15px;
     }
 
     .arrow-up {
         width: 0; 
         height: 0; 
-        border-left: 12px solid transparent;
-        border-right: 12px solid transparent;
-        border-bottom: 12px solid var(--color-background-default);
+        border-left: 14px solid transparent;
+        border-right: 14px solid transparent;
+        border-bottom: 14px solid white;
+        z-index: 10;
     }
  
 	.modal-background {

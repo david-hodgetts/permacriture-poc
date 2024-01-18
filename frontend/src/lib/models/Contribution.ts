@@ -8,6 +8,7 @@ import UserStore from '$lib/stores/user.store';
 import userStore from "$lib/stores/user.store";
 
 import { marked } from "marked";
+import { colorForAuthor } from "./Author";
 
 
 // remove warnings
@@ -49,9 +50,6 @@ export enum Relation{
     Child,
 }
 
-const userColors = [
-    "#707070", "#C95454", "#6C7B5B", "#585858",
-];
 
 
 
@@ -179,13 +177,7 @@ export class Contribution extends BaseStrapiEntity{
             return "#fff";
         }
 
-        let colorIndex = 0;
-
-        if(this.author && this.author.nickname.length > 0){
-            colorIndex = this.author!.nickname.charCodeAt(0);
-        }
-
-        return userColors[colorIndex];
+        return colorForAuthor(this.author!);
     }
 
     getDirectRelationsOfType(relation: Relation){
