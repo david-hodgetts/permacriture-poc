@@ -39,9 +39,7 @@
         "children": [
             10
         ],
-        "parents": [
-            1
-        ]
+        "parents": [...Array(99).keys()]
     };
     
     const editingContributionData = {
