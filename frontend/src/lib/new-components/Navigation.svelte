@@ -1,11 +1,11 @@
 <script lang="ts">
     import NavTopRow from "./Navigation/NavTopRow.svelte";
-    import NavBottomRow from "./Navigation/NavBottomRow.svelte";
+    import JournalListFilter from "./Navigation/JournalListFilter.svelte";
 </script>
 
 <div class="navigation">
     <NavTopRow />
-    <NavBottomRow />
+    <!-- <JournalListFilter /> -->
 </div>
 
 
@@ -14,7 +14,6 @@
         display: flex;
         flex-direction: column;
         justify-content: center;
-        background-color: var(--color-background-app);
         gap: 10px;
         width: 100%;
         position: fixed;

@@ -28,5 +28,6 @@
 
     .map-page{
         margin-top: var(--navbar-height-map);
+        height: calc(100svh - var(--navbar-height-map));
     }
 </style>

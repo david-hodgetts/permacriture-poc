@@ -2,6 +2,7 @@
     // landing page
     import ContributionList from "$lib/components/ContributionList.svelte"
     import ListFilter from "$lib/components/ListFilter.svelte";
+    import JournalListFilter from "$lib/new-components/Navigation/JournalListFilter.svelte";
 
 	import { Order, Filter, type Contribution } from "$lib/models/Contribution";
 	import { goto } from "$app/navigation";
@@ -93,7 +94,7 @@
 
 <!-- dom -->
 
-<ListFilter filter={selectedFilter} 
+<JournalListFilter filter={selectedFilter} 
     on:filterChangeRequest={onFilterChangeRequest} 
     on:orderInvertRequest={onOrderInvertRequest} 
 />

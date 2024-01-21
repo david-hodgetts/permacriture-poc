@@ -79,11 +79,9 @@
 
     <TerrainTitle />
 
-    <ContributorBadge text="B1" backgroundColor="red"/>
-    <ContributorBadge role={BadgeRole.Map} text="B1" backgroundColor="red"/>
     <div class="list">
-        <ContributionCard contribution={testContributionEditing}/>
         <ContributionCard contribution={testContributionPublished}/>
+        <ContributionCard contribution={testContributionEditing}/>
         <ContributionCard contribution={testContributionGraine}/>
     </div>
 

@@ -5,6 +5,10 @@
 
     export let contribution: Contribution;
     export let height: number; 
+
+    export let isInDetailCard = false;
+
+    let heightStyleString = height > 0 ? `height:${height}px` : ""
     
     const classFromRole = contribution.isGraine ? "graine" : 
         (contribution.state === ContributionState.Published ? "published" : "editing")  
@@ -12,12 +16,17 @@
 
 <div class={`card ${classFromRole}`} 
 
-    style={`height:${height}px`}>
+    style={`${heightStyleString}`}>
     <Header contribution={contribution} />
-    <div class="mainText" class:mainTextEditing={contribution.state == ContributionState.Editing}>
+    <div 
+        class="mainText" 
+        class:textEllipsis={!isInDetailCard}
+        class:textEllipsisForEditingState={contribution.state == ContributionState.Editing && !isInDetailCard}>
         {@html contribution.textHtml }
     </div>
+    {#if !isInDetailCard}
     <Footer contribution={contribution}/>
+    {/if}
 </div>
 
 
@@ -51,11 +60,14 @@
     .mainText{
         overflow: hidden;
         display: -webkit-box;
+    }
+
+    .textEllipsis{
         -webkit-line-clamp: 8;
         -webkit-box-orient: vertical;  
     }
 
-    .mainTextEditing{
+    .textEllipsisForEditingState{
         -webkit-line-clamp: 4;
     }
 
