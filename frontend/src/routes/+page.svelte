@@ -4,7 +4,7 @@
     import ListFilter from "$lib/components/ListFilter.svelte";
     import JournalListFilter from "$lib/new-components/Navigation/JournalListFilter.svelte";
 
-	import { Order, Filter, type Contribution } from "$lib/models/Contribution";
+	import { Order, Filter, type Contribution, ContributionState } from "$lib/models/Contribution";
 	import { goto } from "$app/navigation";
 	import { onDestroy, onMount } from "svelte";
 	import { strapiService } from "$lib/services/StrapiService";
@@ -56,7 +56,7 @@
     }
 
     async function updateContributions(){
-        const newContributions = await getContributions(); 
+        const newContributions = (await getContributions()).filter(c => c.state != ContributionState.Abandoned); 
         if(selectedFilter == Filter.all){
             contributions = newContributions;
         }else{

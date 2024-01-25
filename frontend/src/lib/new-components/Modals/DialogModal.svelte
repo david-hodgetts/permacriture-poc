@@ -22,11 +22,11 @@
         <div class="buttons">
             <Button 
                 buttonType='neutral'
-                on:click={() => dispatch('dialogAccepted', {})}
+                on:click={() => dispatch('close', {})}
             >{noText}</Button>
             <Button 
                 buttonType={role}
-                on:click={() => dispatch('close', {})}
+                on:click={() => dispatch('dialogAccepted', {})}
             >{yesText}</Button>
         </div>
     </div>

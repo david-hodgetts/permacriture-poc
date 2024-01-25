@@ -3,11 +3,12 @@
     import Header from "./ContributionCard/Header.svelte";
     import DialogModal from "./Modals/DialogModal.svelte";
     import EsperlinkModal from "./Modals/EsperlinkModal.svelte";
-	import type { Contribution } from "$lib/models/Contribution";
+	import { ContributionState, type Contribution } from "$lib/models/Contribution";
 	import ButtonSmall from "./ButtonSmall.svelte";
 	import { strapiService } from "$lib/services/StrapiService";
 	import Config from "$lib/services/Config";
     import { getNotificationsContext } from 'svelte-notifications';
+	import { goto } from "$app/navigation";
     const { addNotification } = getNotificationsContext();
 
     export let contribution: Contribution;
@@ -26,9 +27,30 @@
         showPubliForceDialog = false;
     }
 
-    function handleAbandonRequest(){
-        //TODO implement
+    async function handleAbandonRequest(){
+        console.log("abandon contribution");
         showAbandonDialog = false;
+        try{
+            await strapiService.abandonContribution(contribution);
+            addNotification({
+                text: "contribution abandonnée",
+                position: "top-center",
+                type: "success",
+                removeAfter: Config.notificationDuration,
+            });
+            contribution.publicationDatetime = null;
+            contribution.state = ContributionState.Abandoned;
+        }catch(e){
+            console.error(e);
+            addNotification({
+                text: "unable to abandon contribution",
+                position: "top-center",
+                type: "error",
+                removeAfter: Config.notificationDuration,
+            });
+        }finally{
+            goto("/");
+        }
     }
 
     async function save(){
