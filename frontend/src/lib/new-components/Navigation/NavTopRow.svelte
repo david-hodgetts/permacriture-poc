@@ -9,7 +9,7 @@
 </script>
 
 <div class="row">
-    <a href="/" class:link-inactive={isJournalSelected}>
+    <a href="/" >
         <div class="capsule capsule-left" 
             class:selected={isJournalSelected} 
             >
@@ -19,7 +19,7 @@
                     <QuillIcon selected={isJournalSelected} />
         </div>
     </a>
-    <a href="/map" class:link-inactive={!isJournalSelected}>
+    <a href="/map" >
         <div 
             class="capsule" 
             class:selected={!isJournalSelected}
@@ -33,11 +33,6 @@
 </div>
 
 <style>
-
-    .link-inactive{
-        pointer-events: none;
-    }
-
     .row{
         margin-top: 23px;
         display: flex;
@@ -71,7 +66,6 @@
         background-color: var(--color-background-accent);
         color: var(--color-text-selected);
         text-decoration: underline;
-        cursor: auto;
     }
 
     .text{
