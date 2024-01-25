@@ -4,7 +4,7 @@
     import { page } from "$app/stores";
     import { createEventDispatcher } from "svelte";
 
-    $: isJournalSelected = $page.url.pathname === '/';
+    $: isJournalSelected = $page.url.pathname !== '/map';
 
 </script>
 
