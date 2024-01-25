@@ -46,10 +46,12 @@
     }
 </script>
 
-<div class="terrain-title no-select" on:click={() => modalIsOpen = true} role="button" tabindex=0  on:keydown={() => null}>
-    <h2>
+<div class="terrain-title no-select" >
+    <div class="title" 
+        on:click={() => modalIsOpen = true} 
+        role="button" tabindex=0  on:keydown={() => null}>
         {$UserStore.user?.context.terrain.title}
-    </h2>
+    </div>
 
     {#if modalIsOpen}
         <div 
@@ -81,8 +83,10 @@
     }
 
 
-    h2{
+    .title{
+        padding-top: 15px;
         font-size: 13px;
+        font-weight: bold;
         color: var(--color-background-accent);
         text-align: center;
     }
