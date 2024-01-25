@@ -10,7 +10,6 @@ import { Graph } from '$lib/models/Graph';
 import type { D3Graph } from '$lib/models/D3Graph';
 import type Author from '$lib/models/Author';
 
-
 function axiosOptions(optionaJwt: string = "") {
     const authToken = optionaJwt ? optionaJwt : getJwt();
     return {
@@ -31,9 +30,13 @@ enum HttpCode{
  */
 function errorHandler(e:any ){
     console.error(e);
-    if(axios.isAxiosError(e) && e.response?.status === HttpCode.unauthorized){
+    if(isUnAuthorizedError(e)){
         goto("/login");
     }
+}
+
+export function isUnAuthorizedError(e:any): boolean{
+    return axios.isAxiosError(e) && e.response?.status === HttpCode.unauthorized
 }
 
 class StrapiService

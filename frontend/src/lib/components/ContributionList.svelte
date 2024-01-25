@@ -8,7 +8,7 @@
 </script>
 
 <div class="contribution-list">
-    {#each contributions as contribution }
+    {#each contributions as contribution (contribution.id) }
         <ContributionCard 
             contribution={contribution} 
             on:cardSelectionRequest

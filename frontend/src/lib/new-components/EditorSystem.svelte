@@ -22,9 +22,28 @@
         contribution.text = e.detail.text
     }
 
-    function handleForcePublication(){
-        //TODO implement
+    async function handleForcePublication(){
         showPubliForceDialog = false;
+        try{
+            await strapiService.publishContribution(contribution);
+            contribution.publicationDatetime = new Date();
+            contribution.state = ContributionState.Published;
+            addNotification({
+                text: "contribution publiée avec succés",
+                position: "top-center",
+                type: "success",
+                removeAfter: Config.notificationDuration,
+            });
+            goto("/");
+        }catch(e){
+            console.error(e);
+            addNotification({
+                text: "unable to publish contribution",
+                position: "top-center",
+                type: "error",
+                removeAfter: Config.notificationDuration,
+            });
+        }
     }
 
     async function handleAbandonRequest(){
@@ -127,7 +146,7 @@
         </ButtonSmall>
         <ButtonSmall 
             on:click={() => showPubliForceDialog = true}
-            disabled={true}>
+            disabled={!contribution.isPublishable}>
             publiforcer
         </ButtonSmall>
         <ButtonSmall 

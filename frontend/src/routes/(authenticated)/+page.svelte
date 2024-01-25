@@ -7,7 +7,7 @@
 	import { Order, Filter, type Contribution, ContributionState } from "$lib/models/Contribution";
 	import { goto } from "$app/navigation";
 	import { onDestroy, onMount } from "svelte";
-	import { strapiService } from "$lib/services/StrapiService";
+	import { isUnAuthorizedError, strapiService } from "$lib/services/StrapiService";
 	import Config from "$lib/services/Config";
     
     import { getNotificationsContext } from 'svelte-notifications';
@@ -42,21 +42,41 @@
             const newContributions: Contribution[] = await strapiService.getContributions();
             return newContributions;
         }catch(e){
-            console.error(e);
+            if(isUnAuthorizedError(e)){
+                addNotification({
+                    text: "not logged in",
+                    position: "top-center",
+                    type: "error",
+                    removeAfter: Config.notificationDuration,
+                });
+            }
+            
             addNotification({
                 text: "unable to retrieve contributions",
                 position: "top-center",
                 type: "error",
                 removeAfter: Config.notificationDuration,
             });
-
-            // return old contributions
-            return contributions;
+            
+            throw e;
         }
     }
 
     async function updateContributions(){
-        const newContributions = (await getContributions()).filter(c => c.state != ContributionState.Abandoned); 
+        let newContributions: Contribution[] = [];        
+        try{
+            newContributions = await getContributions();
+        }catch(e){
+            newContributions = [];
+            if(isUnAuthorizedError(e)){
+                return;
+            }
+        }
+        
+        // remove abandoned contribs
+        newContributions = newContributions.filter(c => c.state != ContributionState.Abandoned); 
+
+        // handle filter state
         if(selectedFilter == Filter.all){
             contributions = newContributions;
         }else{
@@ -81,11 +101,15 @@
 
 	function onOrderInvertRequest(e: CustomEvent<any>): void {
         order = (order == Order.Ascending) ? Order.Descending : Order.Ascending;
+
+        clearTimeout(timeoutId);
         updateContributions();
 	}
 
 	function onFilterChangeRequest(e: CustomEvent<any>): void {
         selectedFilter = e.detail.filter;
+        
+        clearTimeout(timeoutId);
         updateContributions();
 	}
 </script>
