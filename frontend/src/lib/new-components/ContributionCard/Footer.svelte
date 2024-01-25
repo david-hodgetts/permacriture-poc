@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { goto } from "$app/navigation";
 	import { ContributionState, type Contribution } from "$lib/models/Contribution";
     import {createEventDispatcher} from "svelte";
 
@@ -14,13 +15,13 @@
 <div class={`footer no-select ${classFromRole}`}>
     {#if contribution.state == ContributionState.Editing}
         <div 
-            on:click={() => dispatch('editRequest', {})} 
+            on:click|stopPropagation={() => goto(`/editor/${contribution.id}`)}
             on:keydown={() => null}
             role="button" 
             tabindex=0>… éditer</div>
     {:else}
         <div
-            on:click={() => dispatch('viewDetailRequest', {})} 
+            on:click|stopPropagation={() => dispatch('viewDetailRequest', {})} 
             on:keydown={() => null}
             role="button" 
             tabindex=0>… voir plus</div>

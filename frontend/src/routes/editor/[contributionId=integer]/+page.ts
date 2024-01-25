@@ -14,7 +14,7 @@ export const load: PageLoad = async ({ params }) => {
             contribution,
         };
     }catch(e){
-
+        console.error("failed to load contribution", e);
         // FIX: improve error handling 
         error(404, 'Not found');
     }
