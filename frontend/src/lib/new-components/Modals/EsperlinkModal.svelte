@@ -46,8 +46,9 @@
     }
 
     async function linkAllRequestedParents(){
-        // TODO;
-        console.log("link all (todo)");
+        for(const id of setOfSelectedContributions){
+            requestSecondaryLinkCreation(id);
+        }
     }
     
     async function requestSecondaryLinkCreation(requestedContributionParentId: id){
@@ -64,11 +65,18 @@
                 type: "error",
                 removeAfter: Config.notificationDuration,
             });
+            dispatch("close", {invalidationRequired:true});
             return;
         }
 
         // operation was succesful
         console.log("add link operation successful");
+        addNotification({
+            text: "esperliation réussie",
+            position: "top-center",
+            type: "success",
+            removeAfter: Config.notificationDuration,
+        });
         
         // close modal
         dispatch("close", {invalidationRequired:true});
@@ -99,12 +107,18 @@
             {/each}
         </div>
 
-        <div class="button">
+        <div class="buttons">
+            <Button 
+                buttonType="neutral"
+                on:click={() => dispatch("close", {})}
+            >
+                annuler
+            </Button>
             <Button 
                 on:click={linkAllRequestedParents}
                 disabled={setOfSelectedContributions.size == 0}
             >
-                Oui
+                accepter
             </Button>
         </div>
     </div>
@@ -133,6 +147,13 @@
         flex-direction: column;
         max-height: 30svh;
         overflow-y: scroll;
+        gap: 20px;
+    }
+
+    .buttons{
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
         gap: 20px;
     }
 
