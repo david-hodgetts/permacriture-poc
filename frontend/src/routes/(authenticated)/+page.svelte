@@ -67,7 +67,7 @@
         try{
             newContributions = await getContributions();
         }catch(e){
-            newContributions = [];
+            newContributions = [...contributions];
             if(isUnAuthorizedError(e)){
                 return;
             }
