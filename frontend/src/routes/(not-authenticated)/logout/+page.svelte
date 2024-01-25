@@ -5,7 +5,7 @@
 
     onMount(() => {
         UserStore.clear();
-        goto("/");
+        goto("/login");
     });
 </script>
 

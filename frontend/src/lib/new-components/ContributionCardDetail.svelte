@@ -3,9 +3,16 @@
     import Counter from './ContributionCard/decoration/Counter.svelte';
     import LinkToMe from "./ContributionCard/decoration/LinkToMe.svelte";
     import BottomCounter from "./ContributionCard/decoration/BottomCounter.svelte";
+    import ParentChildrenLinks from "./ContributionCard/ParentChildrenLinks.svelte";
 	import { ContributionState, type Contribution } from "$lib/models/Contribution";
+	import { onMount } from "svelte";
 
     export let contribution: Contribution;
+
+    
+    onMount(() => {
+
+    });
 
 
     function linkToMe(){
@@ -28,7 +35,8 @@
     
     {#if !contribution.isGraine}
         <div class="bottom-decoration">
-            <BottomCounter count={contribution.parents.length} />
+            <BottomCounter count={contribution.parents.length}/>
+            <ParentChildrenLinks contributionIds={contribution.parents} offset="5px"/>
         </div>
     {/if}
 </div>

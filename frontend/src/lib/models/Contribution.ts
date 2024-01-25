@@ -50,9 +50,6 @@ export enum Relation{
     Child,
 }
 
-
-
-
 export class Contribution extends BaseStrapiEntity{
     
     public author!: Author | null;
@@ -171,7 +168,7 @@ export class Contribution extends BaseStrapiEntity{
         return `${this.author!.nickname}${textIndex}`;
     }
 
-    // define a 
+    // background color
     get color(): string{
         if(this.isGraine){
             return "#fff";

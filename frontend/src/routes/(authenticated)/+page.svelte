@@ -126,6 +126,3 @@
     contributions={contributions} 
     on:cardSelectionRequest={onContributionSelectionRequest} 
 />
-
-
-
