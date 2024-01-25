@@ -4,13 +4,14 @@
     import "../style/app.scss";
     import { page } from "$app/stores";
 
-    $: isMapPage = $page.url.pathname.startsWith("/map") ;
+    $: doesNotHaveJournalFilter = $page.url.pathname.startsWith("/map") || 
+                                  $page.url.pathname.startsWith("/editor") ;
 
 </script>
 
 <Notifications>
     <Navigation />
-    <main class:map-page={isMapPage}>
+    <main class:map-page={doesNotHaveJournalFilter}>
         <slot></slot>
     </main>
 </Notifications>

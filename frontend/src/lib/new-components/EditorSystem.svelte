@@ -5,6 +5,10 @@
     import EsperlinkModal from "./Modals/EsperlinkModal.svelte";
 	import type { Contribution } from "$lib/models/Contribution";
 	import ButtonSmall from "./ButtonSmall.svelte";
+	import { strapiService } from "$lib/services/StrapiService";
+	import Config from "$lib/services/Config";
+    import { getNotificationsContext } from 'svelte-notifications';
+    const { addNotification } = getNotificationsContext();
 
     export let contribution: Contribution;
     
@@ -25,6 +29,26 @@
     function handleAbandonRequest(){
         //TODO implement
         showAbandonDialog = false;
+    }
+
+    async function save(){
+        try{
+            await strapiService.updateContribution({ id: contribution.id, text: contribution.text }) 
+            addNotification({
+                text: "sauvegarde réussie",
+                position: 'top-center',
+                type: 'success',
+                removeAfter: Config.notificationDuration,
+            });
+        }catch(e){
+            console.error(e);
+            addNotification({
+                text: e,
+                position: 'top-center',
+                type: 'error',
+                removeAfter: Config.notificationDuration,
+            });
+        }
     }
     
     async function onEsperlinkModalCloseRequest(e:any){
@@ -72,7 +96,7 @@
     />
     <div class="footer">
         <div class="first-button">
-            <ButtonSmall>sauver</ButtonSmall>
+            <ButtonSmall on:click={save}>sauver</ButtonSmall>
         </div>
 
         <ButtonSmall 
@@ -103,8 +127,10 @@
         border-radius: 16px;
         padding-left: 15px;
         padding-right: 15px;
-        padding-top:15px;
+        /* padding-top:15px; */
         padding-bottom:15px;
+
+        margin-top: 30px;
 
         overflow-y: scroll;
     }
