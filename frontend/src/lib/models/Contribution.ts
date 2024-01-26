@@ -42,7 +42,7 @@ export enum Order {
 };
 
 export enum Filter {
-    all, mine,
+    all = "tous", mine = "mes-textes",
 };
 
 export enum Relation{

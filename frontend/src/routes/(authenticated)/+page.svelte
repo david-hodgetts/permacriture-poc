@@ -11,14 +11,18 @@
 	import Config from "$lib/services/Config";
     
     import { getNotificationsContext } from 'svelte-notifications';
+	import { page } from "$app/stores";
     const { addNotification } = getNotificationsContext();
 
     let contributions: Contribution[] = [];
 
-    let order = Order.Descending;
-    let selectedFilter = Filter.all;
+    let order: Order = determineOrder();
+    let selectedFilter = determineFilter();
 
     let timeoutId:number = -1;
+
+    const orderParamKey = "order";
+    const filterParamKey = "filter";
 
     onMount(() => {
         // @ts-ignore
@@ -26,10 +30,33 @@
         
         updateContributions();
     });
-
+    
     onDestroy(() => {
         window.clearTimeout(timeoutId);
     });
+
+    function determineOrder():Order{
+        const param = $page.url.searchParams.get(orderParamKey);
+        if(param && (param == Order.Ascending || param == Order.Descending)){
+            console.log("determining order", param);
+            return param;
+        }
+        console.log("determining order", Order.Descending);
+        return Order.Descending;
+    }
+
+    function determineFilter(): Filter{
+        const param = $page.url.searchParams.get(filterParamKey);
+        if(param && (param == Filter.all || param == Filter.mine)){
+            console.log("determining filter", param);
+            return param;
+        }
+        console.log("determining order", Order.Descending);
+        let query = new URLSearchParams($page.url.searchParams.toString());
+        query.set(filterParamKey, Filter.all);
+        goto(`?${query.toString()}`);
+        return Filter.all;
+    }
 
     function onContributionSelectionRequest(e:any){
         const contributionId = e.detail.contributionId;
@@ -101,9 +128,13 @@
 
 	function onOrderInvertRequest(e: CustomEvent<any>): void {
         order = (order == Order.Ascending) ? Order.Descending : Order.Ascending;
-
+        
         clearTimeout(timeoutId);
         updateContributions();
+        
+        let query = new URLSearchParams($page.url.searchParams.toString());
+        query.set(orderParamKey, order);
+        goto(`?${query.toString()}`);
 	}
 
 	function onFilterChangeRequest(e: CustomEvent<any>): void {
@@ -111,6 +142,10 @@
         
         clearTimeout(timeoutId);
         updateContributions();
+        
+        let query = new URLSearchParams($page.url.searchParams.toString());
+        query.set(filterParamKey, selectedFilter);
+        goto(`?${query.toString()}`);
 	}
 </script>
 
