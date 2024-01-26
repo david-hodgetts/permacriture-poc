@@ -8,7 +8,7 @@
 
 <a href={`/contribution/${contribution.id}`}>
     <div class="badge" style="background-color: {backgroundColor}">
-        <div class="text">
+        <div class="text no-select">
             {contribution.badgeText}
         </div>
     </div>
