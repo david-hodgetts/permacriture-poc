@@ -3,7 +3,7 @@
     import "../style/app.scss";
 </script>
 
-<Notifications>
+<Notifications zIndex={4000}>
     <slot></slot>
 </Notifications>
 

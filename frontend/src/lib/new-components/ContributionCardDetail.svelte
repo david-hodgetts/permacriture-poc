@@ -5,15 +5,9 @@
     import BottomCounter from "./ContributionCard/decoration/BottomCounter.svelte";
     import ParentChildrenLinks from "./ContributionCard/ParentChildrenLinks.svelte";
 	import { ContributionState, type Contribution } from "$lib/models/Contribution";
-	import { onMount } from "svelte";
 
     export let contribution: Contribution;
-
     
-    onMount(() => {
-
-    });
-
 
     function linkToMe(){
         console.log("show link modal (todo)");
