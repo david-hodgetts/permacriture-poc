@@ -15,6 +15,7 @@
         contribution: Contribution | null;
     }
 
+    let element:HTMLElement; // root div
     let selectedContribution:Contribution | null;
 
     let svg: any;
@@ -45,8 +46,11 @@
 
         rootOfGraph = svg.append("g");
         
-        const width = innerWidth;
-        const height = innerHeight;
+        const bbox = element.getBoundingClientRect();
+        // const width = innerWidth;
+        // const height = innerHeight;
+        const width = bbox.width;
+        const height = bbox.height;
 
         console.log("on mount", data.graph.links, data.graph.nodes);
         console.log(`width ${width} - height ${height}`);
@@ -292,7 +296,7 @@
     <Slider min={10} value={30} max={60} on:input={ (e) => { collisionRadius = e.detail.value; updateSimulation()} } />
 </div>
 
-<div id="maproot"></div>
+<div id="maproot" bind:this={element}></div>
 <!-- <svg></svg> -->
 
 <style>

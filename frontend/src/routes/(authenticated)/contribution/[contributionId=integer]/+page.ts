@@ -3,7 +3,27 @@ import type { id } from '$lib/models/Id';
 import { strapiService } from '$lib/services/StrapiService';
 import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
+import type Author from '$lib/models/Author';
+import type { D3Graph } from '$lib/models/D3Graph';
 
+
+async function prepareMapData(){
+
+
+    try{
+        const authors = await strapiService.getAuthors();
+        const graph: D3Graph = await strapiService.getD3Graph();
+        return {
+            graph,  
+            contribution: null,
+            authors,
+        };
+    }catch(e){
+        console.error(e);
+        // FIX: improve error handling 
+        error(404, 'Not found');
+    }
+}
 export const load: PageLoad = async ({ params }) => {
     // console.log(params);
     const contributionId = parseInt(params.contributionId);
@@ -30,10 +50,12 @@ export const load: PageLoad = async ({ params }) => {
 
         console.log("counts", parentContributions, childContributions);
 
+        const mapData = await prepareMapData();
         return {
             contribution,
             parentContributions,
             childContributions,
+            mapData,
         };
     }catch(e){
 
