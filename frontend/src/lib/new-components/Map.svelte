@@ -19,12 +19,12 @@
 
     let svg: any;
     let rootOfGraph: any; // first g element of svg (root of all nodes)
-    let circle: any;
+    let rect: any;
 
     const circleRadius = 15;
     let simulation:any;
-    let charge = -50;
-    let linkForce = 60;
+    let charge = 0;
+    let linkForce = 100;
     let collisionRadius = circleRadius * 2;
 
     // $:{
@@ -39,17 +39,17 @@
     // }
 
     onMount(()=> {
-        svg = d3.select("#maproot").append("svg");
-        console.log("empty ?", svg.empty());
-        rootOfGraph = svg.append("g");
+        svg = d3.select("#maproot")
+            .append("svg")
+            .attr("class", "mapSvg");
 
-        console.log("on mount", data.graph.links, data.graph.nodes);
+        rootOfGraph = svg.append("g");
         
         const width = innerWidth;
         const height = innerHeight;
 
+        console.log("on mount", data.graph.links, data.graph.nodes);
         console.log(`width ${width} - height ${height}`);
-
 
         const makeArrow = (idName:string, color: string) => {
             return svg.append("svg:defs").append("svg:marker")
@@ -138,19 +138,29 @@
             // });
         });
 
+        const rectSize = 54;
 
-        circle = node.append("circle")
-        .attr("r", circleRadius)
+        rect = node.append("rect")
+        .attr("x", -rectSize / 2)
+        .attr("y", -rectSize / 2)
+        .attr("width", rectSize)
+        .attr("height", rectSize)
+        .attr("rx", 10)
+        .attr("ry", 10)
         .style("fill", (d:any) => d.color)
+        .style("stroke", "none")
         .classed("node", true)
         .classed("fixed", (d:any) => d.fx !== undefined);
 
         // adds perAuthorTextIndex in center of nodes
         node.append("text")
-        .text((d:any) => d.perAuthorTextIndex != -1 ? d.perAuthorTextIndex : "") // don't show graine authorTextIndex   
+        .text((d:any) => d.badgeText) // don't show graine authorTextIndex   
         .attr("text-anchor", "middle")
         .attr("y", 5)
-        .attr("alignment-baseline", "central");
+        .attr("alignment-baseline", "central")
+        .attr("class", "no-select")
+        .attr("font-weight", 700)
+        .attr("fill", "white");
 
 
         function dragstart() {
@@ -231,7 +241,7 @@
         delete (selectedVisualElement as any).fy;
 
         const greyedOutColor = "#eee";
-        circle.style("fill", (d:any) => {
+        rect.style("fill", (d:any) => {
             // alway preserve color of graine
             if(d.isGraine){
                 return d.color;
@@ -241,7 +251,6 @@
     }
 
     function deselect(){
-        return;
 
         if (selectedContribution){
             const selectedVisualElement = d3.select(`#contribution_id_${selectedContribution.id}`)
@@ -250,8 +259,8 @@
         
         selectedContribution = null;
 
-        console.log("deselect", circle);
-        circle.style("fill", (d:any) => d.color);
+        console.log("deselect", rect);
+        rect.style("fill", (d:any) => d.color);
 
         goto("/map");
     }
@@ -289,11 +298,11 @@
 <style>
     #maproot{
         width: 100%;
-        height: 100svh;
+        height: 100%;
     }
-    :global(svg){
+    :global(.mapSvg){
         width: 100%;
-        height: 100svh;
+        height: 100%;
     }
     .controls{
         position: fixed;

@@ -171,7 +171,7 @@ export class Contribution extends BaseStrapiEntity{
     // background color
     get color(): string{
         if(this.isGraine){
-            return "#fff";
+            return "#525EF5";
         }
 
         return colorForAuthor(this.author!);

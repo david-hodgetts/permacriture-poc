@@ -2,9 +2,8 @@
     import QuillIcon from "$lib/icons/QuillIcon.svelte";
     import MapNavIcon from "$lib/icons/MapNavIcon.svelte";
     import { page } from "$app/stores";
-    import { createEventDispatcher } from "svelte";
 
-    $: isJournalSelected = $page.url.pathname !== '/map';
+    $: isJournalSelected = !$page.url.pathname.startsWith('/map');
 
 </script>
 

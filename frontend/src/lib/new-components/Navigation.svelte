@@ -1,11 +1,9 @@
 <script lang="ts">
     import NavTopRow from "./Navigation/NavTopRow.svelte";
-    import JournalListFilter from "./Navigation/JournalListFilter.svelte";
 </script>
 
 <div class="navigation">
     <NavTopRow />
-    <!-- <JournalListFilter /> -->
 </div>
 
 

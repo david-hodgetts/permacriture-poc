@@ -11,4 +11,10 @@
     <Map data={data} />
 </div>
 
+<style>
+    .map{
+        width: 100%;
+        height: 100%;
+    }
+</style>
 
