@@ -30,14 +30,18 @@
 </script>
 
 <div class="slider">
-    <input 
-        type="range"  
-        value={value.toString()}
-        min={min.toString()}
-        max={max.toString()}
-        step={step.toString()}
-        bind:this={element}
-        />
+    <div class="controls">
+        <div class="text">&plus;</div>
+        <input 
+            type="range"  
+            value={value.toString()}
+            min={min.toString()}
+            max={max.toString()}
+            step={step.toString()}
+            bind:this={element}
+            />
+        <div class="text">&minus;</div>
+    </div>
 </div>
 
 <style>
@@ -49,7 +53,26 @@
         display:flex;
         justify-content: center;
         align-items: center;
+
+        padding-left: 15px;
+        padding-right: 15px;
     }
+
+    .controls{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        width: 100%;
+    }
+
+    .text{
+        position: relative;
+        top: -1px;
+        font-weight: bold;
+        font-size: 17px;
+    }
+
     :root{
         --track-color: var(--color-background-app);
         --track-height: 5px;
@@ -122,6 +145,4 @@
         /* outline: 3px solid var(--thumb-color); */
         /* outline-offset: 0.125rem;  */
     }
-
-
 </style>
