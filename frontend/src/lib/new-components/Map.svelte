@@ -70,7 +70,7 @@
                 .style("fill", color);
         }
 
-        const linkColor = "#333";
+        const linkColor = "#fff";
 
         const arrowBlack = makeArrow("arrow-black", linkColor);
 
@@ -80,8 +80,8 @@
         .join("line")
         .classed("link", true)
         .attr("stroke", (l) => linkColor)
-        .style("stroke-width", "2px")
-        .attr("marker-end",  "url(#arrow-black)");
+        .style("stroke-width", "3px");
+        // .attr("marker-end",  "url(#arrow-black)");
         
         const drag = d3
         .drag()
