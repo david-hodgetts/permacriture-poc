@@ -310,8 +310,11 @@
     }
     .controls{
         position: fixed;
-        width: 200px;
-        height: 200px;
+        display: flex;
+        flex-direction: column;
+        gap:20px;
+        width: 300px;
+        height: 300px;
         bottom:20px;
         left: 20px;
         background-color: rgba(0, 0, 0, 0.1);
