@@ -15,7 +15,7 @@
         contribution: Contribution | null;
     }
 
-    export let separation: number = 0;
+    export let separation: number = 50; 
     
     const rectSize = 54;
     let charge = 0;

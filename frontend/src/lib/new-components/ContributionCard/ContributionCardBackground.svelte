@@ -59,12 +59,12 @@
 
     .mainText{
         overflow: hidden;
-        display: -webkit-box;
     }
 
     .textEllipsis{
         -webkit-line-clamp: 8;
         -webkit-box-orient: vertical;  
+        display: -webkit-box; 
     }
 
     .textEllipsisForEditingState{
