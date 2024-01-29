@@ -54,6 +54,7 @@
 
     {#if contribution.state == ContributionState.Editing}
         <div class="editingTimeout">
+            <img src="/images/icon-timer.svg" alt="">
             <span>{formatDelayToPublication(contribution)}</span>
         </div>
     {:else if contribution.state == ContributionState.Published && !contribution.isGraine}
@@ -88,6 +89,8 @@
     }
 
     .editingTimeout{
+        display: flex;
+        gap: 5px;
         margin-left: auto;
         margin-right: 0;
         position: relative;
