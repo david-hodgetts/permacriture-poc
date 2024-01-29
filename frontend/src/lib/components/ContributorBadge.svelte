@@ -15,7 +15,7 @@
 <div 
     class="badge"
     class:small={role == BadgeRole.List} 
-    style="background-color: {backgroundColor}; width: {sizePx}px; height: {sizePx}px;"
+    style="background-color: {isGraine ? "#fff" : backgroundColor}; width: {sizePx}px; height: {sizePx}px;"
 >
     <div 
         class="text"
