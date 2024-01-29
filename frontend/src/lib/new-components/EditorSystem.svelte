@@ -4,6 +4,7 @@
     import DialogModal from "./Modals/DialogModal.svelte";
     import EsperlinkModal from "./Modals/EsperlinkModal.svelte";
     import SaveButton from "./SaveButton.svelte";
+    import SaveCompletedButton from "./SaveCompletedButton.svelte";
 	import ButtonSmall from "./ButtonSmall.svelte";
 	import { ContributionState, type Contribution } from "$lib/models/Contribution";
 	import { strapiService } from "$lib/services/StrapiService";
@@ -19,9 +20,10 @@
     let showEsperlinkDialog = false;
     let showPubliForceDialog = false;
     let showAbandonDialog = false;
+    let showSavedStatus = false;
 
     function onTextChange(e:any){
-        console.log("on text change", e.detail.text);
+        // console.log("on text change", e.detail.text);
         enableSaveTextButton = true;
         contribution.text = e.detail.text
     }
@@ -86,6 +88,10 @@
                 removeAfter: Config.notificationDuration,
             });
             enableSaveTextButton = false;
+
+            // show saved status version of the button for 3 seconds
+            showSavedStatus = true;
+            setTimeout(() => showSavedStatus = false, 3000);
         }catch(e){
             console.error(e);
             addNotification({
@@ -142,7 +148,11 @@
     />
     <div class="footer">
         <div class="first-button">
-            <SaveButton disabled={!enableSaveTextButton} on:click={save} />
+            {#if !showSavedStatus}
+                <SaveButton disabled={!enableSaveTextButton} on:click={save} />
+            {:else}
+                <SaveCompletedButton />
+            {/if}
         </div>
 
         <ButtonSmall 

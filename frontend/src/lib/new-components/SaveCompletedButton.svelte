@@ -1,12 +1,10 @@
 <script lang="ts">
-    import SaveIcon from "$lib/icons/SaveIcon.svelte";
-    export let disabled = true;
 
 </script>
 
-<button disabled={disabled} on:click class:disabled={disabled}>
-    <SaveIcon disabled={disabled} />
-    <div class:disabled={disabled} class="label no-select">sauver</div>
+<button disabled >
+    <img src="/images/icon-saved.svg" alt="">
+    <div class="label no-select">sauver</div>
 </button>
 
 <style>
@@ -28,8 +26,4 @@
         color: var(--color-background-accent);
     }
 
-    .disabled{
-        color: var(--color-background-app);
-        cursor: auto;
-    }
 </style>
