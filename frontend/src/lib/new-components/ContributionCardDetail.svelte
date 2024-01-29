@@ -14,6 +14,9 @@
     }
 </script>
 
+
+{#key contribution}
+
 <div class="contribution-card">
     <div class="top-decoration">
         {#if contribution.state === ContributionState.Published}
@@ -35,6 +38,8 @@
         </div>
     {/if}
 </div>
+
+{/key}
 
 
 <style>
