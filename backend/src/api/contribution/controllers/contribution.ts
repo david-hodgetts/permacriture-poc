@@ -9,8 +9,36 @@ async function addChildrenAndParentsToContribution(contribution, strapi, userCon
     const parentLinks = await strapi.service('api::link.link').parentsOfContribution(contribution.id, userContext);
     const childrenLinks = await strapi.service('api::link.link').childrenOfContribution(contribution.id, userContext);
 
-    contribution.children = childrenLinks.map(l => l.child.id);
-    contribution.parents = parentLinks.map(l => l.parent.id);
+    // contribution.children = childrenLinks.map(l => l.child.id);
+    // contribution.parents = parentLinks.map(l => l.parent.id);
+    let children = childrenLinks.map(l => l.child.id);
+    let parents = parentLinks.map(l => l.parent.id);
+
+    // only show links that point to published contributions
+    {
+        const promises = children.map(id => strapi.service('api::contribution.contribution').findOne(id));
+        const childrenContributions = await Promise.all(promises);
+
+        children = children.filter(id => {
+            const contribution = childrenContributions.find((c) => c.id == id);
+            return contribution.state == "Published";
+        });
+
+        contribution.children = children;
+    }
+    
+    {
+        const promises = parents.map(id => strapi.service('api::contribution.contribution').findOne(id));
+        const parentContributions = await Promise.all(promises);
+
+        parents = parents.filter(id => {
+            const contribution = parentContributions.find((c) => c.id == id);
+            return contribution.state == "Published";
+        });
+
+        contribution.children = children;
+        contribution.parents = parents;
+    }
 }
 
 async function computeNextPerAuthorTextIndexForUser(userContext) : Promise<number>{

@@ -8,6 +8,7 @@ import UserStore from '$lib/stores/user.store';
 import userStore from "$lib/stores/user.store";
 
 import { marked } from "marked";
+import { colorForAuthor } from "./Author";
 
 
 // remove warnings
@@ -41,7 +42,7 @@ export enum Order {
 };
 
 export enum Filter {
-    all, mine,
+    all = "tous", mine = "mes-textes",
 };
 
 export enum Relation{
@@ -66,6 +67,7 @@ export class Contribution extends BaseStrapiEntity{
     constructor(obj: any){
         super(obj);
         // console.log("item", obj);
+        // console.log("item", JSON.stringify(obj, null, 2));
         
         this.author = obj.author;
         this.text = obj.text;
@@ -127,24 +129,52 @@ export class Contribution extends BaseStrapiEntity{
 
         const now = new Date();
         const remainingMillis = (this.createdAt.getTime() + delayInMinutes * 60 * 1000) - now.getTime();
+        // check for negative values (should not happen)
+        if(remainingMillis < 0){
+            return 0;
+        }
         return Math.round(remainingMillis / 1000 / 60);
+    }
+
+    /**
+     * generates text for contributor badge, based on first letter of nickname + perAuthorTextIndex
+     */
+    public get badgeText(): string{
+        if(this.isGraine){
+            return `T${this.perAuthorTextIndex}`;
+        }
+
+        const textIndex = this.perAuthorTextIndex ? ` ${this.perAuthorTextIndex}` : '';
+        return `${this.author!.nickname[0]}${textIndex}`;
+    }
+
+    public get nickname():string{
+        if(this.isGraine){
+            return "Terreau";
+        }
+
+        return this.author!.nickname;
     }
 
     /**
      * define a title property based on the author's nickname + perAuthorTextIndex
      */
     public get title(): string{
-        if(!this.author){
-            return "Graine";
+        if(this.isGraine){
+            return "Terreau";
         }
 
         const textIndex = this.perAuthorTextIndex ? ` ${this.perAuthorTextIndex}` : '';
-        return `${this.author.nickname}${textIndex}`;
+        return `${this.author!.nickname}${textIndex}`;
     }
 
-    // define a color from hash of author's nickname
+    // background color
     get color(): string{
-        return stringToColor(this.author?.nickname || "");
+        if(this.isGraine){
+            return "#525EF5";
+        }
+
+        return colorForAuthor(this.author!);
     }
 
     getDirectRelationsOfType(relation: Relation){

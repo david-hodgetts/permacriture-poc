@@ -1,24 +1,25 @@
 <script lang="ts">
-	import { BadgeSize } from "$lib/components-utils/Badge";
+	import { BadgeRole } from "$lib/components-utils/Badge";
 
-    export let color="#ffffff";
+    export let backgroundColor="#000";
+    export let isGraine = false;
     export let text = "";
-    export let size:BadgeSize = BadgeSize.Big;
+    export let role:BadgeRole = BadgeRole.List;
 
-    let sizePx = (size == BadgeSize.Big ? 37 : 22);
+    let sizePx = (role == BadgeRole.List ? 31 : 54);
 
-    let fontSize = (size == BadgeSize.Big ? 15 : 10);
- 
+    let fontSize = (role == BadgeRole.List ? 15 : 25);
 
 </script>
 
 <div 
     class="badge"
-    class:small={size == BadgeSize.Small} 
-    style="background-color: {color}; width: {sizePx}px; height: {sizePx}px;"
+    class:small={role == BadgeRole.List} 
+    style="background-color: {backgroundColor}; width: {sizePx}px; height: {sizePx}px;"
 >
     <div 
         class="text"
+        class:textGraine={isGraine}
         style="font-size: {fontSize}px;"
     >
         {text.toUpperCase()}
@@ -27,15 +28,20 @@
 
 <style>
     .badge{
-        border-radius: 50%;
+        border-radius: 9px;
         display: flex;
         justify-content: center;
         align-items: center;
-        filter: drop-shadow(0px 3px 6px #00000029);
+        /* filter: drop-shadow(0px 3px 6px #00000029); */
     }    
 
     .text{
-        font-family: Luminari;
-        color: white;
+        color: var(--color-text-selected);
+        font-weight: bold;
+        letter-spacing: -1px;
+    }
+
+    .textGraine{
+        color: var(--color-background-accent);
     }
 </style>

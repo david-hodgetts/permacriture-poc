@@ -115,6 +115,7 @@ exports.default = {
             console.error("failed to prepare date for terrain ingestion", e);
             process.exit(1);
         }
+        console.log("-----------------------------");
         console.log("Starting bootstrap process");
         console.log("ingesting new terrains...");
         for (const terrain of terrains) {
@@ -151,13 +152,14 @@ exports.default = {
                     }
                 }
                 // add graines
-                for (const graine of terrain.graines) {
+                for (const [index, graine] of terrain.graines.entries()) {
                     try {
                         await strapi.db.query("api::contribution.contribution").create({
                             data: {
                                 text: graine.text,
                                 terrain: newTerrain.id,
                                 state: "Published",
+                                perAuthorTextIndex: index + 1,
                                 publicationDatetime: (0, bootstrapModel_1.dayDateToDate)(terrain.grainePublicationDatetime),
                             },
                             populate: ["terrain"],

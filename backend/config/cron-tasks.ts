@@ -6,7 +6,6 @@ export default {
   
     '* * * * *': async ({ strapi }) => {
         // For each contribution, check if it should change state
-
         const pendingContributions = await strapi.db.query('api::contribution.contribution').findMany({
             select: [ 'state', 'createdAt'],
             where:{

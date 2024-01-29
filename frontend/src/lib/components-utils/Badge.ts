@@ -1,1 +1,1 @@
-export enum BadgeSize { Big, Small };
+export enum BadgeRole { List, Map };

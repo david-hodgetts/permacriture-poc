@@ -1,6 +1,34 @@
 html {
     font-size: 18px;
+    font-family: "Euclid";
+    background-color: var(--color-background-app);
+}
+
+body{
+    font-family: "Euclid";
+    width: 100%;
+}
+
+// targets div in which the svelte app gets inserted 
+// ie. direct child of body
+body > div{
+    display: flex;
+    justify-content: center;
 }
 
 // rem is always related to root element i.e. html
 // pixel to rem -> pixels / rootFontSize 18px in our case
+
+body::-webkit-scrollbar {
+    width: 0;
+}
+   
+body::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+body::-webkit-scrollbar-thumb {
+    background-color: darkgrey;
+    outline: 1px solid slategrey;
+}
+

@@ -1,4 +1,4 @@
-import axios, { AxiosError }  from 'axios';
+import axios from 'axios';
 import Config from "$lib/services/Config";
 import type { Context } from "$lib/models/User";
 import { getJwt } from "$lib/services/LocalStorage";
@@ -9,7 +9,6 @@ import type { Link } from '$lib/models/Link';
 import { Graph } from '$lib/models/Graph';
 import type { D3Graph } from '$lib/models/D3Graph';
 import type Author from '$lib/models/Author';
-
 
 function axiosOptions(optionaJwt: string = "") {
     const authToken = optionaJwt ? optionaJwt : getJwt();
@@ -29,11 +28,15 @@ enum HttpCode{
  * error handler, redirect user to login if unauthorized
  * @param e: AxiosError
  */
-function errorHandler(e: AxiosError){
+function errorHandler(e:any ){
     console.error(e);
-    if(e.response?.status === HttpCode.unauthorized){
+    if(isUnAuthorizedError(e)){
         goto("/login");
     }
+}
+
+export function isUnAuthorizedError(e:any): boolean{
+    return axios.isAxiosError(e) && e.response?.status === HttpCode.unauthorized
 }
 
 class StrapiService
@@ -48,7 +51,7 @@ class StrapiService
             delete context.author.terrain;
             return context as Context;
         }catch(e){
-            errorHandler(e as AxiosError);
+            errorHandler(e);
             throw e;
         }
     }
@@ -64,7 +67,7 @@ class StrapiService
 
             return contributions;
         }catch(e){
-            errorHandler(e as AxiosError);
+            errorHandler(e);
             throw e;
         }
     }
@@ -82,7 +85,7 @@ class StrapiService
                 };
             }) as Link[];
         }catch(e){
-            errorHandler(e as AxiosError);
+            errorHandler(e);
             throw e;
         }
     }
@@ -99,7 +102,7 @@ class StrapiService
             const response = await axios.post(url, payload, axiosOptions());
             return response.data.data.id;
         }catch(e){
-            errorHandler(e as AxiosError);
+            errorHandler(e);
             return -1;
         }
     }
@@ -117,7 +120,7 @@ class StrapiService
             console.log("response", response);
             return response.data.data.id;
         }catch(e){
-            errorHandler(e as AxiosError);
+            errorHandler(e);
             return -1;
         }
     }
@@ -129,7 +132,7 @@ class StrapiService
             console.log(response.data);
             return new Contribution(response.data);
         }catch(e){
-            errorHandler(e as AxiosError);
+            errorHandler(e);
             throw e;
         }
     }
@@ -146,7 +149,7 @@ class StrapiService
             console.log(response.data);
             return null;
         }catch(e){
-            errorHandler(e as AxiosError);
+            errorHandler(e);
             throw e;
         }
     }
@@ -157,7 +160,7 @@ class StrapiService
             await axios.put(url, {}, axiosOptions());
             return null;
         }catch(e){
-            errorHandler(e as AxiosError);
+            errorHandler(e);
             throw e;
         }
     }
@@ -179,7 +182,7 @@ class StrapiService
             await axios.put(url, {}, axiosOptions());
             return null;
         }catch(e){
-            errorHandler(e as AxiosError);
+            errorHandler(e);
             throw e;
         }
 	}
@@ -191,7 +194,7 @@ class StrapiService
             const response = await axios.get(url, axiosOptions());
             return response.data.data as Author[] ;
         }catch(e){
-            errorHandler(e as AxiosError);
+            errorHandler(e);
             throw e;
         }
         
