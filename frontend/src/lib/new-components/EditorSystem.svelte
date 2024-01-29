@@ -3,8 +3,9 @@
     import Header from "./ContributionCard/Header.svelte";
     import DialogModal from "./Modals/DialogModal.svelte";
     import EsperlinkModal from "./Modals/EsperlinkModal.svelte";
-	import { ContributionState, type Contribution } from "$lib/models/Contribution";
+    import SaveButton from "./SaveButton.svelte";
 	import ButtonSmall from "./ButtonSmall.svelte";
+	import { ContributionState, type Contribution } from "$lib/models/Contribution";
 	import { strapiService } from "$lib/services/StrapiService";
 	import Config from "$lib/services/Config";
     import { getNotificationsContext } from 'svelte-notifications';
@@ -12,6 +13,8 @@
     const { addNotification } = getNotificationsContext();
 
     export let contribution: Contribution;
+
+    let enableSaveTextButton = false;
     
     let showEsperlinkDialog = false;
     let showPubliForceDialog = false;
@@ -19,6 +22,7 @@
 
     function onTextChange(e:any){
         console.log("on text change", e.detail.text);
+        enableSaveTextButton = true;
         contribution.text = e.detail.text
     }
 
@@ -81,6 +85,7 @@
                 type: 'success',
                 removeAfter: Config.notificationDuration,
             });
+            enableSaveTextButton = false;
         }catch(e){
             console.error(e);
             addNotification({
@@ -137,7 +142,7 @@
     />
     <div class="footer">
         <div class="first-button">
-            <ButtonSmall on:click={save}>sauver</ButtonSmall>
+            <SaveButton disabled={!enableSaveTextButton} on:click={save} />
         </div>
 
         <ButtonSmall 
@@ -179,6 +184,7 @@
     .footer{
         display: flex;
         justify-content: end;
+        align-items: end;
         gap: 9px;
     }
 
