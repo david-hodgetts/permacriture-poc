@@ -8,6 +8,7 @@
     export let min:number;
     export let max:number;
     export let step = 1;
+    export let width = "316px";
 
     let element:HTMLInputElement;
 
@@ -29,7 +30,7 @@
 
 </script>
 
-<div class="slider">
+<div class="slider" style="max-width:{width}">
     <div class="controls">
         <div class="text">&plus;</div>
         <input 

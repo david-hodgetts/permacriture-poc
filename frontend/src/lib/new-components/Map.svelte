@@ -15,6 +15,13 @@
         contribution: Contribution | null;
     }
 
+    export let separation: number = 0;
+    
+    const rectSize = 54;
+    let charge = 0;
+    let linkForce = 100;
+    let collisionRadius = rectSize;
+
     let element:HTMLElement; // root div
     let selectedContribution:Contribution | null;
 
@@ -22,11 +29,16 @@
     let rootOfGraph: any; // first g element of svg (root of all nodes)
     let rect: any;
 
-    const circleRadius = 15;
+
     let simulation:any;
-    let charge = 0;
-    let linkForce = 100;
-    let collisionRadius = circleRadius * 2;
+
+    $:{
+        charge = (separation * 1.4 - 70);
+        linkForce = separation * 2;
+        if(simulation){
+            updateSimulation();
+        }
+    }
 
     // $:{
     //     if (data.contribution && simulation){
@@ -58,7 +70,7 @@
         const makeArrow = (idName:string, color: string) => {
             return svg.append("svg:defs").append("svg:marker")
                 .attr("id", idName)
-                .attr("refX", circleRadius + 2) // must a bit bigger than circleRadius
+                .attr("refX", (rectSize / 2) + 2) // must a bit bigger than rectWidth
                 .attr("refY", 3) // must be markerWidth / 2
                 .attr("markerUnits", "strokeWidth")
                 .attr("markerWidth", 6)
@@ -142,7 +154,6 @@
             // });
         });
 
-        const rectSize = 54;
 
         rect = node.append("rect")
         .attr("x", -rectSize / 2)
@@ -287,17 +298,16 @@
 <svelte:body on:click={ deselect }/>
 
 
-<div class="controls">
+<!-- <div class="controls">
     -- repulsion attraction --
     <Slider min={-70} value={charge} max={70} on:input={ (e) => { charge = e.detail.value; updateSimulation()} } />
     link force (link magnitude)
     <Slider min={0} value={linkForce} max={150} on:input={ (e) => { linkForce = e.detail.value; updateSimulation()} } />
     collision radius (node vs node)
     <Slider min={10} value={30} max={60} on:input={ (e) => { collisionRadius = e.detail.value; updateSimulation()} } />
-</div>
+</div> -->
 
 <div id="maproot" bind:this={element}></div>
-<!-- <svg></svg> -->
 
 <style>
     #maproot{
