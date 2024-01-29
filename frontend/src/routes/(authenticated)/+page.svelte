@@ -154,6 +154,7 @@
 <!-- dom -->
 
 <JournalListFilter filter={selectedFilter} 
+    order={order}
     on:filterChangeRequest={onFilterChangeRequest} 
     on:orderInvertRequest={onOrderInvertRequest} 
 />

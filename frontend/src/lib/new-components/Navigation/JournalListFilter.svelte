@@ -1,13 +1,18 @@
 <script lang="ts">
     import NavDot from "$lib/icons/NavDot.svelte";
+    import OrderArrow from "../OrderArrow.svelte";
     import TerrainTitle from "../TerrainTitle.svelte";
     
-    import { Filter } from "$lib/models/Contribution";
+    import { Filter, Order } from "$lib/models/Contribution";
     import { createEventDispatcher } from "svelte";
+	import { page } from "$app/stores";
 
     export let filter: Filter = Filter.all;
+    
+    export let order: Order;
 
     const dispatch = createEventDispatcher();
+    
 
     function select(selectedFilter: Filter){
         if(selectedFilter == filter){
@@ -33,6 +38,9 @@
             >
                 <NavDot isSelected={filter == Filter.all} />
                 <div class="text">tous les textes</div>
+                {#if filter == Filter.all}
+                    <OrderArrow order={order}/>
+                {/if}
             </div>
             <div 
                 class="item right" 
@@ -44,6 +52,9 @@
             >
                 <NavDot isSelected={filter == Filter.mine} />
                 <div class="text">mes textes</div>
+                {#if filter == Filter.mine}
+                    <OrderArrow order={order}/>
+                {/if}
             </div>
         </div>
     </div>
@@ -75,8 +86,8 @@
         color: var(--color-text-default);
         border-radius: 43px;
         display: flex;
-        justify-content: space-between;
         align-items: center;
+        gap: 20px;
     }
 
     .item{
