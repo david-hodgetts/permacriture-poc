@@ -47,6 +47,7 @@
 </script>
 
 <div class="terrain-title no-select" >
+    <img src="/images/terrain-title.svg" alt="">
     <div class="title" 
         on:click={() => modalIsOpen = true} 
         role="button" tabindex=0  on:keydown={() => null}>
@@ -76,15 +77,15 @@
     .terrain-title{
         position: relative;
         display: flex;
-        flex-direction: column;
         justify-content: center;
         align-items: center;
+        gap: 8px;
         cursor: pointer;
+        padding-top: 15px;
     }
 
 
     .title{
-        padding-top: 15px;
         font-size: 13px;
         font-weight: bold;
         color: var(--color-background-accent);
