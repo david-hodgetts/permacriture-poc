@@ -194,7 +194,7 @@
         <ButtonSmall 
             inverse={true}
             on:click={()=> showAbandonDialog = true}>
-            abondonner
+            abandonner
         </ButtonSmall>
     </div>
 </div>
