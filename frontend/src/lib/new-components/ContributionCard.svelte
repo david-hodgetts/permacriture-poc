@@ -8,8 +8,8 @@
 	import { strapiService } from "$lib/services/StrapiService";
 	import Config from "$lib/services/Config";
     
-    import { getNotificationsContext } from 'svelte-notifications';
 	import { goto } from "$app/navigation";
+    import { getNotificationsContext } from 'svelte-notifications';
     const { addNotification } = getNotificationsContext();
 
     export let contribution: Contribution;

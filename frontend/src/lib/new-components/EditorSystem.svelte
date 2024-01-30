@@ -81,12 +81,12 @@
     async function save(){
         try{
             await strapiService.updateContribution({ id: contribution.id, text: contribution.text }) 
-            addNotification({
-                text: "sauvegarde réussie",
-                position: 'top-center',
-                type: 'success',
-                removeAfter: Config.notificationDuration,
-            });
+            // addNotification({
+            //     text: "sauvegarde réussie",
+            //     position: 'top-center',
+            //     type: 'success',
+            //     removeAfter: Config.notificationDuration,
+            // });
             enableSaveTextButton = false;
 
             // show saved status version of the button for 3 seconds

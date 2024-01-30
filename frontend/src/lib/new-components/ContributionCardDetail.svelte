@@ -4,16 +4,61 @@
     import LinkToMe from "./ContributionCard/decoration/LinkToMe.svelte";
     import BottomCounter from "./ContributionCard/decoration/BottomCounter.svelte";
     import ParentChildrenLinks from "./ContributionCard/ParentChildrenLinks.svelte";
+    import NewContributionModal from "./Modals/NewContributionModal.svelte";
 	import { ContributionState, type Contribution } from "$lib/models/Contribution";
+	import { strapiService } from "$lib/services/StrapiService";
+	import Config from "$lib/services/Config";
+	import { goto } from "$app/navigation";
+    import { getNotificationsContext } from 'svelte-notifications';
+    const { addNotification } = getNotificationsContext();
 
     export let contribution: Contribution;
     
+    // new contribution state
+    let showNewContributionModal = false;
+    let newContributionParentContribution: Contribution | null = null;
 
-    function linkToMe(){
-        console.log("show link modal (todo)");
+    function onNewContributionModalCloseRequest(){
+        showNewContributionModal = false;
+        newContributionParentContribution = null;
+    }
+
+    function requestNewContribution(){
+        newContributionParentContribution = contribution;
+        showNewContributionModal = true;
+    }
+
+    async function createNewContribution(){
+        const parentContribution = newContributionParentContribution!;
+        const newContributionId = await strapiService.createNewContributionFromParent(parentContribution);
+        console.log("new contribution id", newContributionId);
+        if(newContributionId === -1){
+            console.error("unable to create new contribution");
+
+            addNotification({
+                text: "unable to create new contribution",
+                position: "top-center",
+                type: "error",
+                removeAfter: Config.notificationDuration,
+            });
+            return;
+        }
+        
+        showNewContributionModal = false;
+        newContributionParentContribution = null;
+
+        // open the editor 
+        goto(`/editor/${newContributionId}`);
     }
 </script>
 
+<NewContributionModal 
+    visible={showNewContributionModal}
+    parentContribution={newContributionParentContribution}
+    on:ok={createNewContribution}
+    on:close={onNewContributionModalCloseRequest}
+    on:cancel={onNewContributionModalCloseRequest}
+/>
 
 {#key contribution}
 
@@ -22,7 +67,7 @@
         {#if contribution.state === ContributionState.Published}
             <Counter count={contribution.children.length} isGraine={contribution.isGraine}/>
             <ParentChildrenLinks contributionIds={contribution.children} heightOffset="-5px"/>
-            <LinkToMe isGraine={contribution.isGraine} on:click={linkToMe} />
+            <LinkToMe isGraine={contribution.isGraine} on:click={requestNewContribution} />
         {/if}
     </div>
 
