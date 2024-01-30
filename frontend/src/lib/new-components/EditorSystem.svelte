@@ -10,7 +10,9 @@
 	import { strapiService } from "$lib/services/StrapiService";
 	import Config from "$lib/services/Config";
     import { getNotificationsContext } from 'svelte-notifications';
-	import { goto } from "$app/navigation";
+	import { beforeNavigate, goto } from "$app/navigation";
+	import { onMount } from "svelte";
+	import type { BeforeNavigate } from "@sveltejs/kit";
     const { addNotification } = getNotificationsContext();
 
     export let contribution: Contribution;
@@ -21,6 +23,28 @@
     let showPubliForceDialog = false;
     let showAbandonDialog = false;
     let showSavedStatus = false;
+
+    let showReallyLeavePageDialog = false;
+    let desiredDestination:URL;
+
+    beforeNavigate((navigation: BeforeNavigate) => {
+        console.log("leaving for", navigation.to?.url.pathname);
+        if(enableSaveTextButton){
+            desiredDestination = navigation.to?.url as URL;
+            showReallyLeavePageDialog = true;
+            navigation.cancel();
+        }
+    });
+     
+    function handleLeavePageWithoutSaving(){
+        showReallyLeavePageDialog = false;
+        enableSaveTextButton = false; // force before navigation to succeed
+        if(!desiredDestination){
+            goto("/");
+        }else{
+            goto(desiredDestination.pathname);
+        }
+    }
 
     function onTextChange(e:any){
         // console.log("on text change", e.detail.text);
@@ -81,12 +105,6 @@
     async function save(){
         try{
             await strapiService.updateContribution({ id: contribution.id, text: contribution.text }) 
-            // addNotification({
-            //     text: "sauvegarde réussie",
-            //     position: 'top-center',
-            //     type: 'success',
-            //     removeAfter: Config.notificationDuration,
-            // });
             enableSaveTextButton = false;
 
             // show saved status version of the button for 3 seconds
@@ -139,6 +157,15 @@
     on:dialogAccepted={handleAbandonRequest}
 />
 
+<DialogModal
+    title="Voulez-vous vraiment quitter cette page ?"
+    subTitle="le texte n'a pas été sauvé"
+    visible={showReallyLeavePageDialog} 
+    role="danger"
+    on:close={() => showReallyLeavePageDialog = false}
+    on:dialogAccepted={handleLeavePageWithoutSaving}
+/>
+
 <div class="editor-system">
     <Header contribution={contribution} />
     <Editor 
@@ -161,7 +188,7 @@
         </ButtonSmall>
         <ButtonSmall 
             on:click={() => showPubliForceDialog = true}
-            disabled={!contribution.isPublishable}>
+            disabled={!contribution.isPublishable || enableSaveTextButton}>
             publiforcer
         </ButtonSmall>
         <ButtonSmall 
