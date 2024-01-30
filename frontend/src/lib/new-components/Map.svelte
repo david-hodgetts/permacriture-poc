@@ -33,8 +33,8 @@
     let simulation:any;
 
     $:{
-        charge = (separation * 1.4 - 70);
-        linkForce = separation * 2;
+        charge = 150; // (separation * 1 - 50);
+        linkForce = separation * 3;
         if(simulation){
             updateSimulation();
         }
@@ -67,7 +67,7 @@
         console.log("on mount", data.graph.links, data.graph.nodes);
         console.log(`width ${width} - height ${height}`);
 
-        const makeArrow = (idName:string, color: string) => {
+        const makeArrow = (idName: string, color: string) => {
             return svg.append("svg:defs").append("svg:marker")
                 .attr("id", idName)
                 .attr("refX", (rectSize / 2) + 2) // must a bit bigger than rectWidth
@@ -83,8 +83,8 @@
         }
 
         const linkColor = "#fff";
-
         const arrowBlack = makeArrow("arrow-black", linkColor);
+
 
         const link = rootOfGraph
         .selectAll(".link")
@@ -119,11 +119,11 @@
             e.stopPropagation();
 
             const selectedContributionId = (d as Contribution).id;
-            goto(`/map/${selectedContributionId}`);
+            // goto(`/map/${selectedContributionId}`);
 
-            // // remove fixed status set during drag
-            // delete d.fx;
-            // delete d.fy;
+            // remove fixed status set during drag
+            delete d.fx;
+            delete d.fy;
 
             // selectedContribution = d as Contribution;
 
@@ -198,7 +198,7 @@
         .force("charge", d3.forceManyBody().strength(charge))
         .force("collide", d3.forceCollide().radius((d) => collisionRadius))
         .force("center", d3.forceCenter(width / 2, height / 2))
-        .force("link", d3.forceLink(data.graph.links).distance(l => l.isFirstLink ? linkForce : linkForce * 3))
+        .force("link", d3.forceLink(data.graph.links).distance(l => linkForce))
         .on("tick", tick);
 
         const zoom = d3.zoom().on('zoom', handleZoomAndPan);
@@ -277,7 +277,7 @@
         console.log("deselect", rect);
         rect.style("fill", (d:any) => d.color);
 
-        goto("/map");
+        // goto("/map");
     }
 
     function updateSimulation(){
@@ -295,19 +295,10 @@
     }
 </script>
 
-<svelte:body on:click={ deselect }/>
+<!-- <svelte:body on:click={ deselect }/> -->
 
 
-<!-- <div class="controls">
-    -- repulsion attraction --
-    <Slider min={-70} value={charge} max={70} on:input={ (e) => { charge = e.detail.value; updateSimulation()} } />
-    link force (link magnitude)
-    <Slider min={0} value={linkForce} max={150} on:input={ (e) => { linkForce = e.detail.value; updateSimulation()} } />
-    collision radius (node vs node)
-    <Slider min={10} value={30} max={60} on:input={ (e) => { collisionRadius = e.detail.value; updateSimulation()} } />
-</div> -->
-
-<div id="maproot" bind:this={element}></div>
+<div id="maproot" bind:this={element} on:click={deselect} on:keydown={()=>null} role="button" tabindex="0"></div>
 
 <style>
     #maproot{

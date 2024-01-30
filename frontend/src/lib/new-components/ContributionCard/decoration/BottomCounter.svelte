@@ -4,7 +4,7 @@
 
 <div class="counter">
     <img src="/images/linkToMe.svg" alt="">
-    <div class="count-rect">
+    <div class="count-rect no-select">
         <div class="count-bg">
             <div class="num">{count}</div>
         </div>

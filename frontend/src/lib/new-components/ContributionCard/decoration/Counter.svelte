@@ -5,9 +5,8 @@
 </script>
 
 <div class="counter">
-    <!-- <img src="/images/linkToMe.svg" alt=""> -->
     <LinkToMeIcon isGraine={isGraine} />
-    <div class="count-rect" class:graineRect={isGraine}>
+    <div class="count-rect no-select" class:graineRect={isGraine}>
         <div class="count-bg" class:graineBg={isGraine}>
             <div class="num" class:graineText={isGraine}>{count}</div>
         </div>
