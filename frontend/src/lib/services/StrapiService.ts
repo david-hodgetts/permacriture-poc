@@ -3,7 +3,7 @@ import Config from "$lib/services/Config";
 import type { Context } from "$lib/models/User";
 import { getJwt } from "$lib/services/LocalStorage";
 import { goto } from "$app/navigation";
-import { Contribution } from "$lib/models/Contribution";
+import { Contribution, ContributionState } from "$lib/models/Contribution";
 import type { id } from '$lib/models/Id';
 import type { Link } from '$lib/models/Link';
 import { Graph } from '$lib/models/Graph';
@@ -201,7 +201,7 @@ class StrapiService
     }
 
     async getD3Graph(): Promise<D3Graph> {
-        const contributions = await this.getContributions(); 
+        const contributions = (await this.getContributions()).filter(c => c.state == ContributionState.Published); 
         const links: Link[] = (await strapiService.getLinks()).filter((l: Link) => {
             // ensure we only get link for contributions that are accessible to current user
             // TODO: this check should be done in the backend
