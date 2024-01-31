@@ -7,7 +7,6 @@
     import ContributionDetailModal from "$lib/new-components/Modals/ContributionDetailModal.svelte";
 	import { goto } from "$app/navigation";
     import { page } from "$app/stores";
-	import { fade } from 'svelte/transition';
 
     export let data:PageData;
 
@@ -55,8 +54,7 @@
 </div>
 
 
-<div class="content" transition:fade={{duration:200}}>
-
+<div class="content" >
     {#if showContribution}
     {#key data.contribution}
         <ContributionCard 
@@ -66,8 +64,7 @@
     {/key}
     {/if}
 
-    {#key data.contribution}
-    <div class="map" class:mapWithCard={showContribution}>
+    <div class="map" class:mapWithCard={showContribution} >
         <Map 
             data={data} 
             separation={separation} 
@@ -75,7 +72,6 @@
             on:contributionUnSelected={onContributionUnSelected}
             />
     </div>
-    {/key}
 </div>
 
 <style>

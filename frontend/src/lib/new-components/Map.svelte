@@ -125,6 +125,8 @@
 
             dispatch("contributionSelection", {id: selectedContributionId});
 
+            select(d);
+
             // remove fixed status set during drag
             delete d.fx;
             delete d.fy;

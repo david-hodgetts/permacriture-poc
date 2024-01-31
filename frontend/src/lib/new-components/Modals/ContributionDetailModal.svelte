@@ -16,12 +16,10 @@
 </script>
 
 <ModalBaseForDetail visible={visible} zIndex={100} on:close>
-        <ContributionCardDetail 
-            contribution={contribution} 
-            on:contributionSelection={onContributionSelection}
-            />
+    <ContributionCardDetail 
+        contribution={contribution} 
+        on:contributionSelection={onContributionSelection}
+        />
 </ModalBaseForDetail>
 
 
-<style>
-</style>
