@@ -49,7 +49,12 @@
 
 
 <div class="fixed">
-    <Slider width="316px" min={0} value={separation} max={100} on:input={ (e) => { separation = e.detail.value; } } />
+    <Slider 
+        width="316px" 
+        min={0} 
+        max={100} 
+        value={separation} 
+        on:input={ (e) => separation = e.detail.value } />
     <TerrainTitle />
 </div>
 
