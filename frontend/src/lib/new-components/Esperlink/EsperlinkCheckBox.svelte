@@ -8,6 +8,8 @@
     const dispatch = createEventDispatcher();
 
     export let contribution: Contribution;
+
+    let strippedText = contribution ? contribution.text.replace(/(<([^>]+)>)/gi, "") : "";
     let selected = false;
 
     function onClick(){
@@ -23,7 +25,7 @@
         backgroundColor={contribution.isGraine ? "#445566" : contribution.color}
         role={BadgeRole.Map}
         />
-    <div class="text">{@html contribution.text}</div>
+    <div class="text">{@html strippedText}</div>
 </div>
 
 <style>
