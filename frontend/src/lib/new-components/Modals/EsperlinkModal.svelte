@@ -4,11 +4,10 @@
     import EsperlinkCheckBox from '../Esperlink/EsperlinkCheckBox.svelte';
     import { ContributionState, type Contribution } from "$lib/models/Contribution";
     import { strapiService } from "$lib/services/StrapiService";
-    import { createEventDispatcher, onMount } from "svelte";
+    import { createEventDispatcher } from "svelte";
 
     import { getNotificationsContext } from 'svelte-notifications';
     import Config from "$lib/services/Config";
-	import { link } from 'd3';
 	import type { id } from '$lib/models/Id';
     const { addNotification } = getNotificationsContext();
 
@@ -18,6 +17,7 @@
     export let contribution: Contribution;
 
     let setOfSelectedContributions = new Set<id>();
+    let contributions: Contribution[] = [];
 
     $:{
         if (visible){
@@ -32,12 +32,10 @@
         console.log("contributions", contributions);
     }
 
-
-    let contributions: Contribution[] = [];
-
     // get all published contributions except this one
     // and all its parent
     async function getContributions(): Promise<Contribution[]>{
+
         return (await strapiService.getContributions()).filter(c => {
             return  c.state == ContributionState.Published &&
                     c.id != contribution.id && 
@@ -68,6 +66,11 @@
             dispatch("close", {invalidationRequired:true});
             return;
         }
+
+        // update local copy of contribution to ensure we can reopen 
+        // the modal witout needing to reload
+        contribution.parents.push(requestedContributionParentId);
+
 
         // operation was succesful
         console.log("add link operation successful");
@@ -156,5 +159,4 @@
         justify-content: center;
         gap: 20px;
     }
-
 </style>
