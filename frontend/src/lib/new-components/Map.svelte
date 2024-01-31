@@ -2,12 +2,14 @@
     import Slider from "$lib/components/Slider.svelte";
     import * as d3 from "d3";
     import { forceSimulation } from 'd3';
-	import { onMount } from "svelte";
+	import { onMount, createEventDispatcher } from "svelte";
 	import type { Contribution } from "$lib/models/Contribution";
 	// import { newDateOrNull } from "$lib/services/dateUtils";
 	import { goto } from "$app/navigation";
 	import type { D3Graph } from "$lib/models/D3Graph";
 	import type Author from "$lib/models/Author";
+
+    const dispatch = createEventDispatcher();
 
     export let data:{
         graph: D3Graph,
@@ -121,6 +123,8 @@
             const selectedContributionId = (d as Contribution).id;
             // goto(`/map/${selectedContributionId}`);
 
+            dispatch("contributionSelection", {id: selectedContributionId});
+
             // remove fixed status set during drag
             delete d.fx;
             delete d.fy;
@@ -233,35 +237,30 @@
         selectedContribution = contribution;
 
         // clear all state
-        data.graph.nodes.forEach((node:any) => delete(node.d3SelectAsParentOrChild));
+        // data.graph.nodes.forEach((node:any) => delete(node.d3SelectAsParentOrChild));
         
 
-        const parents = selectedContribution.parents.map(parentId => {
-            return data.graph.nodes.find(n => n.id == parentId);
-        });
-        parents.forEach((contrib:any) => contrib.d3SelectAsParentOrChild = true);
+        // const parents = selectedContribution.parents.map(parentId => {
+        //     return data.graph.nodes.find(n => n.id == parentId);
+        // });
+        // parents.forEach((contrib:any) => contrib.d3SelectAsParentOrChild = true);
         
-        const children = selectedContribution.children.map(childId => {
-            return data.graph.nodes.find(n => n.id == childId);
-        });
-        children.forEach((contrib:any) => contrib.d3SelectAsParentOrChild = true);
+        // const children = selectedContribution.children.map(childId => {
+        //     return data.graph.nodes.find(n => n.id == childId);
+        // });
+        // children.forEach((contrib:any) => contrib.d3SelectAsParentOrChild = true);
 
         // change visual style of selected node
-        svg.selectAll('.selected').classed('selected', false);
-        // d3.select(this).classed('selected', true);
+        // svg.selectAll('.selected').classed('selected', false);
         const selectedVisualElement = d3.select(`#contribution_id_${selectedContribution.id}`)
-        selectedVisualElement.classed('selected', true);
+        // selectedVisualElement.classed('selected', true);
         // remove fixed status set during drag
         delete (selectedVisualElement as any).fx;
         delete (selectedVisualElement as any).fy;
 
-        const greyedOutColor = "#eee";
+        const greyedOutColor = "#9B9B9B";
         rect.style("fill", (d:any) => {
-            // alway preserve color of graine
-            if(d.isGraine){
-                return d.color;
-            }
-            return d.d3SelectAsParentOrChild ? d.color : greyedOutColor;
+            return d.id == selectedContribution!.id ? d.color : greyedOutColor;
         });
     }
 
@@ -277,7 +276,7 @@
         console.log("deselect", rect);
         rect.style("fill", (d:any) => d.color);
 
-        // goto("/map");
+        dispatch("contributionUnSelected", {})
     }
 
     function updateSimulation(){
