@@ -141,7 +141,7 @@ export class Contribution extends BaseStrapiEntity{
      */
     public get badgeText(): string{
         if(this.isGraine){
-            return `T${this.perAuthorTextIndex}`;
+            return `&${this.perAuthorTextIndex}`;
         }
 
         const textIndex = this.perAuthorTextIndex ? ` ${this.perAuthorTextIndex}` : '';
@@ -150,7 +150,7 @@ export class Contribution extends BaseStrapiEntity{
 
     public get nickname():string{
         if(this.isGraine){
-            return "Terreau";
+            return "";
         }
 
         return this.author!.nickname;

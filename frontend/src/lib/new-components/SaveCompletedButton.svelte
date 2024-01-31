@@ -4,7 +4,7 @@
 
 <button disabled >
     <img src="/images/icon-saved.svg" alt="">
-    <div class="label no-select">sauver</div>
+    <div class="label no-select">sauvé</div>
 </button>
 
 <style>
