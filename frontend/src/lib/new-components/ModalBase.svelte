@@ -3,6 +3,8 @@
 	import { fade } from 'svelte/transition';
     export let visible = false;
 
+	export let zIndex = 200;
+
 	const dispatch = createEventDispatcher();
 	const close = () => dispatch('close', {});
 
@@ -67,6 +69,7 @@
 		on:keydown={() => {}}
 		role="button"
 		tabindex=0
+		style="z-index:{zIndex}"
 		transition:fade={{duration:200}}
 	></div>
 
@@ -75,6 +78,7 @@
 		role="dialog" 
 		aria-modal="true" 
 		bind:this={modal}
+		style="z-index:{zIndex + 1}"
 		transition:fade={{duration:150}}
 	>
         <slot></slot>
@@ -90,7 +94,6 @@
 		width: 100%;
 		height: 100%;
 		background: #1A1A1AC9;
-        z-index: 200;
 	}
 
 	.modal {
@@ -108,6 +111,5 @@
 		border-radius: 16px;
 		background: var(--color-background-default);
         color: var(--color-text-modal);
-        z-index: 201;
 	}
 </style>
