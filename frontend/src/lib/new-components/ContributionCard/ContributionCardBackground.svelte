@@ -25,7 +25,7 @@
         {@html contribution.textHtml }
     </div>
     {#if !isInDetailCard}
-        <Footer contribution={contribution}/>
+        <Footer on:showDetailRequest contribution={contribution}/>
     {/if}
 </div>
 

@@ -71,7 +71,7 @@
         {/if}
     </div>
 
-    <ContributionCardBackground contribution={contribution} height={cardHeight}/>
+    <ContributionCardBackground on:showDetailRequest contribution={contribution} height={cardHeight}/>
     
     {#if !contribution.isGraine}
         <div class="bottom-decoration">

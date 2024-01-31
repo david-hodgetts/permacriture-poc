@@ -58,8 +58,13 @@
         return Filter.all;
     }
 
-    function onContributionSelectionRequest(e:any){
-        const contributionId = e.detail.contributionId;
+    // function onContributionSelectionRequest(e:any){
+    //     const contributionId = e.detail.contributionId;
+    //     goto(`/contribution/${contributionId}`);
+    // }
+
+    function onShowDetailRequest(e:any){
+        const contributionId = e.detail.id;
         goto(`/contribution/${contributionId}`);
     }
 
@@ -160,5 +165,5 @@
 />
 <ContributionList 
     contributions={contributions} 
-    on:cardSelectionRequest={onContributionSelectionRequest} 
+    on:showDetailRequest={onShowDetailRequest}
 />

@@ -3,8 +3,10 @@
 	import type { Contribution } from "$lib/models/Contribution";
 	import type { id } from "$lib/models/Id";
 	import { strapiService } from "$lib/services/StrapiService";
-	import { onMount } from "svelte";
+	import { onMount, createEventDispatcher } from "svelte";
 	import MiniBadge from "./MiniBadge.svelte";
+
+    const dispatch = createEventDispatcher();
 
     export let contributionIds:id[] = []; 
     export let heightOffset:string;
@@ -37,7 +39,9 @@
     <div class="embla__container">
         {#each contributions as contribution}
             <div class="embla__slide">
-                <MiniBadge contribution={contribution} />
+                <MiniBadge 
+                    contribution={contribution} 
+                    on:click={() => dispatch("contributionSelection", {id: contribution.id})} />
             </div>
         {/each}
     </div>

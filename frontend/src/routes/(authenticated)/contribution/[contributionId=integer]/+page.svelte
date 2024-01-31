@@ -8,7 +8,7 @@
 
 
     function onContributionSelectionRequest(e:any){
-        const contributionId = e.detail.contributionId;
+        const contributionId = e.detail.id;
         goto(`/contribution/${contributionId}`);
     }
 </script>
@@ -18,6 +18,7 @@
 
 <ContributionCardDetail
     contribution={data.contribution} 
+    on:contributionSelection={onContributionSelectionRequest}
 />
 
 <div class="map-container">

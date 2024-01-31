@@ -4,13 +4,18 @@
 	import Slider from "$lib/components/Slider.svelte";
 	import TerrainTitle from "$lib/new-components/TerrainTitle.svelte";
     import ContributionCard from "$lib/new-components/ContributionCard.svelte";
+    import ContributionDetailModal from "$lib/new-components/Modals/ContributionDetailModal.svelte";
 	import { goto } from "$app/navigation";
+    import { page } from "$app/stores";
+	import { fade } from 'svelte/transition';
 
     export let data:PageData;
 
     let separation = 50; 
 
     $: showContribution = !!data.contribution;
+
+    $: showDetailModal = !!$page.url.searchParams.get('show-detail');
 
     function onContributionSelection(e){
         const { id } = e.detail;
@@ -19,10 +24,30 @@
     }
 
     function onContributionUnSelected(e){
-        goto(`/map`);
+        goto('/map');
+    }
+
+    function onShowDetailRequest(e){
+        const contributionId = e.detail.id;
+        goto(`/map/${contributionId}?show-detail=true`)
+    }
+
+    function closeDetailModal(){
+        if(data.contribution){
+            goto(`/map/${data.contribution.id}`);
+        }else{
+            goto('/map');
+        }
     }
 
 </script>
+
+
+<ContributionDetailModal 
+    visible={showDetailModal}
+    on:close={closeDetailModal}
+    contribution={data.contribution} />
+
 
 <div class="fixed">
     <Slider width="316px" min={0} value={separation} max={100} on:input={ (e) => { separation = e.detail.value; } } />
@@ -30,11 +55,14 @@
 </div>
 
 
-<div class="content">
+<div class="content" transition:fade={{duration:200}}>
 
     {#if showContribution}
     {#key data.contribution}
-        <ContributionCard contribution={data.contribution}/>
+        <ContributionCard 
+            contribution={data.contribution}
+            on:showDetailRequest={onShowDetailRequest}
+        />
     {/key}
     {/if}
 

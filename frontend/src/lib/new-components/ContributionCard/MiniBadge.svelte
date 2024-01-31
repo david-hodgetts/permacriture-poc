@@ -6,13 +6,11 @@
     $: backgroundColor = contribution.isGraine ? "#525EF5" : contribution.color;
 </script>
 
-<a href={`/contribution/${contribution.id}`}>
-    <div class="badge" style="background-color: {backgroundColor}">
-        <div class="text no-select">
-            {contribution.badgeText}
-        </div>
+<div class="badge" style="background-color: {backgroundColor}" on:click on:keydown={() => null} role="button" tabindex="0">
+    <div class="text no-select">
+        {contribution.badgeText}
     </div>
-</a>
+</div>
 
 <style>
     .badge{
@@ -30,7 +28,4 @@
         color: var(--color-text-selected);
     }
 
-    a{
-        text-decoration: none;
-    }
 </style>

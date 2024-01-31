@@ -21,7 +21,7 @@
             tabindex=0>… éditer</div>
     {:else}
         <div
-            on:click|stopPropagation={() => goto(`/contribution/${contribution.id}`)} 
+            on:click|stopPropagation={() => dispatch("showDetailRequest", {id: contribution.id})} 
             on:keydown={() => null}
             role="button" 
             tabindex=0>… voir plus</div>

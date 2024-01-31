@@ -18,7 +18,7 @@
     style="background-color: {isGraine ? "#fff" : backgroundColor}; width: {sizePx}px; height: {sizePx}px;"
 >
     <div 
-        class="text"
+        class="text no-select"
         class:textGraine={isGraine}
         style="font-size: {fontSize}px;"
     >

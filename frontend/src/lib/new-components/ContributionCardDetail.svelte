@@ -66,7 +66,10 @@
     <div class="top-decoration">
         {#if contribution.state === ContributionState.Published}
             <Counter count={contribution.children.length} isGraine={contribution.isGraine}/>
-            <ParentChildrenLinks contributionIds={contribution.children} heightOffset="-5px"/>
+            <ParentChildrenLinks 
+                contributionIds={contribution.children} 
+                on:contributionSelection
+                heightOffset="-5px"/>
             <LinkToMe isGraine={contribution.isGraine} on:click={requestNewContribution} />
         {/if}
     </div>
@@ -79,7 +82,10 @@
     {#if !contribution.isGraine}
         <div class="bottom-decoration">
             <BottomCounter count={contribution.parents.length}/>
-            <ParentChildrenLinks contributionIds={contribution.parents} heightOffset="5px"/>
+            <ParentChildrenLinks 
+                contributionIds={contribution.parents}
+                on:contributionSelection
+                heightOffset="5px"/>
         </div>
     {/if}
 </div>

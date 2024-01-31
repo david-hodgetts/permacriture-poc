@@ -11,7 +11,7 @@
     {#each contributions as contribution (contribution.id) }
         <ContributionCard 
             contribution={contribution} 
-            on:cardSelectionRequest
+            on:showDetailRequest
         />
     {/each}
     <Footer />
