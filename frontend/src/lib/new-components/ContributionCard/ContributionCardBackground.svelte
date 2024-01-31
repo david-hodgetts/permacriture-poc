@@ -72,8 +72,7 @@
     }
 
     .mainText :global(p){
-        margin-top: 15px;
-        margin-bottom: 15px;
+        margin:0;
     }
 
 </style>
