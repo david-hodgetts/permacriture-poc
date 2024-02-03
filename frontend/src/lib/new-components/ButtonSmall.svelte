@@ -3,7 +3,6 @@
     export let flat = true;
     export let inverse = false;
     export let disabled = false;
-
 </script>
 
 <button 
@@ -44,6 +43,7 @@
         background: var(--color-text-modal);
         color: white;
     }
+
     /* options  */
     .flat {
         box-shadow: none
@@ -55,6 +55,9 @@
         color: #45c496;
         background: white;
         border: 2px solid #45c496
+    }
+    .neutral.invese{
+        background-color: var(--color-background-app);
     }
     .primary.disabled {
         pointer-events: none;

@@ -2,6 +2,7 @@
     import Editor from "./Editor.svelte";
     import Header from "./ContributionCard/Header.svelte";
     import DialogModal from "./Modals/DialogModal.svelte";
+    import AlertModal from "./Modals/AlertModal.svelte";
     import EsperlinkModal from "./Modals/EsperlinkModal.svelte";
     import SaveButton from "./SaveButton.svelte";
     import SaveCompletedButton from "./SaveCompletedButton.svelte";
@@ -11,7 +12,6 @@
 	import Config from "$lib/services/Config";
     import { getNotificationsContext } from 'svelte-notifications';
 	import { beforeNavigate, goto } from "$app/navigation";
-	import { onMount } from "svelte";
 	import type { BeforeNavigate } from "@sveltejs/kit";
     const { addNotification } = getNotificationsContext();
 
@@ -22,6 +22,8 @@
     let showEsperlinkDialog = false;
     let showPubliForceDialog = false;
     let showAbandonDialog = false;
+    let showNotPubliforcableAlert = false;
+    let notPubliForcableAlertText = "";
     let showSavedStatus = false;
 
     let showReallyLeavePageDialog = false;
@@ -50,6 +52,26 @@
         // console.log("on text change", e.detail.text);
         enableSaveTextButton = true;
         contribution.text = e.detail.text
+    }
+
+    function handleShowNotPubliforcableDialog(){
+        // 1. update alert text (compute delay before force publishable)
+        const delayInMinutes = contribution.delayInMinutesBeforePubliForcable;
+        const hours = Math.floor(delayInMinutes / 60);
+        const minutes = delayInMinutes % 60;
+
+        let delayStr = "";;
+
+        if(hours > 0){
+            delayStr = `${hours}h${minutes.toString().padStart(2, '0')}`
+        }else{
+            delayStr = `${minutes} minutes`
+        }
+
+        notPubliForcableAlertText = `Cette contribution pourra être publiforcée dans ${delayStr}.`
+
+        // 2. show alert
+        showNotPubliforcableAlert = true;
     }
 
     async function handleForcePublication(){
@@ -134,6 +156,13 @@
 </script>
 
 
+<AlertModal
+    title="La contribution ne peut pas être publi-forcée à ce moment"
+    subTitle={notPubliForcableAlertText}
+    visible={showNotPubliforcableAlert}
+    on:close={() => showNotPubliforcableAlert = false}
+/>
+
 <EsperlinkModal
     visible={showEsperlinkDialog}
     contribution={contribution}
@@ -186,11 +215,18 @@
             on:click={() => showEsperlinkDialog = true}>
             esperlier
         </ButtonSmall>
-        <ButtonSmall 
-            on:click={() => showPubliForceDialog = true}
-            disabled={!contribution.isPublishable || enableSaveTextButton}>
-            publiforcer
-        </ButtonSmall>
+        {#if contribution.isPublishable}
+            <ButtonSmall 
+                on:click={() => showPubliForceDialog = true}>
+                publiforcer
+            </ButtonSmall>
+        {:else}
+            <ButtonSmall 
+                buttonType="neutral"
+                on:click={handleShowNotPubliforcableDialog}>
+                publiforcer
+            </ButtonSmall>
+        {/if}
         <ButtonSmall 
             inverse={true}
             on:click={()=> showAbandonDialog = true}>
