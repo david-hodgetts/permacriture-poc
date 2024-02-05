@@ -1,6 +1,6 @@
 <script lang="ts">
-    import ModalBase from '$lib/new-components/ModalBase.svelte';
-    import Button from '$lib/new-components/Button.svelte';
+    import ModalBase from '$lib/components/ModalBase.svelte';
+    import Button from '$lib/components/Button.svelte';
     import EsperlinkCheckBox from '../Esperlink/EsperlinkCheckBox.svelte';
     import { ContributionState, type Contribution } from "$lib/models/Contribution";
     import { strapiService } from "$lib/services/StrapiService";

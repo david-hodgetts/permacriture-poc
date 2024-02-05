@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { PageData } from "./$types";
-	import TerrainTitle from "$lib/new-components/TerrainTitle.svelte";
-	import EditorSystem from "$lib/new-components/EditorSystem.svelte";
+	import TerrainTitle from "$lib/components/TerrainTitle.svelte";
+	import EditorSystem from "$lib/components/EditorSystem.svelte";
     
     export let data: PageData;
 </script>

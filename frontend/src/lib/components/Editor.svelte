@@ -28,6 +28,8 @@
             formats: formats,
         });
 
+        editor.root.setAttribute('spellcheck', "false");
+
         if(text){
             // text comes in as raw html 
             // https://stackoverflow.com/questions/46626633/how-do-you-insert-html-into-a-quilljs
@@ -67,12 +69,17 @@
     @import 'https://cdn.quilljs.com/1.3.6/quill.bubble.css';
 
     .editor{
-        border: 1px solid #000;
         width: 100%;
         height: 100%;
     }
 
     :global(.ql-container){
-        font-size: var(--font-size);
+        font-family: Euclid;
+        font-size: 18px;
+        color: var(--color-text-faded);
+    }
+    :global(.ql-editor){
+        padding-left: 0;
+        padding-right: 0;
     }
 </style>

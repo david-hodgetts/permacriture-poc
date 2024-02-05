@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { PageData } from "./$types";
-    import ContributionCardDetail from "$lib/new-components/ContributionCardDetail.svelte";
-    import Map from "$lib/new-components/Map.svelte";
+    import ContributionCardDetail from "$lib/components/ContributionCardDetail.svelte";
+    import Map from "$lib/components/Map.svelte";
 	import { goto } from "$app/navigation";
 
     export let data: PageData;

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Contribution } from "$lib/models/Contribution";
-    import ContributionCardDetail from "$lib/new-components/ContributionCardDetail.svelte";
+    import ContributionCardDetail from "$lib/components/ContributionCardDetail.svelte";
     
     const detailContributionData = {
         "publicationDatetime": "2023-12-04T11:03:40.442Z",

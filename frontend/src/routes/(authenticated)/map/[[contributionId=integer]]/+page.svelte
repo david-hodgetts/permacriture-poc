@@ -1,10 +1,10 @@
 <script lang="ts">
 	import type { PageData } from "./$types";
-    import Map from "$lib/new-components/Map.svelte";
+    import Map from "$lib/components/Map.svelte";
 	import Slider from "$lib/components/Slider.svelte";
-	import TerrainTitle from "$lib/new-components/TerrainTitle.svelte";
-    import ContributionCard from "$lib/new-components/ContributionCard.svelte";
-    import ContributionDetailModal from "$lib/new-components/Modals/ContributionDetailModal.svelte";
+	import TerrainTitle from "$lib/components/TerrainTitle.svelte";
+    import ContributionCard from "$lib/components/ContributionCard.svelte";
+    import ContributionDetailModal from "$lib/components/Modals/ContributionDetailModal.svelte";
 	import { goto } from "$app/navigation";
     import { page } from "$app/stores";
 

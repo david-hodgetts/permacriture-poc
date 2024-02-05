@@ -1,8 +1,8 @@
 <script lang="ts">
 	import type { Contribution } from "$lib/models/Contribution";
-    import ContributionCard from "$lib/new-components/ContributionCard.svelte";
-    import Footer from "$lib/new-components/Footer.svelte";
-    import TerrainTitle from "$lib/new-components/TerrainTitle.svelte";
+    import ContributionCard from "$lib/components/ContributionCard.svelte";
+    import Footer from "$lib/components/Footer.svelte";
+    import TerrainTitle from "$lib/components/TerrainTitle.svelte";
 
     export let contributions:Contribution[] = [];
 </script>

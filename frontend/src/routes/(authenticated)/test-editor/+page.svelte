@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Contribution } from "$lib/models/Contribution";
-	import EditorSystem from "$lib/new-components/EditorSystem.svelte";
-	import TerrainTitle from "$lib/new-components/TerrainTitle.svelte";
+	import EditorSystem from "$lib/components/EditorSystem.svelte";
+	import TerrainTitle from "$lib/components/TerrainTitle.svelte";
 
     
     const editingContributionData = {

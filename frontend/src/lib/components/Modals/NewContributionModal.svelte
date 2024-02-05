@@ -1,7 +1,7 @@
 <script lang="ts">
-    import ModalBase from '$lib/new-components/ModalBase.svelte';
+    import ModalBase from '$lib/components/ModalBase.svelte';
 	import type { Contribution } from "$lib/models/Contribution";
-    import Button from '$lib/new-components/Button.svelte';
+    import Button from '$lib/components/Button.svelte';
     import { createEventDispatcher } from 'svelte';
 
     const dispatch = createEventDispatcher();

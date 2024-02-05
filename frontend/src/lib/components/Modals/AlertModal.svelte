@@ -1,6 +1,6 @@
 <script lang="ts">
-    import ModalBase from '$lib/new-components/ModalBase.svelte';
-    import Button from '$lib/new-components/Button.svelte';
+    import ModalBase from '$lib/components/ModalBase.svelte';
+    import Button from '$lib/components/Button.svelte';
     import { createEventDispatcher } from 'svelte';
 
     export let visible:boolean;

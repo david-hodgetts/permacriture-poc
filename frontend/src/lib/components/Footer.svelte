@@ -1,5 +1,5 @@
 <script lang="ts">
-    import Button from "$lib/new-components/Button.svelte";
+    import Button from "$lib/components/Button.svelte";
     import UserStore from '$lib/stores/user.store';
     import { goto } from '$app/navigation';
     // @ts-ignore

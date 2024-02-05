@@ -1,5 +1,5 @@
 <script>
-    import Navigation from "$lib/new-components/Navigation.svelte";
+    import Navigation from "$lib/components/Navigation.svelte";
     import { page } from "$app/stores";
 
     $: doesNotHaveJournalFilter = $page.url.pathname.startsWith("/map") || 

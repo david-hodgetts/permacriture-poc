@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { BadgeRole } from "$lib/components-utils/Badge";
-    import Navigation from "$lib/new-components/Navigation.svelte";
-    import TerrainTitle from "$lib/new-components/TerrainTitle.svelte";
+    import Navigation from "$lib/components/Navigation.svelte";
+    import TerrainTitle from "$lib/components/TerrainTitle.svelte";
     import ContributorBadge from "$lib/components/ContributorBadge.svelte";
-    import ContributionCard from "$lib/new-components/ContributionCard.svelte";
-    import DialogModal from "$lib/new-components/Modals/DialogModal.svelte";
-    import Footer from "$lib/new-components/Footer.svelte";
-    import Button from "$lib/new-components/Button.svelte";
+    import ContributionCard from "$lib/components/ContributionCard.svelte";
+    import DialogModal from "$lib/components/Modals/DialogModal.svelte";
+    import Footer from "$lib/components/Footer.svelte";
+    import Button from "$lib/components/Button.svelte";
 	import { Contribution } from "$lib/models/Contribution";
 
     let modalIsVisible = false;
