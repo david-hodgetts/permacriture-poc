@@ -61,13 +61,70 @@
 
 </script>
 
-<h2>entrer sur le terrain (login)</h2>
-<form on:submit|preventDefault={submit}>
-    <input type="email" label="email" placeholder="votre courriel" bind:value={email}>
-    <input type="password" label="password" placeholder="votre mot de passe" bind:value={password}>
-    <button type='submit' disabled={!email || !password}>soumettre</button>
-</form>
+<div class="login">
+    <h2>Entrer sur le terrain (login)</h2>
+    <form on:submit|preventDefault={submit}>
+        <div>
+            <label for="email">courriel:</label>
+            <input type="email" name="email" placeholder="votre courriel" bind:value={email}>
+        </div>
+        <div>
+            <label for="password">mot de passe:</label>
+            <input type="password" name="password" placeholder="votre mot de passe" bind:value={password}>
+        </div>
+        <button type="submit" disabled={!email || !password}>soumettre</button>
+    </form>
+</div>
 
 {#if error}
     <p>{error}</p>
 {/if}
+
+
+<style>
+    .login{
+        margin-top: 60px;
+    }
+    h2{
+        font-size: 18px;
+        color: var(--color-text-default);
+    }
+
+    form{
+        display: flex;
+        flex-direction: column;
+        max-width: 300px;
+        gap: 20px;
+    }
+
+    input{
+        width: 100%;
+    }
+    
+    input:-webkit-autofill {
+        -webkit-box-shadow: inset 0 0 0px 9999px white;
+    }
+    
+    input[type="email"], input[type="password"], 
+    input[type="email"]:focus, input[type="password"]:focus, input:active, input:autofill {
+        background-color : white; 
+    }
+
+    button{
+        border: 0;
+        border-radius: 6px;
+        width: 100%;
+        height: 40px;
+        cursor: pointer;
+        /* padding: 0px 20px; */
+        font-weight: bold;
+        font-size: 18px;
+        background-color: var(--color-background-accent);
+        color:white;
+    }
+
+    button:disabled{
+        background-color: var(--color-text-faded);
+        cursor: auto;
+    }
+</style>

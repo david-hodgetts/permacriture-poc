@@ -1,9 +1,9 @@
 <script>
-
+    import PermaLogo from "$lib/components/PermaLogo.svelte";
 </script>
 
 <main>
-    <h1>Permacriture</h1>
+    <PermaLogo/>
     <slot></slot>
 </main>
 
@@ -18,5 +18,4 @@
         margin-left: var(--app-col-margin);
         margin-right: var(--app-col-margin);
     }
-
 </style>
