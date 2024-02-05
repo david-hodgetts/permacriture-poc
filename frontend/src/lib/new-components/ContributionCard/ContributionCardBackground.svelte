@@ -59,6 +59,7 @@
 
     .mainText{
         overflow: hidden;
+        margin: 10px 0 15px 0;
     }
 
     .textEllipsis{
