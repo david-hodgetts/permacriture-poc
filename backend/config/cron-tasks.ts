@@ -3,7 +3,7 @@ export default {
     /**
      * Every 1 minutes
      */
-  
+
     '* * * * *': async ({ strapi }) => {
         // For each contribution, check if it should change state
         const pendingContributions = await strapi.db.query('api::contribution.contribution').findMany({
@@ -32,7 +32,7 @@ export default {
                     },
                     data:{
                         state: "Published",
-                        publicationDateTime: publicationDate,
+                        publicationDatetime: publicationDate,
                     }
                 });
             }

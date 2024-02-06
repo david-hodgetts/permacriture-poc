@@ -27,7 +27,7 @@ exports.default = {
                     },
                     data: {
                         state: "Published",
-                        publicationDateTime: publicationDate,
+                        publicationDatetime: publicationDate,
                     }
                 });
             }
