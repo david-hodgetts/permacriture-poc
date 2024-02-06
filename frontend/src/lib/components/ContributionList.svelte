@@ -22,7 +22,7 @@
     .contribution-list{
         display: flex;
         flex-direction: column;
-        gap: 20px;
+        gap: 50px;
         height: 100%;
         padding-top: 20px;
         padding-top: 40px;
