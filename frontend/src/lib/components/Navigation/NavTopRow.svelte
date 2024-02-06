@@ -1,5 +1,5 @@
 <script lang="ts">
-    import QuillIcon from "$lib/icons/QuillIcon.svelte";
+    import JournalIcon from "$lib/icons/JournalIcon.svelte";
     import MapNavIcon from "$lib/icons/MapNavIcon.svelte";
     import { page } from "$app/stores";
 
@@ -15,7 +15,7 @@
                     <div class="text no-select">
                         journal
                     </div>
-                    <QuillIcon selected={isJournalSelected} />
+                    <JournalIcon selected={isJournalSelected} />
         </div>
     </a>
     <a href="/map" >
@@ -41,7 +41,7 @@
     }
 
     .capsule{
-        width:97px;
+        width: 97px;
         height: 38px;
         background-color: var(--color-background-default);
         color: var(--color-text-default);
@@ -58,6 +58,8 @@
     }
 
     .capsule-left{
+        justify-content: start;
+        width: 100px;
         gap: 5px
     }
 

@@ -58,11 +58,6 @@
         return Filter.all;
     }
 
-    // function onContributionSelectionRequest(e:any){
-    //     const contributionId = e.detail.contributionId;
-    //     goto(`/contribution/${contributionId}`);
-    // }
-
     function onShowDetailRequest(e:any){
         const contributionId = e.detail.id;
         goto(`/contribution/${contributionId}`);

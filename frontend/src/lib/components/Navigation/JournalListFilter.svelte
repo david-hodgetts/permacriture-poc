@@ -71,6 +71,7 @@
         display: flex;
         flex-direction: column;
         justify-content: center;
+        z-index: 50;
     }
     .row{
         display: flex;
