@@ -12,10 +12,10 @@
         <div class="capsule capsule-left" 
             class:selected={isJournalSelected} 
             >
-                    <div class="text no-select">
-                        journal
-                    </div>
-                    <JournalIcon selected={isJournalSelected} />
+                <div class="text no-select">
+                    journal
+                </div>
+                <JournalIcon selected={isJournalSelected} />
         </div>
     </a>
     <a href="/map" >
@@ -70,7 +70,6 @@
     }
 
     .text{
-        font-family: Arial, Helvetica, sans-serif;
         font-weight: bold;
         font-size: 16px;
     }
