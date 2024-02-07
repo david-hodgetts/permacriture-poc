@@ -60,6 +60,10 @@
             <span class="date">{formatPublicationDate(contribution)}</span>
             <span class="time">{formatPublicationTime(contribution)}</span>
         </div>
+    {:else if contribution.state == ContributionState.Abandoned}
+        <div class="editingTimeout">
+            abandonnée
+        </div>
     {/if}
 </div>
 

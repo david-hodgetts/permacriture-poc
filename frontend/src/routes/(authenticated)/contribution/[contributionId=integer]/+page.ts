@@ -8,8 +8,6 @@ import type { D3Graph } from '$lib/models/D3Graph';
 
 
 async function prepareMapData(){
-
-
     try{
         const authors = await strapiService.getAuthors();
         const graph: D3Graph = await strapiService.getD3Graph();

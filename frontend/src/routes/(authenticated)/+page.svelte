@@ -100,12 +100,11 @@
             }
         }
         
-        // remove abandoned contribs
-        newContributions = newContributions.filter(c => c.state != ContributionState.Abandoned); 
 
         // handle filter state
         if(selectedFilter == Filter.all){
-            contributions = newContributions;
+            // only show published contributions on main page
+            contributions = newContributions.filter(c => c.state == ContributionState.Published);
         }else{
             contributions = newContributions.filter(c => c.isMine);
         }

@@ -120,7 +120,7 @@
                 removeAfter: Config.notificationDuration,
             });
         }finally{
-            goto("/");
+            goto("/?filter=mes-textes");
         }
     }
 

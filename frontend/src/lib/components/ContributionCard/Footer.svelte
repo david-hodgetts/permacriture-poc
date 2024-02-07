@@ -18,13 +18,13 @@
             on:click|stopPropagation={() => goto(`/editor/${contribution.id}`)}
             on:keydown={() => null}
             role="button" 
-            tabindex=0>… éditer</div>
+            tabindex=0>… modifier</div>
     {:else}
         <div
             on:click|stopPropagation={() => dispatch("showDetailRequest", {id: contribution.id})} 
             on:keydown={() => null}
             role="button" 
-            tabindex=0>… voir plus</div>
+            tabindex=0>… ouvrir</div>
     {/if}
 
 </div>

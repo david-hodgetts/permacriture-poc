@@ -23,19 +23,6 @@ export enum ContributionState{
     Abandoned = "Abandoned",
 };
 
-export function displayStringForState(state: ContributionState): string{
-    switch(state){
-        case ContributionState.Abandoned:
-            return "Abandonné";
-        case ContributionState.Editing:
-            return "En cours d'édition";
-        case ContributionState.Published:
-            return "Publié";
-        default:
-            throw new Error(`no display string found for state ${state}`);
-    }
-}
-
 export enum Order {
     Ascending = "Asc",
     Descending = "Desc",
