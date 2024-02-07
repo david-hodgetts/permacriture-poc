@@ -91,6 +91,10 @@ export class Contribution extends BaseStrapiEntity{
         return elapsedMillisSinceCreation >= minDelayBeforePublication * 60 * 1000;
     }
 
+    get isAbandonned(): boolean{
+        return this.state == ContributionState.Abandoned;
+    }
+
     get remainingTimeBeforePublication(): string{
         if(this.state !== ContributionState.Editing){
             return "";

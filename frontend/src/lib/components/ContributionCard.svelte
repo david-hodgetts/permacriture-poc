@@ -67,7 +67,7 @@
     <div class="top-decoration">
         {#if contribution.state === ContributionState.Published}
             <Counter 
-                count={contribution.state != ContributionState.Abandoned ? contribution.children.length : 0} 
+                count={contribution.isAbandonned ? 0 : contribution.children.length} 
                 isGraine={contribution.isGraine}/>
             <LinkToMe isGraine={contribution.isGraine} on:click={requestNewContribution} />
         {/if}
@@ -78,7 +78,7 @@
     {#if !contribution.isGraine}
         <div class="bottom-decoration">
             <BottomCounter 
-                count={contribution.state != ContributionState.Abandoned ? contribution.parents.length : 0} 
+                count={contribution.isAbandonned ? 0 : contribution.parents.length} 
                 />
         </div>
     {/if}
