@@ -3,7 +3,8 @@
     import MapNavIcon from "$lib/icons/MapNavIcon.svelte";
     import { page } from "$app/stores";
 
-    $: isJournalSelected = !$page.url.pathname.startsWith('/map');
+    $: isJournalSelected = $page.url.pathname == '/' || $page.url.pathname.startsWith("/?");
+    $: isMapSelected = $page.url.pathname.startsWith("/map");
 
 </script>
 
@@ -21,12 +22,12 @@
     <a href="/map" >
         <div 
             class="capsule" 
-            class:selected={!isJournalSelected}
+            class:selected={isMapSelected}
             >
                 <div class="text no-select">
                     carte
                 </div>
-                <MapNavIcon selected={!isJournalSelected}/>
+                <MapNavIcon selected={isMapSelected}/>
         </div>
     </a>
 </div>

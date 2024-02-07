@@ -100,12 +100,12 @@
             }
         }
         
-
         // handle filter state
         if(selectedFilter == Filter.all){
             // only show published contributions on main page
             contributions = newContributions.filter(c => c.state == ContributionState.Published);
         }else{
+            // show all my contributions irrespective of state
             contributions = newContributions.filter(c => c.isMine);
         }
 
