@@ -16,19 +16,19 @@
 
     $: showDetailModal = !!$page.url.searchParams.get('show-detail');
 
-    function onContributionSelection(e){
+    function onContributionSelection(e:any){
         const { id } = e.detail;
         console.log("contrib ", id);
-        goto(`/map/${id}`);
+        goto(`/contribution/${id}`);
     }
 
-    function onContributionUnSelected(e){
+    function onContributionUnSelected(e:any){
         goto('/map');
     }
 
-    function onShowDetailRequest(e){
+    function onShowDetailRequest(e:any){
         const contributionId = e.detail.id;
-        goto(`/map/${contributionId}?show-detail=true`)
+        goto(`/contribution/${contributionId}`);
     }
 
     function closeDetailModal(){
@@ -42,41 +42,26 @@
 </script>
 
 
-<ContributionDetailModal 
-    visible={showDetailModal}
-    on:close={closeDetailModal}
-    contribution={data.contribution} />
-
-
 <div class="fixed">
-    <Slider 
-        width="316px" 
-        min={0} 
-        max={100} 
-        value={separation} 
-        on:input={ (e) => separation = e.detail.value } />
-    <TerrainTitle />
+    <div style="pointer-events:auto">
+        <Slider 
+            width="316px" 
+            min={0} 
+            max={100} 
+            value={separation} 
+            on:input={ (e) => separation = e.detail.value } />
+        <TerrainTitle />
+    </div>
 </div>
 
 
-<div class="content" >
-    {#if showContribution}
-    {#key data.contribution}
-        <ContributionCard 
-            contribution={data.contribution}
-            on:showDetailRequest={onShowDetailRequest}
+<div class="map">
+    <Map 
+        data={data} 
+        separation={separation} 
+        on:contributionSelection={onContributionSelection}
+        on:contributionUnSelected={onContributionUnSelected}
         />
-    {/key}
-    {/if}
-
-    <div class="map" class:mapWithCard={showContribution} >
-        <Map 
-            data={data} 
-            separation={separation} 
-            on:contributionSelection={onContributionSelection}
-            on:contributionUnSelected={onContributionUnSelected}
-            />
-    </div>
 </div>
 
 <style>
@@ -84,10 +69,6 @@
         --fixed-element-height: 80px;
         --total-fixed-element-height: calc(var(--navbar-height-map) + var(--fixed-element-height));
         --card-height: 289px;
-    }
-    
-    .content{
-        margin-top: var(--fixed-element-height);
     }
 
     .fixed {
@@ -100,15 +81,17 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        pointer-events: none;
+        z-index: 10;
     }
 
     .map{
-        width: 100%;
-        height: calc(100svh - var(--total-fixed-element-height));
+        position:fixed;
+        top: 0;
+        left: 0;
+        width: 100svw;
+        height: 100svh;
     }
 
-    .mapWithCard{
-        height: calc(100svh - (var(--total-fixed-element-height) + var(--card-height)));
-    }
 </style>
 

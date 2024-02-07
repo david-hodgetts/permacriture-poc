@@ -37,7 +37,6 @@
         margin-top: 23px;
         display: flex;
         justify-content: center;
-        /* color: var(--color-text-default); */
         gap: 6px;
     }
 
@@ -47,6 +46,7 @@
         background-color: var(--color-background-default);
         color: var(--color-text-default);
         display: flex;
+        pointer-events: auto;
 
         flex-direction: row;
         justify-content: center;

@@ -19,5 +19,6 @@
         top:0;
         left: 0;
         padding-bottom: 10px;
+        pointer-events: none;
     }
 </style>
