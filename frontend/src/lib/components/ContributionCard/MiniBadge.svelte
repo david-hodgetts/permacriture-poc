@@ -20,6 +20,7 @@
         justify-content: center;
         align-items: center;
         border-radius: 9px;
+        cursor: pointer;
     }
 
     .text{

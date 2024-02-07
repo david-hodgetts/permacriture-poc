@@ -13,6 +13,8 @@
     import { getNotificationsContext } from 'svelte-notifications';
 	import { beforeNavigate, goto } from "$app/navigation";
 	import type { BeforeNavigate } from "@sveltejs/kit";
+	import BottomCounter from "./ContributionCard/decoration/BottomCounter.svelte";
+	import ParentChildrenLinks from "./ContributionCard/ParentChildrenLinks.svelte";
     const { addNotification } = getNotificationsContext();
 
     export let contribution: Contribution;
@@ -28,6 +30,8 @@
 
     let showReallyLeavePageDialog = false;
     let desiredDestination:URL;
+
+    let invalidationKey: 0;
 
     beforeNavigate((navigation: BeforeNavigate) => {
         console.log("leaving for", navigation.to?.url.pathname);
@@ -144,17 +148,24 @@
     }
     
     async function onEsperlinkModalCloseRequest(e:any){
-        // const invalidationRequired = !!e.detail.invalidationRequired;
-        // if(invalidationRequired){
-        //     // TODO: forces state refresh. We should think about a better state management strategy
-        //     console.log("invalidating route");
-        //     await invalidateAll();
-        //     console.log("invalidation complete");
-        // }
+        const invalidationRequired = !!e.detail.invalidationRequired;
+        if(invalidationRequired){
+            // TODO: forces state refresh. We should think about a better state management strategy
+            console.log("invalidating route", contribution);
+            invalidationKey = invalidationKey + 1;
+        }
+
         showEsperlinkDialog = false;
+    }
+
+    function onParentContributionSelectionRequest(e:any){
+        const contributionId = e.detail.id;
+        console.log("selected", contributionId);
+        goto(`/contribution/${contributionId}`);
     }
 </script>
 
+{#key invalidationKey}
 
 <AlertModal
     title="La contribution ne peut pas être publi-forcée à ce moment"
@@ -235,11 +246,20 @@
     </div>
 </div>
 
+<div class="bottom-decoration">
+    <BottomCounter count={contribution.parents.length}/>
+    <ParentChildrenLinks 
+        contributionIds={contribution.parents}
+        on:contributionSelection={onParentContributionSelectionRequest}
+        heightOffset="5px"/>
+</div>
+
+{/key}
 
 <style>
     .editor-system{
         width: 100%;
-        height: calc(100svh - 180px);
+        height: calc(100svh - 200px);
         display:flex;
         flex-direction: column;
         background-color: var(--color-background-default);
@@ -264,5 +284,9 @@
     .first-button{
         margin-right:auto;
         margin-left: 0;
+    }
+
+    .bottom-decoration{
+        display: flex;
     }
 </style>

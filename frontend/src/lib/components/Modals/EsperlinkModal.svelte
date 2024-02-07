@@ -45,8 +45,20 @@
 
     async function linkAllRequestedParents(){
         for(const id of setOfSelectedContributions){
-            requestSecondaryLinkCreation(id);
+            await requestSecondaryLinkCreation(id);
         }
+        
+        // operation was succesful
+        console.log("add link operation successful");
+        addNotification({
+            text: "esperliation réussie",
+            position: "top-center",
+            type: "success",
+            removeAfter: Config.notificationDuration,
+        });
+        
+        // close modal
+        dispatch("close", {invalidationRequired:true});
     }
     
     async function requestSecondaryLinkCreation(requestedContributionParentId: id){
@@ -70,19 +82,6 @@
         // update local copy of contribution to ensure we can reopen 
         // the modal witout needing to reload
         contribution.parents.push(requestedContributionParentId);
-
-
-        // operation was succesful
-        console.log("add link operation successful");
-        addNotification({
-            text: "esperliation réussie",
-            position: "top-center",
-            type: "success",
-            removeAfter: Config.notificationDuration,
-        });
-        
-        // close modal
-        dispatch("close", {invalidationRequired:true});
     }
 
     function onSelected(e){
