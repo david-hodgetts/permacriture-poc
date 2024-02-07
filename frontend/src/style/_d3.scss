@@ -2,6 +2,12 @@
     // stroke: #000;
 }
 
+.greyed-link{
+    stroke: var(--color-text-default);
+    stroke-width: 0.5;
+    opacity: 0.1;
+}
+
 .node {
     cursor: pointer;
 }

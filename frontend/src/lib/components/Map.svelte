@@ -31,7 +31,6 @@
     let rootOfGraph: any; // first g element of svg (root of all nodes)
     let rect: any;
 
-
     let simulation:any;
 
     $:{
@@ -158,7 +157,21 @@
             //     }
             //     return d.d3SelectAsParentOrChild ? d.color : greyedOutColor;
             // });
+        })
+        .on("mouseover", function(e, d){
+            mouseOverAction(e, d);
+        })
+        .on("mouseout", function(e, d){
+            mouseOutAction(e, d);
         });
+
+        function mouseOverAction(e, d){
+            select(d);
+        }
+
+        function mouseOutAction(e, d){
+            unselect();
+        }
 
 
         rect = node.append("rect")
@@ -240,7 +253,6 @@
 
         // clear all state
         // data.graph.nodes.forEach((node:any) => delete(node.d3SelectAsParentOrChild));
-        
 
         // const parents = selectedContribution.parents.map(parentId => {
         //     return data.graph.nodes.find(n => n.id == parentId);
@@ -254,6 +266,13 @@
 
         // change visual style of selected node
         // svg.selectAll('.selected').classed('selected', false);
+        
+        d3.selectAll(".link")
+        .classed('greyed-link', function(d:any){
+            // changed all links not connected to selected contribution
+            return d.source.id != selectedContribution!.id && d.target.id != selectedContribution!.id;
+        });
+
         const selectedVisualElement = d3.select(`#contribution_id_${selectedContribution.id}`)
         // selectedVisualElement.classed('selected', true);
         // remove fixed status set during drag
@@ -266,7 +285,7 @@
         });
     }
 
-    function deselect(){
+    function unselect(){
 
         if (selectedContribution){
             const selectedVisualElement = d3.select(`#contribution_id_${selectedContribution.id}`)
@@ -275,8 +294,11 @@
         
         selectedContribution = null;
 
-        console.log("deselect", rect);
+        // console.log("unselect", rect);
         rect.style("fill", (d:any) => d.color);
+
+        d3.selectAll(".link")
+        .classed('greyed-link', false);
 
         dispatch("contributionUnSelected", {})
     }
@@ -299,7 +321,7 @@
 <!-- <svelte:body on:click={ deselect }/> -->
 
 
-<div id="maproot" bind:this={element} on:click={deselect} on:keydown={()=>null} role="button" tabindex="0"></div>
+<div id="maproot" bind:this={element} on:click={unselect} on:keydown={()=>null} role="button" tabindex="0"></div>
 
 <style>
     #maproot{
