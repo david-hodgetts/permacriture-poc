@@ -1,8 +1,20 @@
 <script lang="ts">
+    import { createEventDispatcher } from "svelte";
+    const dispatch = createEventDispatcher();
+    
     export let count: number;
+    export let isClickable = false;
+
+    function handleClick(){
+        if(!isClickable){
+            return;
+        }
+
+        dispatch("click", {});
+    }
 </script>
 
-<div class="counter">
+<div class="counter" class:is-clickable={isClickable}  on:click={handleClick} on:keydown={()=>null} role="button" tabindex=0>
     <img src="/images/linkToMe.svg" alt="">
     <div class="count-rect no-select">
         <div class="count-bg">
@@ -17,6 +29,9 @@
         position: relative;
         height: 35px;
         padding-left:65px;
+    }
+    .is-clickable{
+        cursor: pointer;
     }
     .count-rect{
         position:absolute;

@@ -4,6 +4,7 @@
     import LinkToMe from "./ContributionCard/decoration/LinkToMe.svelte";
     import BottomCounter from "./ContributionCard/decoration/BottomCounter.svelte";
     import NewContributionModal from "./Modals/NewContributionModal.svelte";
+    import ParentChildrenLinks from "./ContributionCard/ParentChildrenLinks.svelte";
 	import { ContributionState, type Contribution } from "$lib/models/Contribution";
 	import { strapiService } from "$lib/services/StrapiService";
 	import Config from "$lib/services/Config";
@@ -19,6 +20,9 @@
     // new contribution state
     let showNewContributionModal = false;
     let newContributionParentContribution: Contribution | null = null;
+
+    let showTopLinks = false;
+    let showBottomLinks = false;
 
     function onNewContributionModalCloseRequest(){
         showNewContributionModal = false;
@@ -53,6 +57,11 @@
         goto(`/editor/${newContributionId}`);
     }
 
+    function handleGotoDetailRequest(e:any){
+        const contributionId = e.detail.id;
+        goto(`/contribution/${contributionId}`);
+    }
+
 </script>
 
 
@@ -66,9 +75,19 @@
 <div class="contribution-card">
     <div class="top-decoration">
         {#if contribution.state === ContributionState.Published}
-            <Counter 
-                count={contribution.isAbandonned ? 0 : contribution.children.length} 
-                isGraine={contribution.isGraine}/>
+            <div class="clickable">
+                <Counter 
+                    count={contribution.isAbandonned ? 0 : contribution.children.length} 
+                    isGraine={contribution.isGraine} 
+                    isClickable={true}
+                    on:click={() => showTopLinks = !showTopLinks}/>
+                {#if showTopLinks}
+                <ParentChildrenLinks 
+                    contributionIds={contribution.isAbandonned ? [] : contribution.children} 
+                    on:contributionSelection={handleGotoDetailRequest}
+                    heightOffset="-5px"/>
+                {/if}
+            </div>
             <LinkToMe isGraine={contribution.isGraine} on:click={requestNewContribution} />
         {/if}
     </div>
@@ -79,7 +98,14 @@
         <div class="bottom-decoration">
             <BottomCounter 
                 count={contribution.isAbandonned ? 0 : contribution.parents.length} 
-                />
+                isClickable={true}
+                on:click={() => showBottomLinks = !showBottomLinks}/>
+            {#if showBottomLinks}
+            <ParentChildrenLinks 
+                contributionIds={contribution.isAbandonned ? [] : contribution.parents}
+                on:contributionSelection={handleGotoDetailRequest}
+                heightOffset="5px"/>
+            {/if}
         </div>
     {/if}
 </div>
@@ -90,6 +116,10 @@
         width: 100%;
     }
     .top-decoration, .bottom-decoration{
+        display: flex;
+    }
+
+    .clickable{
         display: flex;
     }
 </style>
