@@ -34,7 +34,7 @@
         position:absolute;
         width: 24px;
         height: 24px;
-        border-radius: 9px;
+        border-radius: 6px;
         background-color: var(--color-background-accent);
         display: flex;
         justify-content: center;
