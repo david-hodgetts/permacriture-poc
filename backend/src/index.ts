@@ -1,5 +1,5 @@
 import { readFileSync, writeFileSync } from 'fs';
-import { Terrain, TerrainJSON, terrainJSONToTerrain, UserAuthorPair, dayDateToDate } from "./bootstrapHandler/bootstrapModel";
+import { Terrain, TerrainJSON, ingestTerrainData, UserAuthorPair, dayDateToDate } from "./bootstrapHandler/bootstrapModel";
 import { Strapi } from '@strapi/strapi';
 
 
@@ -128,7 +128,7 @@ export default {
         let terrains: Terrain[];
         try{
             const terrainsJson = JSON.parse(readFileSync("./bootstrapData.json", { encoding: 'utf-8' })) as TerrainJSON[];
-            terrains = terrainsJson.map(terrainJSONToTerrain);
+            terrains = terrainsJson.map(ingestTerrainData);
         }catch(e){
             console.error("failed to prepare date for terrain ingestion", e);
             process.exit(1);

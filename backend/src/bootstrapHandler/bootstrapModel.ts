@@ -55,7 +55,7 @@ function genPassword():string{
     return Math.random().toString(36).slice(charCount * -1); 
 }
 
-function cryptonimToUserAuthoPair(cryptonim: string): UserAuthorPair{
+function cryptonimToUserAuthorPair(cryptonim: string): UserAuthorPair{
     return {
         user:{
             username: cryptonim,
@@ -68,7 +68,7 @@ function cryptonimToUserAuthoPair(cryptonim: string): UserAuthorPair{
     }
 }
 
-export function terrainJSONToTerrain(terrainJson:TerrainJSON): Terrain{
+export function ingestTerrainData(terrainJson:TerrainJSON): Terrain{
     const result: Terrain = {
         title: terrainJson.title,
         description: terrainJson.description,
@@ -76,7 +76,7 @@ export function terrainJSONToTerrain(terrainJson:TerrainJSON): Terrain{
         end: terrainJson.end,
         contribution_min_publication_delay_minutes: terrainJson.contribution_min_publication_delay_minutes,
         contribution_max_publication_delay_minutes: terrainJson.contribution_max_publication_delay_minutes,
-        users: terrainJson.cryptonims.map(cryptonimToUserAuthoPair),
+        users: terrainJson.cryptonims.map(cryptonimToUserAuthorPair),
         grainePublicationDatetime: terrainJson.grainePublicationDatetime,
         graines: terrainJson.graines
     }
