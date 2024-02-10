@@ -1,3 +1,5 @@
+import { Strapi } from "@strapi/strapi";
+
 export interface DayDate{
     day: number,
     month: number,
@@ -86,4 +88,27 @@ export function ingestTerrainData(terrainJson:TerrainJSON): Terrain{
 
 export function dayDateToDate(dayDate: DayDate): Date{
     return new Date(dayDate.year, dayDate.month, dayDate.day);
+}
+
+
+async function userWithEmailExists(email:string): Promise<boolean> {
+    const user = await strapi.db.query('plugin::users-permissions.user').findOne({
+        where: {email: email},
+    });
+
+    return !!user;
+}
+
+export async function computeEmailForCryptonim(cryptonim: string, strapi: Strapi): Promise<string> {
+    const domain = "test.test";
+
+    let email = `${cryptonim}@${domain}`;
+    let userExists = await userWithEmailExists(email);
+    let index = 1;
+    while(userExists){
+        email = `${cryptonim}_${index}@${domain}`;
+        userExists = await userWithEmailExists(email);
+        index++;
+    }
+    return email;
 }

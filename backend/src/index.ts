@@ -1,5 +1,5 @@
 import { readFileSync, writeFileSync } from 'fs';
-import { Terrain, TerrainJSON, ingestTerrainData, UserAuthorPair, dayDateToDate } from "./bootstrapHandler/bootstrapModel";
+import { Terrain, TerrainJSON, ingestTerrainData, UserAuthorPair, dayDateToDate, computeEmailForCryptonim } from "./bootstrapHandler/bootstrapModel";
 import { Strapi } from '@strapi/strapi';
 
 
@@ -123,6 +123,11 @@ export default {
      * run jobs, or perform some special logic.
      */
     async bootstrap({ strapi: Strapi }) {
+
+        const email = await computeEmailForCryptonim("zut", strapi);
+        console.log("email is ------------------------->", email);
+
+        return;
 
         // prepare data
         let terrains: Terrain[];

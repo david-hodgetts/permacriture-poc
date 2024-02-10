@@ -105,11 +105,14 @@ exports.default = {
      * run jobs, or perform some special logic.
      */
     async bootstrap({ strapi: Strapi }) {
+        const email = await (0, bootstrapModel_1.computeEmailForCryptonim)("zut", strapi);
+        console.log("email is ------------------------->", email);
+        return;
         // prepare data
         let terrains;
         try {
             const terrainsJson = JSON.parse((0, fs_1.readFileSync)("./bootstrapData.json", { encoding: 'utf-8' }));
-            terrains = terrainsJson.map(bootstrapModel_1.terrainJSONToTerrain);
+            terrains = terrainsJson.map(bootstrapModel_1.ingestTerrainData);
         }
         catch (e) {
             console.error("failed to prepare date for terrain ingestion", e);
