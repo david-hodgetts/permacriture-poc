@@ -5,7 +5,7 @@ import { Strapi } from '@strapi/strapi';
 
 
 async function createUserAuthorPair(
-    userAuthorPair: UserAuthorPair, 
+    userAuthorPair: UserAuthorPair,
     terrainId: number
 ): Promise<{userId: number, authorId: number}>
 {
@@ -46,19 +46,19 @@ async function createUserAuthorPair(
 
 /**
  * delete terrain and authors, graines
- * @param terrainId 
- * @param createdUserAuthors 
+ * @param terrainId
+ * @param createdUserAuthors
  */
 async function cancelTerrainCreation(
-    terrainId: number, 
+    terrainId: number,
     createdUserAuthors: { userId: number; authorId: number; }[],
-    strapi: Strapi) 
+    strapi: Strapi)
 {
     try{
         console.log("removing contributions for terrain id", terrainId);
         // 1 remove contributions
         // deleteMany on terrain do not work WTF!!
-        // so we get the contrib list and delete them in second step :( 
+        // so we get the contrib list and delete them in second step :(
         const contributions = await strapi.db.query("api::contribution.contribution").findMany({
             where: {
                 'terrain': terrainId,
@@ -135,7 +135,7 @@ export default {
             const terrainsJson = JSON.parse(readFileSync("./bootstrapData.json", { encoding: 'utf-8' })) as TerrainJSON[];
             terrains = terrainsJson.map(ingestTerrainData);
         }catch(e){
-            console.error("failed to prepare date for terrain ingestion", e);
+            console.error("failed to prepare data for terrain ingestion", e);
             process.exit(1);
         }
 
@@ -162,7 +162,7 @@ export default {
                         contribution_max_publication_delay_minutes: terrain.contribution_max_publication_delay_minutes,
                     }
                 });
-                
+
                 // use this collection to collect all user/author pairs
                 // useful if we must rollbak and delete newly created user/authors
                 let createdUserAuthors:{userId: number, authorId: number }[] = [];
