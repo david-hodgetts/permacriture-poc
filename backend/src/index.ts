@@ -1,5 +1,5 @@
 import { readFileSync, writeFileSync } from 'fs';
-import { Terrain, TerrainJSON, ingestTerrainData, UserAuthorPair, dayDateToDate, computeEmailForCryptonim } from "./bootstrapHandler/bootstrapModel";
+import { Terrain, TerrainJSON, ingestTerrainData, UserAuthorPair, dayDateToDate, cryptonimToUserAuthorPair } from "./bootstrapHandler/bootstrapModel";
 import { Strapi } from '@strapi/strapi';
 
 
@@ -106,6 +106,16 @@ async function cancelTerrainCreation(
     console.log(`successully removed terrain with id ${terrainId} and associated data`);
 }
 
+export async function terrainWithTitleExists(terrainTitle:string): Promise<boolean>{
+
+    const strapiTerrain = await strapi.db.query('api::terrain.terrain').findOne({
+        select: ['title'],
+        where: { title: terrainTitle },
+    });
+
+    return !!strapiTerrain;
+}
+
 export default {
     /**
      * An asynchronous register function that runs before
@@ -124,18 +134,11 @@ export default {
      */
     async bootstrap({ strapi: Strapi }) {
 
-        const email = await computeEmailForCryptonim("zut", strapi);
-        console.log("email is ------------------------->", email);
-
-        return;
-
-        // prepare data
-        let terrains: Terrain[];
+        let terrainsJson: TerrainJSON[];
         try{
-            const terrainsJson = JSON.parse(readFileSync("./bootstrapData.json", { encoding: 'utf-8' })) as TerrainJSON[];
-            terrains = terrainsJson.map(ingestTerrainData);
+            terrainsJson = JSON.parse(readFileSync("./bootstrapData.json", { encoding: 'utf-8' })) as TerrainJSON[];
         }catch(e){
-            console.error("failed to prepare data for terrain ingestion", e);
+            console.error("failed to read json file for terrain ingestion", e);
             process.exit(1);
         }
 
@@ -143,15 +146,22 @@ export default {
         console.log("Starting bootstrap process");
         console.log("ingesting new terrains...");
 
-        for (const terrain of terrains){
+        for (const terrainJson of terrainsJson){
             // 1. does the terrain exist
-            const strapiTerrain = await strapi.db.query('api::terrain.terrain').findOne({
-                select: ['title'],
-                where: { title: terrain.title},
-            });
 
-            if(!strapiTerrain){
+            const terrainExists = await terrainWithTitleExists(terrainJson.title);
+
+            if(!terrainExists){
+                let terrain: Terrain;
+                try{
+                    terrain = ingestTerrainData(terrainJson);
+                }catch(e){
+                    console.error("failed to ingest json data for terrain with title", terrainJson.title);
+                    console.error(e);
+                    process.exit(1);
+                }
                 console.log("found new terrain with title ->", terrain.title);
+
                 const newTerrain = await strapi.db.query('api::terrain.terrain').create({
                     data:{
                         title: terrain.title,
@@ -168,14 +178,17 @@ export default {
                 let createdUserAuthors:{userId: number, authorId: number }[] = [];
 
                 // add users
-                for (const userAuthorPair of terrain.users) {
-                    console.log("create user from data", userAuthorPair);
+                for (const cryptonim of terrain.cryptonims) {
+                    console.log("create user from cryptonim", cryptonim);
                     try{
+                        const userAuthorPair = await cryptonimToUserAuthorPair(cryptonim);
+                        terrain.users.push(userAuthorPair);
                         const userAuthorIds = await createUserAuthorPair(userAuthorPair, newTerrain.id);
                         createdUserAuthors.push(userAuthorIds);
                     }catch(e){
                         console.error("error creating user author pair");
                         await cancelTerrainCreation(newTerrain.id, createdUserAuthors, strapi);
+                        process.exit(1);
                     }
                 }
 
@@ -195,6 +208,7 @@ export default {
                     }catch(e){
                         console.error("error creating graine");
                         await cancelTerrainCreation(newTerrain.id, createdUserAuthors, strapi);
+                        process.exit(1);
                     }
                 }
 

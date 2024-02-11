@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.terrainWithTitleExists = void 0;
 const fs_1 = require("fs");
 const bootstrapModel_1 = require("./bootstrapHandler/bootstrapModel");
 async function createUserAuthorPair(userAuthorPair, terrainId) {
@@ -45,7 +46,7 @@ async function cancelTerrainCreation(terrainId, createdUserAuthors, strapi) {
         console.log("removing contributions for terrain id", terrainId);
         // 1 remove contributions
         // deleteMany on terrain do not work WTF!!
-        // so we get the contrib list and delete them in second step :( 
+        // so we get the contrib list and delete them in second step :(
         const contributions = await strapi.db.query("api::contribution.contribution").findMany({
             where: {
                 'terrain': terrainId,
@@ -89,6 +90,14 @@ async function cancelTerrainCreation(terrainId, createdUserAuthors, strapi) {
     }
     console.log(`successully removed terrain with id ${terrainId} and associated data`);
 }
+async function terrainWithTitleExists(terrainTitle) {
+    const strapiTerrain = await strapi.db.query('api::terrain.terrain').findOne({
+        select: ['title'],
+        where: { title: terrainTitle },
+    });
+    return !!strapiTerrain;
+}
+exports.terrainWithTitleExists = terrainWithTitleExists;
 exports.default = {
     /**
      * An asynchronous register function that runs before
@@ -105,29 +114,30 @@ exports.default = {
      * run jobs, or perform some special logic.
      */
     async bootstrap({ strapi: Strapi }) {
-        const email = await (0, bootstrapModel_1.computeEmailForCryptonim)("zut", strapi);
-        console.log("email is ------------------------->", email);
-        return;
-        // prepare data
-        let terrains;
+        let terrainsJson;
         try {
-            const terrainsJson = JSON.parse((0, fs_1.readFileSync)("./bootstrapData.json", { encoding: 'utf-8' }));
-            terrains = terrainsJson.map(bootstrapModel_1.ingestTerrainData);
+            terrainsJson = JSON.parse((0, fs_1.readFileSync)("./bootstrapData.json", { encoding: 'utf-8' }));
         }
         catch (e) {
-            console.error("failed to prepare date for terrain ingestion", e);
+            console.error("failed to read json file for terrain ingestion", e);
             process.exit(1);
         }
         console.log("-----------------------------");
         console.log("Starting bootstrap process");
         console.log("ingesting new terrains...");
-        for (const terrain of terrains) {
+        for (const terrainJson of terrainsJson) {
             // 1. does the terrain exist
-            const strapiTerrain = await strapi.db.query('api::terrain.terrain').findOne({
-                select: ['title'],
-                where: { title: terrain.title },
-            });
-            if (!strapiTerrain) {
+            const terrainExists = await terrainWithTitleExists(terrainJson.title);
+            if (!terrainExists) {
+                let terrain;
+                try {
+                    terrain = (0, bootstrapModel_1.ingestTerrainData)(terrainJson);
+                }
+                catch (e) {
+                    console.error("failed to ingest json data for terrain with title", terrainJson.title);
+                    console.error(e);
+                    process.exit(1);
+                }
                 console.log("found new terrain with title ->", terrain.title);
                 const newTerrain = await strapi.db.query('api::terrain.terrain').create({
                     data: {
@@ -143,15 +153,18 @@ exports.default = {
                 // useful if we must rollbak and delete newly created user/authors
                 let createdUserAuthors = [];
                 // add users
-                for (const userAuthorPair of terrain.users) {
-                    console.log("create user from data", userAuthorPair);
+                for (const cryptonim of terrain.cryptonims) {
+                    console.log("create user from cryptonim", cryptonim);
                     try {
+                        const userAuthorPair = await (0, bootstrapModel_1.cryptonimToUserAuthorPair)(cryptonim);
+                        terrain.users.push(userAuthorPair);
                         const userAuthorIds = await createUserAuthorPair(userAuthorPair, newTerrain.id);
                         createdUserAuthors.push(userAuthorIds);
                     }
                     catch (e) {
                         console.error("error creating user author pair");
                         await cancelTerrainCreation(newTerrain.id, createdUserAuthors, strapi);
+                        process.exit(1);
                     }
                 }
                 // add graines
@@ -171,6 +184,7 @@ exports.default = {
                     catch (e) {
                         console.error("error creating graine");
                         await cancelTerrainCreation(newTerrain.id, createdUserAuthors, strapi);
+                        process.exit(1);
                     }
                 }
                 // produce report

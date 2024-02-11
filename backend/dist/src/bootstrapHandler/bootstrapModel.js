@@ -1,22 +1,27 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.computeEmailForCryptonim = exports.dayDateToDate = exports.ingestTerrainData = void 0;
+exports.computeUniqueUsername = exports.dayDateToDate = exports.ingestTerrainData = exports.cryptonimToUserAuthorPair = void 0;
 function genPassword() {
     const charCount = 8;
     return Math.random().toString(36).slice(charCount * -1);
 }
-function cryptonimToUserAuthorPair(cryptonim) {
+async function cryptonimToUserAuthorPair(cryptonim) {
+    const username = await computeUniqueUsername(cryptonim);
+    const emailDomain = "permacriture.org";
+    const email = `${username.toLocaleLowerCase()}@${emailDomain}`;
+    console.log(`email ${email} and username ${username} computed for cryptonim -> ${cryptonim}`);
     return {
         user: {
-            username: cryptonim,
-            email: `${cryptonim.toLowerCase()}@test.test`,
+            username: username,
+            email: email,
             password: genPassword(),
         },
         author: {
-            nickname: cryptonim,
+            nickname: username,
         }
     };
 }
+exports.cryptonimToUserAuthorPair = cryptonimToUserAuthorPair;
 function ingestTerrainData(terrainJson) {
     const result = {
         title: terrainJson.title,
@@ -25,7 +30,8 @@ function ingestTerrainData(terrainJson) {
         end: terrainJson.end,
         contribution_min_publication_delay_minutes: terrainJson.contribution_min_publication_delay_minutes,
         contribution_max_publication_delay_minutes: terrainJson.contribution_max_publication_delay_minutes,
-        users: terrainJson.cryptonims.map(cryptonimToUserAuthorPair),
+        cryptonims: terrainJson.cryptonims,
+        users: [],
         grainePublicationDatetime: terrainJson.grainePublicationDatetime,
         graines: terrainJson.graines
     };
@@ -36,22 +42,27 @@ function dayDateToDate(dayDate) {
     return new Date(dayDate.year, dayDate.month, dayDate.day);
 }
 exports.dayDateToDate = dayDateToDate;
+async function usernameExists(username) {
+    const user = await strapi.db.query('plugin::users-permissions.user').findOne({
+        where: { username: username },
+    });
+    return !!user;
+}
 async function userWithEmailExists(email) {
     const user = await strapi.db.query('plugin::users-permissions.user').findOne({
         where: { email: email },
     });
     return !!user;
 }
-async function computeEmailForCryptonim(cryptonim, strapi) {
-    const domain = "test.test";
-    let email = `${cryptonim}@${domain}`;
-    let userExists = await userWithEmailExists(email);
-    let index = 1;
+async function computeUniqueUsername(cryptonim) {
+    let username = cryptonim;
+    let userExists = await usernameExists(username);
+    let index = 2;
     while (userExists) {
-        email = `${cryptonim}_${index}@${domain}`;
-        userExists = await userWithEmailExists(email);
+        username = `${cryptonim}_${index}`;
+        userExists = await usernameExists(username);
         index++;
     }
-    return email;
+    return username;
 }
-exports.computeEmailForCryptonim = computeEmailForCryptonim;
+exports.computeUniqueUsername = computeUniqueUsername;

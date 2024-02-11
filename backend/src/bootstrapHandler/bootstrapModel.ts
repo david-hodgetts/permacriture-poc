@@ -46,6 +46,7 @@ export interface Terrain{
     contribution_min_publication_delay_minutes: number; // min minutes before user can force publication
     contribution_max_publication_delay_minutes: number; // threshold after which contribution will be automatically published,
 
+    cryptonims: string[],
     users: UserAuthorPair[],
     grainePublicationDatetime: DayDate,
     graines: Graine[],
@@ -54,23 +55,28 @@ export interface Terrain{
 
 function genPassword():string{
     const charCount = 8;
-    return Math.random().toString(36).slice(charCount * -1); 
+    return Math.random().toString(36).slice(charCount * -1);
 }
 
-function cryptonimToUserAuthorPair(cryptonim: string): UserAuthorPair{
+export async function cryptonimToUserAuthorPair(cryptonim: string): Promise<UserAuthorPair>{
+    const username = await computeUniqueUsername(cryptonim);
+    const emailDomain = "permacriture.org";
+    const email = `${username.toLocaleLowerCase()}@${emailDomain}`;
+    console.log(`email ${email} and username ${username} computed for cryptonim -> ${cryptonim}`);
     return {
         user:{
-            username: cryptonim,
-            email: `${cryptonim.toLowerCase()}@test.test`,
+            username: username,
+            email: email,
             password:genPassword(),
         },
         author:{
-            nickname: cryptonim,
+            nickname: username,
         }
     }
 }
 
 export function ingestTerrainData(terrainJson:TerrainJSON): Terrain{
+
     const result: Terrain = {
         title: terrainJson.title,
         description: terrainJson.description,
@@ -78,7 +84,8 @@ export function ingestTerrainData(terrainJson:TerrainJSON): Terrain{
         end: terrainJson.end,
         contribution_min_publication_delay_minutes: terrainJson.contribution_min_publication_delay_minutes,
         contribution_max_publication_delay_minutes: terrainJson.contribution_max_publication_delay_minutes,
-        users: terrainJson.cryptonims.map(cryptonimToUserAuthorPair),
+        cryptonims:  terrainJson.cryptonims,
+        users: [], // filled later
         grainePublicationDatetime: terrainJson.grainePublicationDatetime,
         graines: terrainJson.graines
     }
@@ -90,6 +97,13 @@ export function dayDateToDate(dayDate: DayDate): Date{
     return new Date(dayDate.year, dayDate.month, dayDate.day);
 }
 
+async function usernameExists(username:string): Promise<boolean> {
+    const user = await strapi.db.query('plugin::users-permissions.user').findOne({
+        where: {username: username},
+    });
+
+    return !!user;
+}
 
 async function userWithEmailExists(email:string): Promise<boolean> {
     const user = await strapi.db.query('plugin::users-permissions.user').findOne({
@@ -99,16 +113,16 @@ async function userWithEmailExists(email:string): Promise<boolean> {
     return !!user;
 }
 
-export async function computeEmailForCryptonim(cryptonim: string, strapi: Strapi): Promise<string> {
-    const domain = "test.test";
-
-    let email = `${cryptonim}@${domain}`;
-    let userExists = await userWithEmailExists(email);
-    let index = 1;
+export async function computeUniqueUsername(cryptonim: string): Promise<string> {
+    let username = cryptonim;
+    let userExists = await usernameExists(username );
+    let index = 2;
     while(userExists){
-        email = `${cryptonim}_${index}@${domain}`;
-        userExists = await userWithEmailExists(email);
+        username = `${cryptonim}_${index}`;
+        userExists = await usernameExists(username);
         index++;
     }
-    return email;
+    return username;
 }
+
+
