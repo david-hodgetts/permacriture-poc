@@ -27,7 +27,8 @@
     let mapReady = false;
 
     let element:HTMLElement; // root div
-    let selectedContribution:Contribution | null;
+    let preSelectedContribution:Contribution | null = null;
+    let activeContribution:Contribution | null = null;
 
     $: defaultSelectedContribution = data.contribution; // 
 
@@ -130,12 +131,19 @@
         })
         .call(drag as any)
         .on("click", function(e, d) {
+
             e.stopPropagation();
 
-            const selectedContributionId = (d as Contribution).id;
+            const clickedContributionId = (d as Contribution).id;
+
+            if(preSelectedContribution && clickedContributionId == preSelectedContribution.id){
+                const selectedContributionId = (d as Contribution).id;
+                dispatch("contributionSelection", {id: selectedContributionId});
+                return;
+            }
+
             // goto(`/map/${selectedContributionId}`);
 
-            dispatch("contributionSelection", {id: selectedContributionId});
 
             select(d);
 
@@ -179,11 +187,12 @@
         });
 
         function mouseOverAction(e, d){
-            select(d);
+            const isHover = true;
+            makeActive(d);
         }
 
         function mouseOutAction(e, d){
-            unselect();
+            unMakeActive(d);
         }
 
 
@@ -262,9 +271,8 @@
         mapReady = true;
     });
 
-    function select(contribution: Contribution){
-
-        selectedContribution = contribution;
+    function select(contribution: Contribution ){
+        preSelectedContribution = contribution;
 
         // clear all state
         // data.graph.nodes.forEach((node:any) => delete(node.d3SelectAsParentOrChild));
@@ -285,10 +293,10 @@
         d3.selectAll(".link")
         .classed('greyed-link', function(d:any){
             // changed all links not connected to selected contribution
-            return d.source.id != selectedContribution!.id && d.target.id != selectedContribution!.id;
+            return d.source.id != preSelectedContribution!.id && d.target.id != preSelectedContribution!.id;
         });
 
-        const selectedVisualElement = d3.select(`#contribution_id_${selectedContribution.id}`)
+        const selectedVisualElement = d3.select(`#contribution_id_${preSelectedContribution.id}`)
         // selectedVisualElement.classed('selected', true);
         // remove fixed status set during drag
         delete (selectedVisualElement as any).fx;
@@ -296,18 +304,18 @@
 
         const greyedOutColor = "#9B9B9B";
         rect.style("fill", (d:any) => {
-            return d.id == selectedContribution!.id ? d.color : greyedOutColor;
+            return d.id == preSelectedContribution!.id ? d.color : greyedOutColor;
         });
     }
 
     function unselect(){
 
-        if (selectedContribution){
-            const selectedVisualElement = d3.select(`#contribution_id_${selectedContribution.id}`)
+        if (preSelectedContribution){
+            const selectedVisualElement = d3.select(`#contribution_id_${preSelectedContribution.id}`)
             selectedVisualElement.classed('selected', false);
         }
         
-        selectedContribution = null;
+        preSelectedContribution = null;
 
         // console.log("unselect", rect);
         rect.style("fill", (d:any) => d.color);
@@ -318,9 +326,67 @@
         dispatch("contributionUnSelected", {})
 
         if(defaultSelectedContribution){
-            selectedContribution = defaultSelectedContribution;
-            select(selectedContribution);
+            preSelectedContribution = defaultSelectedContribution;
+            select(preSelectedContribution);
         }
+    }
+
+    function makeActive(contribution: Contribution ){
+        activeContribution = contribution;
+
+        // clear all state
+        // data.graph.nodes.forEach((node:any) => delete(node.d3SelectAsParentOrChild));
+
+        // const parents = selectedContribution.parents.map(parentId => {
+        //     return data.graph.nodes.find(n => n.id == parentId);
+        // });
+        // parents.forEach((contrib:any) => contrib.d3SelectAsParentOrChild = true);
+        
+        // const children = selectedContribution.children.map(childId => {
+        //     return data.graph.nodes.find(n => n.id == childId);
+        // });
+        // children.forEach((contrib:any) => contrib.d3SelectAsParentOrChild = true);
+
+        // change visual style of selected node
+        // svg.selectAll('.selected').classed('selected', false);
+        
+        d3.selectAll(".link")
+        .classed('greyed-link', function(d:any){
+            // changed all links not connected to selected contribution
+            return d.source.id != activeContribution!.id && d.target.id != activeContribution!.id;
+        });
+
+        const selectedVisualElement = d3.select(`#contribution_id_${activeContribution.id}`)
+        // selectedVisualElement.classed('selected', true);
+        // remove fixed status set during drag
+        delete (selectedVisualElement as any).fx;
+        delete (selectedVisualElement as any).fy;
+
+        const greyedOutColor = "#9B9B9B";
+        rect.style("fill", (d:any) => {
+            return d.id == activeContribution!.id ? d.color : greyedOutColor;
+        });
+    }
+    function unMakeActive(){
+
+        if(activeContribution){
+            const selectedVisualElement = d3.select(`#contribution_id_${activeContribution.id}`)
+            selectedVisualElement.classed('selected', false);
+
+        }
+        if (preSelectedContribution){
+            select(preSelectedContribution);
+        }else if(defaultSelectedContribution){
+            preSelectedContribution = defaultSelectedContribution;
+            select(preSelectedContribution);
+        }else{
+            // console.log("unselect", rect);
+            rect.style("fill", (d:any) => d.color);
+
+            d3.selectAll(".link")
+            .classed('greyed-link', false);
+        }
+
     }
 
     function updateSimulation(){

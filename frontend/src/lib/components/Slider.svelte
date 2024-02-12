@@ -32,7 +32,7 @@
 
 <div class="slider" style="max-width:{width}">
     <div class="controls">
-        <div class="text">&plus;</div>
+        <div class="text">&minus;</div>
         <input 
             type="range"  
             value={value.toString()}
@@ -41,7 +41,7 @@
             step={step.toString()}
             bind:this={element}
             />
-        <div class="text">&minus;</div>
+        <div class="text">&plus;</div>
     </div>
 </div>
 
