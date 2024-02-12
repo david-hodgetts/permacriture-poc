@@ -3,7 +3,8 @@
     import { page } from "$app/stores";
 
     $: doesNotHaveJournalFilter = $page.url.pathname.startsWith("/map") || 
-                                  $page.url.pathname.startsWith("/editor") ;
+                                  $page.url.pathname.startsWith("/editor") ||
+                                  $page.url.pathname.startsWith("/contribution");
 
 </script>
 

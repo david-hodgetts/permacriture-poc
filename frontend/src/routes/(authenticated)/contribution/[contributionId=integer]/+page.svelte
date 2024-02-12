@@ -61,8 +61,9 @@
     .container{
         display: flex;
         flex-direction: column;
-        height: calc(100svh - var(--navbar-height));
+        height: calc(100svh - var(--navbar-height-map));
         width: 100%;
+        padding-top: 20px;
     }
 
     .map{
