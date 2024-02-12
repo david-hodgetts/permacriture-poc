@@ -19,8 +19,8 @@
         height: calc(100svh - var(--navbar-height));
         width: 100%;
         max-width: var(--app-max-width);
-        margin-left: var(--app-col-margin);
-        margin-right: var(--app-col-margin);
+        padding-left: var(--app-col-margin);
+        padding-right: var(--app-col-margin);
     }
 
     .map-page{

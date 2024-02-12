@@ -8,6 +8,7 @@
 	import { goto } from "$app/navigation";
 	import type { D3Graph } from "$lib/models/D3Graph";
 	import type Author from "$lib/models/Author";
+	import AlertModal from "./Modals/AlertModal.svelte";
 
     const dispatch = createEventDispatcher();
 
@@ -15,7 +16,7 @@
         graph: D3Graph,
         authors: Author[],
         contribution: Contribution | null;
-    }
+    };
 
     export let separation: number = 50; 
     
@@ -23,9 +24,19 @@
     let charge = 0;
     let linkForce = 100;
     let collisionRadius = rectSize;
+    let mapReady = false;
 
     let element:HTMLElement; // root div
     let selectedContribution:Contribution | null;
+
+    $: defaultSelectedContribution = data.contribution; // 
+
+    $: {
+        if(mapReady && defaultSelectedContribution){
+            select(defaultSelectedContribution);
+        }
+    }
+
 
     let svg: any;
     let rootOfGraph: any; // first g element of svg (root of all nodes)
@@ -64,6 +75,8 @@
         // const height = innerHeight;
         const width = bbox.width;
         const height = bbox.height;
+
+        defaultSelectedContribution = data.contribution;
 
         console.log("on mount", data.graph.links, data.graph.nodes);
         console.log(`width ${width} - height ${height}`);
@@ -245,6 +258,8 @@
         if(data.contribution){
             select(data.contribution);
         }
+
+        mapReady = true;
     });
 
     function select(contribution: Contribution){
@@ -301,6 +316,11 @@
         .classed('greyed-link', false);
 
         dispatch("contributionUnSelected", {})
+
+        if(defaultSelectedContribution){
+            selectedContribution = defaultSelectedContribution;
+            select(selectedContribution);
+        }
     }
 
     function updateSimulation(){

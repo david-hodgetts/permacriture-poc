@@ -7,13 +7,13 @@ import type Author from '$lib/models/Author';
 import type { D3Graph } from '$lib/models/D3Graph';
 
 
-async function prepareMapData(){
+async function prepareMapData(contribution: Contribution){
     try{
         const authors = await strapiService.getAuthors();
         const graph: D3Graph = await strapiService.getD3Graph();
         return {
             graph,  
-            contribution: null,
+            contribution,
             authors,
         };
     }catch(e){
@@ -48,7 +48,7 @@ export const load: PageLoad = async ({ params }) => {
 
         console.log("counts", parentContributions, childContributions);
 
-        const mapData = await prepareMapData();
+        const mapData = await prepareMapData(contribution);
         return {
             contribution,
             parentContributions,

@@ -79,6 +79,7 @@
     <ContributionCardBackground 
         contribution={contribution} 
         height={0} 
+        maxHeight="40svh"
         isInDetailCard={true}/>
     
     {#if !contribution.isGraine}
@@ -98,6 +99,7 @@
 <style>
     .contribution-card{
         width: 100%;
+        height: 100%;
     }
     .top-decoration, .bottom-decoration{
         display: flex;

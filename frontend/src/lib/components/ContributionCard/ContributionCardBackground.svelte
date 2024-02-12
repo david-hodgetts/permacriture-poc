@@ -8,6 +8,8 @@
 
     export let isInDetailCard = false;
 
+    export let maxHeight = "";
+
     let heightStyleString = height > 0 ? `height:${height}px` : ""
     
     const classFromRole = contribution.isGraine ? "graine" : 
@@ -16,11 +18,13 @@
 
 <div class={`card ${classFromRole}`} 
 
-    style={`${heightStyleString}`}>
+    style={`${heightStyleString} max-height:${maxHeight}`}>
     <Header contribution={contribution} />
     <div 
         class="mainText" 
         class:textEllipsis={!isInDetailCard}
+        class:scrollable={isInDetailCard}
+        class:not-scrollable={!isInDetailCard}
         class:textEllipsisForEditingState={contribution.state == ContributionState.Editing && !isInDetailCard}>
         {@html contribution.textHtml }
     </div>
@@ -47,6 +51,14 @@
         border: 2px #707070;
     }
 
+    .not-scrollable{
+        overflow: hidden;
+    }
+
+    .scrollable{
+        overflow-y: scroll;
+    }
+
     .published{
         background-color: var(--color-background-default);
         color: var(--color-text-default);
@@ -58,7 +70,6 @@
     }
 
     .mainText{
-        overflow: hidden;
         margin: 10px 0 15px 0;
     }
 
