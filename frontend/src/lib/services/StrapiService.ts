@@ -165,17 +165,6 @@ class StrapiService
         }
     }
 	
-    // async cancelPublication(contribution: Contribution):Promise<null> {
-    //     const url = `${Config.baseUrl}/api/contributions/cancel-publication/${contribution.id}`;
-    //     try{
-    //         await axios.put(url, {}, axiosOptions());
-    //         return null;
-    //     }catch(e){
-    //         errorHandler(e as AxiosError);
-    //         throw e;
-    //     }
-	// }
-	
     async abandonContribution(contribution: Contribution):Promise<null> {
         const url = `${Config.baseUrl}/api/contributions/abandon/${contribution.id}`;
         try{
@@ -201,7 +190,10 @@ class StrapiService
     }
 
     async getD3Graph(): Promise<D3Graph> {
-        const contributions = (await this.getContributions()).filter(c => c.state != ContributionState.Abandoned); 
+        const contributions = (await this.getContributions()).filter(c => {
+            return c.state == ContributionState.Published ||
+            (c.isMine && c.state == ContributionState.Editing);
+        }); 
         const links: Link[] = (await strapiService.getLinks()).filter((l: Link) => {
             // ensure we only get link for contributions that are accessible to current user
             // TODO: this check should be done in the backend
@@ -222,13 +214,13 @@ class StrapiService
                 source: parentIndex,
                 target: childIndex,
                 isFirstLink: l.isFirstLink,
+                linksToContributionInEditingState: child.state == ContributionState.Editing,
             };
         });
 
         return {
             nodes: contributions,
             links: d3Links,
-            contributions: contributions.map(c => structuredClone(c)),
         };
     }
 }

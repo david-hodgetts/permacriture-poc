@@ -1,14 +1,10 @@
 <script lang="ts">
-    import Slider from "$lib/components/Slider.svelte";
     import * as d3 from "d3";
     import { forceSimulation } from 'd3';
 	import { onMount, createEventDispatcher } from "svelte";
 	import { ContributionState, type Contribution } from "$lib/models/Contribution";
-	// import { newDateOrNull } from "$lib/services/dateUtils";
-	import { goto } from "$app/navigation";
 	import type { D3Graph } from "$lib/models/D3Graph";
 	import type Author from "$lib/models/Author";
-	import AlertModal from "./Modals/AlertModal.svelte";
 
     const dispatch = createEventDispatcher();
 
@@ -98,11 +94,7 @@
         .join("line")
         .classed("link", true)
         .classed("editing-link", function (d:any){
-            const isNumber = (value: any) => typeof value === 'number' && isFinite(value);
-
-            console.log("d", d);
-    
-            return d["target"]["state"] == ContributionState.Editing 
+            return d.linksToContributionInEditingState;
         })
         .attr("stroke", (l) => linkColor)
         .style("stroke-width", "3px");
