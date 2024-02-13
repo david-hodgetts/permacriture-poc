@@ -7,7 +7,7 @@
 
     export let data:PageData;
 
-    let separation = 50; 
+    let separation = 20; 
 
     function onContributionSelection(e:any){
         const { id } = e.detail;

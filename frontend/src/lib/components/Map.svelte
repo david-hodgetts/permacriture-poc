@@ -14,7 +14,7 @@
         contribution: Contribution | null;
     };
 
-    export let separation: number = 50; 
+    export let separation: number = 20; 
     
     const rectSize = 54;
     let charge = 0;
@@ -262,12 +262,14 @@
             simulation.alpha(1).restart();
         }
 
+        const centerStrength = data.graph.nodes.length
+
         simulation = d3
         .forceSimulation()
         .nodes(data.graph.nodes)
         .force("charge", d3.forceManyBody().strength(charge))
         .force("collide", d3.forceCollide().radius((d) => collisionRadius))
-        .force("center", d3.forceCenter(width / 2, height / 2))
+        .force("center", d3.forceCenter(width / 2, height / 2).strength(1.2))
         .force("link", d3.forceLink(data.graph.links).distance(l => linkForce))
         .on("tick", tick);
 
@@ -286,9 +288,6 @@
                 .attr("y1", (d:any) => d.source.y)
                 .attr("x2", (d:any) => d.target.x)
                 .attr("y2", (d:any) => d.target.y);
-            // node
-            //     .attr("cx", d => d.x)
-            //     .attr("cy", d => d.y);
             node.attr("transform", (d:any) => `translate(${d.x}, ${d.y})`);
         }
 
@@ -308,22 +307,6 @@
 
     function select(contribution: Contribution ){
         preSelectedContribution = contribution;
-
-        // clear all state
-        // data.graph.nodes.forEach((node:any) => delete(node.d3SelectAsParentOrChild));
-
-        // const parents = selectedContribution.parents.map(parentId => {
-        //     return data.graph.nodes.find(n => n.id == parentId);
-        // });
-        // parents.forEach((contrib:any) => contrib.d3SelectAsParentOrChild = true);
-        
-        // const children = selectedContribution.children.map(childId => {
-        //     return data.graph.nodes.find(n => n.id == childId);
-        // });
-        // children.forEach((contrib:any) => contrib.d3SelectAsParentOrChild = true);
-
-        // change visual style of selected node
-        // svg.selectAll('.selected').classed('selected', false);
         
         d3.selectAll(".link")
         .classed('greyed-link', function(d:any){
@@ -368,22 +351,6 @@
 
     function makeActive(contribution: Contribution ){
         activeContribution = contribution;
-
-        // clear all state
-        // data.graph.nodes.forEach((node:any) => delete(node.d3SelectAsParentOrChild));
-
-        // const parents = selectedContribution.parents.map(parentId => {
-        //     return data.graph.nodes.find(n => n.id == parentId);
-        // });
-        // parents.forEach((contrib:any) => contrib.d3SelectAsParentOrChild = true);
-        
-        // const children = selectedContribution.children.map(childId => {
-        //     return data.graph.nodes.find(n => n.id == childId);
-        // });
-        // children.forEach((contrib:any) => contrib.d3SelectAsParentOrChild = true);
-
-        // change visual style of selected node
-        // svg.selectAll('.selected').classed('selected', false);
         
         d3.selectAll(".link")
         .classed('greyed-link', function(d:any){
@@ -402,13 +369,13 @@
             return d.id == activeContribution!.id ? d.color : greyedOutColor;
         });
     }
-    function unMakeActive(){
 
+    function unMakeActive(){
         if(activeContribution){
             const selectedVisualElement = d3.select(`#contribution_id_${activeContribution.id}`)
             selectedVisualElement.classed('selected', false);
-
         }
+        
         if (preSelectedContribution){
             select(preSelectedContribution);
         }else if(defaultSelectedContribution){
