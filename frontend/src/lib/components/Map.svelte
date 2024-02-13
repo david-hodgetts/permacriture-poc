@@ -87,7 +87,6 @@
         const linkColor = "#fff";
         const arrowBlack = makeArrow("arrow-black", linkColor);
 
-
         const link = rootOfGraph
         .selectAll(".link")
         .data(data.graph.links)
@@ -185,7 +184,6 @@
             unMakeActive(d);
         }
 
-
         rect = node.append("rect")
         .attr("x", -rectSize / 2)
         .attr("y", -rectSize / 2)
@@ -217,6 +215,10 @@
             return x < lo ? lo : x > hi ? hi : x;
         }
 
+        /**
+         * extracts translation and scale from element attribute
+         * @param transformAttr
+         */
         function extractTransform(transformAttr:string|null): {translation:{x:number, y: number}, scale: number}{
             if(!transformAttr){
                 return{
@@ -262,14 +264,12 @@
             simulation.alpha(1).restart();
         }
 
-        const centerStrength = data.graph.nodes.length
-
         simulation = d3
         .forceSimulation()
         .nodes(data.graph.nodes)
         .force("charge", d3.forceManyBody().strength(charge))
         .force("collide", d3.forceCollide().radius((d) => collisionRadius))
-        .force("center", d3.forceCenter(width / 2, height / 2).strength(1.2))
+        .force("center", d3.forceCenter(width / 2, height / 2))
         .force("link", d3.forceLink(data.graph.links).distance(l => linkForce))
         .on("tick", tick);
 
