@@ -30,7 +30,7 @@
 
 </script>
 
-<div class="slider" style="max-width:{width}">
+<div class="slider generic-box-shadow" style="max-width:{width}">
     <div class="controls">
         <div class="text">&minus;</div>
         <input 

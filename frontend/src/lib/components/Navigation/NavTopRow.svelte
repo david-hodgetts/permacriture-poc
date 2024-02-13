@@ -10,7 +10,7 @@
 
 <div class="row">
     <a href="/" >
-        <div class="capsule capsule-left" 
+        <div class="capsule capsule-left generic-box-shadow" 
             class:selected={isJournalSelected} 
             >
                 <div class="text no-select">
@@ -21,7 +21,7 @@
     </a>
     <a href="/map" >
         <div 
-            class="capsule" 
+            class="capsule generic-box-shadow" 
             class:selected={isMapSelected}
             >
                 <div class="text no-select">
@@ -53,7 +53,7 @@
         align-items: center;
         gap: 10px;
 
-        box-shadow: #54599012 0px 0px 10px 10px;
+        /* box-shadow: #54599012 0px 0px 10px 10px; */
         border-radius: 9px;
         cursor: pointer;
     }

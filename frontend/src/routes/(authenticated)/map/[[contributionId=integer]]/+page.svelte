@@ -3,18 +3,11 @@
     import Map from "$lib/components/Map.svelte";
 	import Slider from "$lib/components/Slider.svelte";
 	import TerrainTitle from "$lib/components/TerrainTitle.svelte";
-    import ContributionCard from "$lib/components/ContributionCard.svelte";
-    import ContributionDetailModal from "$lib/components/Modals/ContributionDetailModal.svelte";
 	import { goto } from "$app/navigation";
-    import { page } from "$app/stores";
 
     export let data:PageData;
 
     let separation = 50; 
-
-    $: showContribution = !!data.contribution;
-
-    $: showDetailModal = !!$page.url.searchParams.get('show-detail');
 
     function onContributionSelection(e:any){
         const { id } = e.detail;
@@ -24,19 +17,6 @@
 
     function onContributionUnSelected(e:any){
         goto('/map');
-    }
-
-    function onShowDetailRequest(e:any){
-        const contributionId = e.detail.id;
-        goto(`/contribution/${contributionId}`);
-    }
-
-    function closeDetailModal(){
-        if(data.contribution){
-            goto(`/map/${data.contribution.id}`);
-        }else{
-            goto('/map');
-        }
     }
 
 </script>

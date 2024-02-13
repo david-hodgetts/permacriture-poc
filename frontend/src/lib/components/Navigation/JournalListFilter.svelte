@@ -27,7 +27,7 @@
 
 <div class="element">
     <div class="row no-select">
-        <div class="capsule">
+        <div class="capsule generic-box-shadow">
             <div 
                 class="item left" 
                 class:selected={filter == Filter.all}
