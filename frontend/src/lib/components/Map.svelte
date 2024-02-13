@@ -53,17 +53,6 @@
         }
     }
 
-    // $:{
-    //     if (data.contribution && simulation){
-    //         select(data.contribution);
-    //     }
-        
-    //     if(!data.contribution && simulation){
-    //         console.log("deselect");
-    //         deselect();
-    //     }
-    // }
-
     onMount(()=> {
         svg = d3.select("#maproot")
             .append("svg")
@@ -72,8 +61,6 @@
         rootOfGraph = svg.append("g");
         
         const bbox = element.getBoundingClientRect();
-        // const width = innerWidth;
-        // const height = innerHeight;
         const width = bbox.width;
         const height = bbox.height;
 
@@ -227,9 +214,48 @@
             return x < lo ? lo : x > hi ? hi : x;
         }
 
+        function extractTransform(transformAttr:string|null): {translation:{x:number, y: number}, scale: number}{
+            if(!transformAttr){
+                return{
+                    scale:1,
+                    translation:{
+                        x:0,
+                        y:0,
+                    }
+                } 
+            }
+            
+            const floatRe = "([+-]?[0-9]*[.]?[0-9]+)";
+            const scaleRe = new RegExp(`scale\\(${floatRe}\\)`);
+            const scale = parseFloat(transformAttr.match(scaleRe)![1]);
+
+            const translateReStr = `translate\\(${floatRe}\\s*,\\s*${floatRe}\\)`;
+            const translateRe = new RegExp(translateReStr);
+            const translateMatch = transformAttr.match(translateRe);
+            const translation = {
+                x: parseFloat(translateMatch![1]),
+                y: parseFloat(translateMatch![2]),
+            }
+
+            return {
+                scale,
+                translation,
+            };
+        }
+
         function dragged(event:any, d:any) {
-            d.fx = clamp(event.x, 0, width);
-            d.fy = clamp(event.y, 0, height);
+            const transform = extractTransform(rootOfGraph.attr('transform'));
+
+            const w = width * (1 / transform.scale);
+            const maxX = w - (transform.translation.x *  (1 / transform.scale));
+            const minX = -(transform.translation.x *  (1 / transform.scale));
+            
+            const h = height * (1 / transform.scale);
+            const maxY = h - (transform.translation.y * (1 / transform.scale));
+            const minY = -(transform.translation.y * (1 / transform.scale));
+            // console.log(`x ${event.x}  transform.translation.x ${transform.translation.x} w ${w} maxX ${maxX} minX ${minX}`);
+            d.fx = clamp(event.x, minX, maxX);
+            d.fy = clamp(event.y, minY, maxY);
             simulation.alpha(1).restart();
         }
 
@@ -417,16 +443,5 @@
     :global(.mapSvg){
         width: 100%;
         height: 100%;
-    }
-    .controls{
-        position: fixed;
-        display: flex;
-        flex-direction: column;
-        gap:20px;
-        width: 300px;
-        height: 300px;
-        bottom:20px;
-        left: 20px;
-        background-color: rgba(0, 0, 0, 0.1);
     }
 </style>
