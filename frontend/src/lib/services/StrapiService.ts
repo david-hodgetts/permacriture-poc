@@ -201,7 +201,7 @@ class StrapiService
     }
 
     async getD3Graph(): Promise<D3Graph> {
-        const contributions = (await this.getContributions()).filter(c => c.state == ContributionState.Published); 
+        const contributions = (await this.getContributions()).filter(c => c.state != ContributionState.Abandoned); 
         const links: Link[] = (await strapiService.getLinks()).filter((l: Link) => {
             // ensure we only get link for contributions that are accessible to current user
             // TODO: this check should be done in the backend
@@ -228,6 +228,7 @@ class StrapiService
         return {
             nodes: contributions,
             links: d3Links,
+            contributions: contributions.map(c => structuredClone(c)),
         };
     }
 }

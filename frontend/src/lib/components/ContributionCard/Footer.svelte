@@ -14,18 +14,17 @@
 
 <div class={`footer no-select ${classFromRole}`}>
     {#if contribution.state == ContributionState.Editing}
-        <div 
-            on:click|stopPropagation={() => goto(`/editor/${contribution.id}`)}
-            on:keydown={() => null}
-            role="button" 
-            tabindex=0>… modifier</div>
-    {:else}
-        <div
-            on:click|stopPropagation={() => dispatch("showDetailRequest", {id: contribution.id})} 
-            on:keydown={() => null}
-            role="button" 
-            tabindex=0>… ouvrir</div>
+    <div 
+        on:click|stopPropagation={() => goto(`/editor/${contribution.id}`)}
+        on:keydown={() => null}
+        role="button" 
+        tabindex=0>… modifier</div>
     {/if}
+    <div
+        on:click|stopPropagation={() => dispatch("showDetailRequest", {id: contribution.id})} 
+        on:keydown={() => null}
+        role="button" 
+        tabindex=0>… ouvrir</div>
 
 </div>
 
@@ -38,6 +37,8 @@
         margin-bottom: 0;
         margin-top: auto;
         padding-bottom: 15px;
+        display: flex;
+        gap: 20px;
     }
     .editing, .published{
         color: var(--color-text-default);

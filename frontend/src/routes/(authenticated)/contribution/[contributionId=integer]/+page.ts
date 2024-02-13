@@ -3,7 +3,6 @@ import type { id } from '$lib/models/Id';
 import { strapiService } from '$lib/services/StrapiService';
 import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
-import type Author from '$lib/models/Author';
 import type { D3Graph } from '$lib/models/D3Graph';
 
 

@@ -14,4 +14,5 @@ export interface D3Graph{
         target: number,         // "child"   // "
         isFirstLink: boolean,
     }[], // note to self this notes an array of interface type (do not remove)
+    contributions: Contribution[],
 }

@@ -8,6 +8,10 @@
     opacity: 0.05;
 }
 
+.editing-link{
+    stroke-dasharray: 5 10;
+}
+
 .node {
     cursor: pointer;
 }
