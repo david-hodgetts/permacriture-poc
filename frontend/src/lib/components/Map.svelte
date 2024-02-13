@@ -45,6 +45,9 @@
 
     let simulation:any;
 
+    let width:number;
+    let height:number;
+
     $:{
         charge = 150; // (separation * 1 - 50);
         linkForce = separation * 3;
@@ -61,8 +64,9 @@
         rootOfGraph = svg.append("g");
         
         const bbox = element.getBoundingClientRect();
-        const width = bbox.width;
-        const height = bbox.height;
+        width = bbox.width;
+        height = bbox.height;
+        addEventListener('resize', onResize);
 
         defaultSelectedContribution = data.contribution;
 
@@ -296,6 +300,12 @@
 
         mapReady = true;
     });
+
+    function onResize(){
+        const bbox = element.getBoundingClientRect();
+        width = bbox.width;
+        height = bbox.height;
+    }
 
     function select(contribution: Contribution ){
         preSelectedContribution = contribution;
