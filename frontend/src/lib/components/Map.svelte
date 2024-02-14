@@ -15,6 +15,8 @@
     };
 
     export let separation: number = 20; 
+
+    export let allowMouseOver = false;
     
     const rectSize = 54;
     let charge = 0;
@@ -191,9 +193,11 @@
             // });
         })
         .on("mouseover", function(e, d){
+            if(!allowMouseOver) return;
             mouseOverAction(e, d);
         })
         .on("mouseout", function(e, d){
+            if(!allowMouseOver) return;
             mouseOutAction(e, d);
         });
 

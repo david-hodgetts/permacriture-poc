@@ -39,6 +39,7 @@
     <Map 
         data={data} 
         separation={separation} 
+        allowMouseOver={true}
         on:contributionSelection={onContributionSelection}
         on:contributionUnSelected={onContributionUnSelected}
         />
