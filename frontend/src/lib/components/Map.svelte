@@ -28,15 +28,37 @@
 
     $: defaultSelectedContribution = data.contribution; // 
 
+    let i = 0;
+
     $: {
         if(mapReady && defaultSelectedContribution){
             select(defaultSelectedContribution);
+
+            // ensure defaultSelectedContribution is fixed
+            if(node && i == 1){
+                node.attr("fx", (d:any) => {
+                    delete d.fx;
+                    delete d.fx;
+
+                    // ensure we fix defaultSelectedContribution
+                    // if(defaultSelectedContribution?.badgeText == d.badgeText){
+                    //     d.fx = width / 2; 
+                    //     d.fy = height / 2;
+                    //     console.log(`fixing ${d.badgeText} at fx ${d.fx} fy ${d.fy}`);
+                    // }else{
+                    //     delete d.fx;
+                    //     delete d.fx;
+                    // }
+                });
+            }
+            i++;
         }
     }
 
 
     let svg: any;
     let rootOfGraph: any; // first g element of svg (root of all nodes)
+    let node: any;
     let rect: any;
 
     let simulation:any;
@@ -66,8 +88,8 @@
 
         defaultSelectedContribution = data.contribution;
 
-        console.log("on mount", data.graph.links, data.graph.nodes);
-        console.log(`width ${width} - height ${height}`);
+        // console.log("on mount", data.graph.links, data.graph.nodes);
+        // console.log(`width ${width} - height ${height}`);
 
         const makeArrow = (idName: string, color: string) => {
             return svg.append("svg:defs").append("svg:marker")
@@ -104,16 +126,16 @@
         .on("start", dragstart)
         .on("drag", dragged);
 
-        const node = rootOfGraph
+        node = rootOfGraph
         .selectAll(".node")
         .data(data.graph.nodes)
         .join("g")
-        // .attr("fx", (d:any) => {
-        //     if (d.isGraine){
-        //         d.fx = (width / 2) + (Math.random() * 400 - 200);
-        //         d.fy = (height / 2) + (Math.random()) * 400 - 200;
-        //     }
-        // })
+        .attr("fx", (d:any) => {
+            if(defaultSelectedContribution && d.badgeText == defaultSelectedContribution.badgeText){
+                d.fx = width / 2;
+                d.fy = height / 2;
+            }
+        })
         .attr("id", function (d) { 
             // add contribution id to each node
             return `contribution_id_${d.id}`; 
@@ -300,9 +322,11 @@
     });
 
     function onResize(){
-        const bbox = element.getBoundingClientRect();
-        width = bbox.width;
-        height = bbox.height;
+        if(element){
+            const bbox = element.getBoundingClientRect();
+            width = bbox.width;
+            height = bbox.height;
+        }
     }
 
     function select(contribution: Contribution ){

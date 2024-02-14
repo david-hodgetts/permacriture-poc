@@ -45,8 +45,6 @@ export const load: PageLoad = async ({ params }) => {
             return mapOfContributions.get(id);
         }) as Contribution[];
 
-        console.log("counts", parentContributions, childContributions);
-
         const mapData = await prepareMapData(contribution);
         return {
             contribution,

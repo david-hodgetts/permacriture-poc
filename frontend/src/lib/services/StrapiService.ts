@@ -41,7 +41,7 @@ export function isUnAuthorizedError(e:any): boolean{
 
 class StrapiService
 {
-    async getContext(optionaJwt: string = ""): Promise<Context>{
+    async getContext(optionaJwt = ""): Promise<Context>{
         const url = `${Config.baseUrl}/api/user-context`;
         console.log(axiosOptions(optionaJwt));
         try{
@@ -60,10 +60,7 @@ class StrapiService
         const url = `${Config.baseUrl}/api/contributions`;
         try{
             const response = await axios.get(url, axiosOptions());
-            let contributions = response.data.data.map((item: any) => new Contribution(item)) as Contribution[];
-
-            // const graph = new Graph(contributions);
-            // contributions = graph.addCompleteChildParentCountToContributions();
+            const contributions = response.data.data.map((item: any) => new Contribution(item)) as Contribution[];
 
             return contributions;
         }catch(e){
@@ -129,7 +126,6 @@ class StrapiService
         const url = `${Config.baseUrl}/api/contributions/${contributionId}?populate[0]=author`;
         try{
             const response = await axios.get(url, axiosOptions());
-            console.log(response.data);
             return new Contribution(response.data);
         }catch(e){
             errorHandler(e);
@@ -193,7 +189,8 @@ class StrapiService
         const contributions = (await this.getContributions()).filter(c => {
             return c.state == ContributionState.Published ||
             (c.isMine && c.state == ContributionState.Editing);
-        }); 
+        });
+
         const links: Link[] = (await strapiService.getLinks()).filter((l: Link) => {
             // ensure we only get link for contributions that are accessible to current user
             // TODO: this check should be done in the backend

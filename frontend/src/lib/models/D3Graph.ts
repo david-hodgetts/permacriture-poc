@@ -1,5 +1,3 @@
-import type { Contribution } from "./Contribution";
-
 import type * as d3 from "d3";
 
 export interface D3Node extends d3.SimulationNodeDatum{

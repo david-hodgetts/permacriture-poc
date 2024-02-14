@@ -48,8 +48,8 @@ export class Contribution extends BaseStrapiEntity{
     public children!: id[];
     public parents!: id[];
 
-    public totalCountOfParents:number = 0;
-    public totalCountOfChildren:number = 0;
+    public totalCountOfParents = 0;
+    public totalCountOfChildren = 0;
 
     constructor(obj: any){
         super(obj);
