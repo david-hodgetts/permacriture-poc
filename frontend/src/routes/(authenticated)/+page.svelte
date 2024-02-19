@@ -1,7 +1,6 @@
 <script lang="ts">
     // landing page
     import ContributionList from "$lib/components/ContributionList.svelte"
-    import ListFilter from "$lib/components/ListFilter.svelte";
     import JournalListFilter from "$lib/components/Navigation/JournalListFilter.svelte";
 
 	import { Order, Filter, type Contribution, ContributionState } from "$lib/models/Contribution";
@@ -12,8 +11,12 @@
     
     import { getNotificationsContext } from 'svelte-notifications';
 	import { page } from "$app/stores";
+    import type { PageData } from "./$types";
     const { addNotification } = getNotificationsContext();
 
+    export let data: PageData;
+
+    let rawContributions: Contribution[] = data.contributions;
     let contributions: Contribution[] = [];
 
     let order: Order = determineOrder();
@@ -27,8 +30,8 @@
     onMount(() => {
         // @ts-ignore
         console.log("app version", __APP_VERSION__);
-        
-        updateContributions();
+        const shouldFetchContributions = false;
+        updateContributions(shouldFetchContributions);
     });
     
     onDestroy(() => {
@@ -89,24 +92,27 @@
         }
     }
 
-    async function updateContributions(){
-        let newContributions: Contribution[] = [];        
-        try{
-            newContributions = await getContributions();
-        }catch(e){
-            newContributions = [...contributions];
-            if(isUnAuthorizedError(e)){
-                return;
+    async function updateContributions(shouldFetchContributions=true){
+        if(shouldFetchContributions){
+            try{
+                rawContributions = await getContributions();
+                console.log("contributions fetched from backend");
+            }catch(e){
+                if(isUnAuthorizedError(e)){
+                    return;
+                }
             }
-        }
+        } 
+
+        contributions = [...rawContributions];
         
         // handle filter state
         if(selectedFilter == Filter.all){
             // only show published contributions on main page
-            contributions = newContributions.filter(c => c.state == ContributionState.Published);
+            contributions = contributions.filter(c => c.state == ContributionState.Published);
         }else{
             // show all my contributions irrespective of state
-            contributions = newContributions.filter(c => c.isMine);
+            contributions = contributions.filter(c => c.isMine);
         }
 
         console.log("contributions updated");
