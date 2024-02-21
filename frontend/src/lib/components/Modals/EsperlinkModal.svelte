@@ -102,7 +102,7 @@
 
 <ModalBase visible={visible} on:close>
     <div class="content">
-        <h2>Avec quels textes souhaitez-vous vous esperlier ?</h2>
+        <h2>A quel(s) autre(s) texte(s) souhaitez-vous lier votre texte?</h2>
         <div class="linkable-contributions">
             {#each contributions as linkableContribution}
                 <EsperlinkCheckBox contribution={linkableContribution} on:selectChange={onSelected} />

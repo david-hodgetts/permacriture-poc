@@ -10,8 +10,8 @@
     export let visible = false;
 
     // distinguish case where parent contribution is a graine
-    $: questionText = parentContribution?.author ? `Voulez-vous créer une contribution liée à la contribution de ${parentContribution?.author?.nickname} ${parentContribution.perAuthorTextIndex}` :
-         "Voulez-vous créer une contribution liée à cette graine?"
+    $: questionText = parentContribution?.author ? `Voulez-vous vous lier au texte ${parentContribution?.author?.nickname} ${parentContribution.perAuthorTextIndex} et commencer à rédiger?` :
+         "Voulez-vous vous lier à ce pré-texte et commencer à rédiger? "
 
 
 	function handleOk() {
@@ -26,7 +26,7 @@
 
 <ModalBase visible={visible} on:close>
     <div class="content">
-        <h2>"Créer une nouvelle contributions"</h2>
+        <h2>"Perlier"</h2>
         <h3>{questionText}</h3>
         <div class="buttons">
             <Button 

@@ -19,7 +19,7 @@
         Permacriture, version {appVersion} 
     </p>
     <p>
-        Vous êtes connecté en tant que {#if $UserStore.user} 
+        connexion en tant que {#if $UserStore.user} 
             {$UserStore.user.context.author.nickname} 
         {/if}
     </p>

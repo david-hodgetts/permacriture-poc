@@ -67,12 +67,13 @@
         let delayStr = "";;
 
         if(hours > 0){
-            delayStr = `${hours}h${minutes.toString().padStart(2, '0')}`
+            const pluralStr = hours > 1 ? "s" : "";
+            delayStr = `${hours} heure${pluralStr} et ${minutes.toString().padStart(2, '0')} minutes`;
         }else{
-            delayStr = `${minutes} minutes`
+            delayStr = `${minutes} minutes`;
         }
-
-        notPubliForcableAlertText = `Cette contribution pourra être publiforcée dans ${delayStr}.`
+        
+        notPubliForcableAlertText = `Elle le sera uniquement dans ${delayStr}.`;
 
         // 2. show alert
         showNotPubliforcableAlert = true;
@@ -168,7 +169,7 @@
 {#key invalidationKey}
 
 <AlertModal
-    title="La contribution ne peut pas être publi-forcée à ce moment"
+    title="La publication de ce texte ne peut encore être avancée."
     subTitle={notPubliForcableAlertText}
     visible={showNotPubliforcableAlert}
     on:close={() => showNotPubliforcableAlert = false}
@@ -181,16 +182,16 @@
 />
 
 <DialogModal
-    title="Voulez-vous forcer la publication ?"
-    subTitle="ce texte sera publié immédiatement"
+    title="Voulez-vous avancer la publication ?"
+    subTitle="Ce texte sera publié immédiatement"
     visible={showPubliForceDialog} 
     on:close={() => showPubliForceDialog = false}
     on:dialogAccepted={handleForcePublication}
 />
 
 <DialogModal
-    title="Voulez-vous abandonner le texte en cours ?"
-    subTitle="ce texte sera définitivement supprimé"
+    title="Abandonnez-vous la publication de ce texte ?"
+    subTitle="(une fois disperlié, ce texte ne pourra plus être publié)"
     visible={showAbandonDialog} 
     role="danger"
     on:close={() => showAbandonDialog = false}
@@ -229,19 +230,19 @@
         {#if contribution.isPublishable}
             <ButtonSmall 
                 on:click={() => showPubliForceDialog = true}>
-                publiforcer
+                avancer
             </ButtonSmall>
         {:else}
             <ButtonSmall 
                 buttonType="neutral"
                 on:click={handleShowNotPubliforcableDialog}>
-                publiforcer
+                avancer
             </ButtonSmall>
         {/if}
         <ButtonSmall 
             inverse={true}
             on:click={()=> showAbandonDialog = true}>
-            abandonner
+            disperlier
         </ButtonSmall>
     </div>
 </div>
