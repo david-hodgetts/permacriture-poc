@@ -39,7 +39,7 @@
         ]
     },
     {
-        "title": "Terrain tutoriel",
+        "title": "Tutoriel Permacriture",
         "description": "un terrain tutoriel",
         "start": {
             "year": 2024,
@@ -51,7 +51,7 @@
             "month": 5,
             "day": 31
         },
-        "contribution_min_publication_delay_minutes": 480,
+        "contribution_min_publication_delay_minutes": 120,
         "contribution_max_publication_delay_minutes": 2880,
         "cryptonims": [
           "Axiome", "Bégaiement", "Commencement", "Début", "Extrait"

@@ -58,10 +58,22 @@ function genPassword():string{
     return Math.random().toString(36).slice(charCount * -1);
 }
 
+// normalizes usernames for use as email local parts.
+function userNameToEmail(username: string, domain:string): string{
+    const localPart = username.toLowerCase()
+      .trim()
+      .replace(/[\s_-]+/g, "-")
+      .replace(/^-+|-+$/g, "")
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "");
+    const email = `${localPart}@${domain}`;
+    return email;
+}
+
 export async function cryptonimToUserAuthorPair(cryptonim: string): Promise<UserAuthorPair>{
     const username = await computeUniqueUsername(cryptonim);
-    const emailDomain = "permacriture.org";
-    const email = `${username.toLocaleLowerCase()}@${emailDomain}`;
+    const domain = "permacriture.org";
+    const email = userNameToEmail(username, domain);
     console.log(`email ${email} and username ${username} computed for cryptonim -> ${cryptonim}`);
     return {
         user:{
@@ -115,7 +127,7 @@ async function userWithEmailExists(email:string): Promise<boolean> {
 
 export async function computeUniqueUsername(cryptonim: string): Promise<string> {
     let username = cryptonim;
-    let userExists = await usernameExists(username );
+    let userExists = await usernameExists(username);
     let index = 2;
     while(userExists){
         username = `${cryptonim}_${index}`;

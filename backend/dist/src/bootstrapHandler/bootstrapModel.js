@@ -5,10 +5,21 @@ function genPassword() {
     const charCount = 8;
     return Math.random().toString(36).slice(charCount * -1);
 }
+// normalizes usernames for use as email local parts.
+function userNameToEmail(username, domain) {
+    const localPart = username.toLowerCase()
+        .trim()
+        .replace(/[\s_-]+/g, "-")
+        .replace(/^-+|-+$/g, "")
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
+    const email = `${localPart}@${domain}`;
+    return email;
+}
 async function cryptonimToUserAuthorPair(cryptonim) {
     const username = await computeUniqueUsername(cryptonim);
-    const emailDomain = "permacriture.org";
-    const email = `${username.toLocaleLowerCase()}@${emailDomain}`;
+    const domain = "permacriture.org";
+    const email = userNameToEmail(username, domain);
     console.log(`email ${email} and username ${username} computed for cryptonim -> ${cryptonim}`);
     return {
         user: {
