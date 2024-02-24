@@ -5,7 +5,6 @@ import { BaseStrapiEntity } from "./BaseStrapiEntity";
 import type { id } from "./Id";
 import { get } from 'svelte/store';
 import UserStore from '$lib/stores/user.store';
-import userStore from "$lib/stores/user.store";
 
 import { marked } from "marked";
 import { colorForAuthor } from "./Author";
@@ -65,6 +64,8 @@ export class Contribution extends BaseStrapiEntity{
         this.createdAt = new Date(obj.createdAt);
         this.children = obj.children;
         this.parents = obj.parents;
+
+        this.whenPublishedEnsurePublicationDateIsPresent();
     }
 
     get isMine(): boolean{
@@ -86,7 +87,7 @@ export class Contribution extends BaseStrapiEntity{
             return false;
         }
         const now = new Date();
-        const minDelayBeforePublication = userStore.getUser()!.context.terrain.contribution_min_publication_delay_minutes;
+        const minDelayBeforePublication = UserStore.getUser()!.context.terrain.contribution_min_publication_delay_minutes;
         const elapsedMillisSinceCreation = (now.getTime() - this.createdAt.getTime());
         return elapsedMillisSinceCreation >= minDelayBeforePublication * 60 * 1000;
     }
@@ -117,7 +118,7 @@ export class Contribution extends BaseStrapiEntity{
             return 0;
         }
 
-        const delayInMinutes = userStore.getUser()!.context.terrain.contribution_min_publication_delay_minutes;
+        const delayInMinutes = UserStore.getUser()!.context.terrain.contribution_min_publication_delay_minutes;
 
         const now = new Date();
         const remainingMillis = (this.createdAt.getTime() + delayInMinutes * 60 * 1000) - now.getTime();
@@ -133,7 +134,7 @@ export class Contribution extends BaseStrapiEntity{
             return 0;
         }
 
-        const delayInMinutes = userStore.getUser()!.context.terrain.contribution_max_publication_delay_minutes;
+        const delayInMinutes = UserStore.getUser()!.context.terrain.contribution_max_publication_delay_minutes;
 
         const now = new Date();
         const remainingMillis = (this.createdAt.getTime() + delayInMinutes * 60 * 1000) - now.getTime();
@@ -193,6 +194,16 @@ export class Contribution extends BaseStrapiEntity{
                 return this.parents;
             default:
                 throw new Error(`unsupported relation found -> ${relation}`);
+        }
+    }
+
+    whenPublishedEnsurePublicationDateIsPresent(){
+        if(this.state === ContributionState.Published && !this.publicationDatetime){
+            const publicationDelayMinutes = UserStore.getUser()?.context.terrain.contribution_max_publication_delay_minutes;
+            if(publicationDelayMinutes){
+                const minutesToMillis = 60000;
+                this.publicationDatetime = new Date(this.createdAt.getTime() + publicationDelayMinutes * minutesToMillis);
+            }
         }
     }
 }
