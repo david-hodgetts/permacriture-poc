@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { BadgeRole } from "$lib/components-utils/Badge";
 
+    import tippyAction from "$lib/actions/tippyAction";
+
     export let backgroundColor="#000";
     export let isGraine = false;
     export let text = "";
@@ -16,6 +18,7 @@
     class="badge"
     class:small={role == BadgeRole.List} 
     style="background-color: {isGraine ? "#fff" : backgroundColor}; width: {sizePx}px; height: {sizePx}px;"
+    use:tippyAction={{content:`${text.toUpperCase()}`}}
 >
     <div 
         class="text no-select"
