@@ -190,8 +190,8 @@
 />
 
 <DialogModal
-    title="Abandonnez-vous la publication de ce texte ?"
-    subTitle="(une fois disperlié, ce texte ne pourra plus être publié)"
+    title="Abandonnez-vous la publication de ce texte?"
+    subTitle="une fois disperlié, ce texte ne pourra plus être publié"
     visible={showAbandonDialog} 
     role="danger"
     on:close={() => showAbandonDialog = false}
@@ -199,7 +199,7 @@
 />
 
 <DialogModal
-    title="Voulez-vous vraiment quitter cette page ?"
+    title="Voulez-vous vraiment quitter cette page?"
     subTitle="le texte n'a pas été sauvé"
     visible={showReallyLeavePageDialog} 
     role="danger"
