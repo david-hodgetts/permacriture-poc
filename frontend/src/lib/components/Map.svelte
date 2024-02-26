@@ -301,7 +301,8 @@
 
         const zoom = d3.zoom().on('zoom', handleZoomAndPan);
 
-        svg.call(zoom);
+        svg.call(zoom)
+        .on("dblclick.zoom", null); // disable zoom event on double click / double tap
 
         function handleZoomAndPan(e: any){
             // console.log("zoom and pan", e.transform);
