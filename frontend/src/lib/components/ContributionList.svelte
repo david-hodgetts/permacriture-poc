@@ -16,8 +16,8 @@
         {/each}
     {:else}
         <div class="no-content">
-            Vous n'avez pas encore rédigé de texte.<br>
-            Passez sur la vue <u>tous les textes</u> et sélectionner <u>esperlier</u> 
+            Vous n'avez pas encore rédigé de textes.<br>
+            Passez sur la vue <u>tous les textes</u> et sélectionner <u>perlier</u> 
             sur un texte qui vous intéresse pour&nbsp;commencer.
         </div>
     {/if}
