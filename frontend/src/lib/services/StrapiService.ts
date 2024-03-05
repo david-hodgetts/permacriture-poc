@@ -43,7 +43,7 @@ class StrapiService
 {
     async getContext(optionaJwt = ""): Promise<Context>{
         const url = `${Config.baseUrl}/api/user-context`;
-        console.log(axiosOptions(optionaJwt));
+        // console.log(axiosOptions(optionaJwt));
         try{
             const response = await axios.get(url, axiosOptions(optionaJwt));
             const context = response.data;
