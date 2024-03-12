@@ -62,7 +62,7 @@
         </div>
     {:else if contribution.state == ContributionState.Abandoned}
         <div class="editingTimeout">
-            abandonnée
+            abandonné
         </div>
     {/if}
 </div>

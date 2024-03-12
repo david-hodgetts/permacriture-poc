@@ -109,7 +109,7 @@
         try{
             await strapiService.abandonContribution(contribution);
             addNotification({
-                text: "contribution abandonnée",
+                text: "texte disperlié",
                 position: "top-center",
                 type: "success",
                 removeAfter: Config.notificationDuration,
@@ -210,7 +210,7 @@
 <div class="editor-system">
     <Header contribution={contribution} />
     <Editor 
-        placeholder="éditez votre contribution" 
+        placeholder="rédigez votre texte" 
         text={contribution.text}
         on:textchange={onTextChange}
     />
