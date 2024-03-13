@@ -72,5 +72,110 @@
                 "text": "«Si je préfère écrire, c’est que l’écriture me permet de corriger chaque phrase autant de fois qu’il le faut.» Italo Calvino"
             }
         ]
+    },
+    {
+        "title": "Figures de style",
+        "description": "Figures de style",
+        "start": {
+            "year": 2024,
+            "month": 3,
+            "day": 18
+        },
+        "end": {
+            "year": 2024,
+            "month": 4,
+            "day": 28
+        },
+        "contribution_min_publication_delay_minutes": 120,
+        "contribution_max_publication_delay_minutes": 4320,
+        "cryptonims": [
+          "Anaphore", "Chiasme", "Épanalepse", "Hyperbole", "Litote", "Métonymie", "Oxymore", "Périphrase", "Synecdoque", "Zeugme", "Modération_figures_de_style"
+        ],
+        "grainePublicationDatetime":{
+            "year": 2024,
+            "month": 3,
+            "day": 17
+        },
+        "graines":[
+            {
+                "text": ""
+            },
+            {
+                "text": ""
+            },
+            {
+                "text": ""
+            }
+        ]
+    },
+    {
+        "title": "Mycologies",
+        "description": "Mycologies",
+        "start": {
+            "year": 2024,
+            "month": 3,
+            "day": 18
+        },
+        "end": {
+            "year": 2024,
+            "month": 4,
+            "day": 28
+        },
+        "contribution_min_publication_delay_minutes": 120,
+        "contribution_max_publication_delay_minutes": 4320,
+        "cryptonims": [
+          "Agaric", "Coprin", "Écailleux", "Hygrophore", "Lactaire", "Morillon", "Pézize", "Russule", "Sparassis", "Trémelle", "Modération_mycologies"
+        ],
+        "grainePublicationDatetime":{
+            "year": 2024,
+            "month": 3,
+            "day": 17
+        },
+        "graines":[
+            {
+                "text": ""
+            },
+            {
+                "text": ""
+            },
+            {
+                "text": ""
+            }
+        ]
+    },
+    {
+        "title": "Vents du Léman",
+        "description": "Vents du Léman",
+        "start": {
+            "year": 2024,
+            "month": 3,
+            "day": 18
+        },
+        "end": {
+            "year": 2024,
+            "month": 4,
+            "day": 28
+        },
+        "contribution_min_publication_delay_minutes": 120,
+        "contribution_max_publication_delay_minutes": 4320,
+        "cryptonims": [
+          "Albrans", "Birran", "Chamoisine", "Désalet", "Fraidieu", "Joran", "Molaine", "Séchard", "Rebat", "Vauderon", "Modération_vents_du_léman"
+        ],
+        "grainePublicationDatetime":{
+            "year": 2024,
+            "month": 3,
+            "day": 17
+        },
+        "graines":[
+            {
+                "text": ""
+            },
+            {
+                "text": ""
+            },
+            {
+                "text": ""
+            }
+        ]
     }
 ]
