@@ -98,13 +98,16 @@
         },
         "graines":[
             {
-                "text": ""
+                "text": "«Pour apprendre une chose, tu dois commencer par la faire.»"
             },
             {
-                "text": ""
+                "text": "«Nous avons la sensibilité pour percevoir les souffrances du monde, l'intelligence pour les analyser, et l'imagination pour inventer les solutions politiques qui y mettront fin.»"
             },
             {
-                "text": ""
+                "text": "«ll est évident que nous sommes ensemble (faute de quoi il n'y aurait personne pour lire ceci, qui ne serait pas non plus écrit, encore moins publié et ainsi communiqué).»"
+            },
+            {
+                "text": "«Vous êtes peut-être en train de vous demander si je plaisante ou si je suis sérieux. Je plaisante et je suis sérieux. Etre ludique ne veut pas dire être ridicule. Le jeu n'est pas forcément frivole, même si frivolité n'est pas trivialité : le plus souvent, on devrait prendre la frivolité au sérieux. J'aimerais que la vie soit un jeu – mais un jeu dont l'enjeu soit vertigineux. Je veux jouer pour de vrai.»"
             }
         ]
     },
@@ -140,6 +143,9 @@
             },
             {
                 "text": ""
+            },
+            {
+                "text": ""
             }
         ]
     },
@@ -167,6 +173,9 @@
             "day": 17
         },
         "graines":[
+            {
+                "text": ""
+            },
             {
                 "text": ""
             },
