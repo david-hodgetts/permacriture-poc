@@ -213,11 +213,23 @@ export default {
                 }
 
                 // produce report
-                const reportFilepath = `./terrain_creation_reports/terrain_creation_report${terrain.title}.json`;
+                {
+                  const reportFilepath = `./terrain_creation_reports/terrain_creation_report${terrain.title}.json`;
+                  writeFileSync(reportFilepath, JSON.stringify(terrain, null, 2), {encoding:'utf-8'});
+                  console.log("wrote report file", reportFilepath);
+                }
 
-                writeFileSync(reportFilepath, JSON.stringify(terrain, null, 2), {encoding:'utf-8'});
+                // produce password report
+                {
+                  const passwordReportFilepath = `./terrain_creation_reports/password_report_for_terrain.${terrain.title}.txt`;
+                  let result = `passwords for terrain ${terrain.title}\n--------------------------------\n\n`;
+                  for(const user of terrain.users){
+                    result += `${user.user.email}:${user.user.password}\n`;
+                  }
+                  writeFileSync(passwordReportFilepath, result, {encoding:'utf-8'});
+                  console.log("wrote password file", passwordReportFilepath);
+                }
 
-                console.log("wrote report file", reportFilepath);
             }
         }
     },
