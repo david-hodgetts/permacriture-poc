@@ -106,7 +106,7 @@ export function ingestTerrainData(terrainJson:TerrainJSON): Terrain{
 }
 
 export function dayDateToDate(dayDate: DayDate): Date{
-    return new Date(dayDate.year, dayDate.month, dayDate.day);
+    return new Date(dayDate.year, dayDate.month - 1, dayDate.day);
 }
 
 async function usernameExists(username:string): Promise<boolean> {
