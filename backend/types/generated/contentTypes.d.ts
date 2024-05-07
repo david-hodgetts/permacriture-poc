@@ -939,6 +939,7 @@ export interface ApiTerrainTerrain extends Schema.CollectionType {
     contribution_min_publication_delay_minutes: Attribute.Integer &
       Attribute.Required &
       Attribute.DefaultTo<480>;
+    slug: Attribute.UID<'api::terrain.terrain', 'title'>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

@@ -38,6 +38,10 @@
       "type": "integer",
       "required": true,
       "default": 480
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "title"
     }
   }
 }
