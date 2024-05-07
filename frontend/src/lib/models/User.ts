@@ -18,5 +18,6 @@ export interface Context
         end: string,
         contribution_min_publication_delay_minutes: number,
         contribution_max_publication_delay_minutes: number,
+        slug: string,
     }
 }
