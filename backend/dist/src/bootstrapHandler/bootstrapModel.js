@@ -50,7 +50,7 @@ function ingestTerrainData(terrainJson) {
 }
 exports.ingestTerrainData = ingestTerrainData;
 function dayDateToDate(dayDate) {
-    return new Date(dayDate.year, dayDate.month, dayDate.day);
+    return new Date(dayDate.year, dayDate.month - 1, dayDate.day);
 }
 exports.dayDateToDate = dayDateToDate;
 async function usernameExists(username) {
