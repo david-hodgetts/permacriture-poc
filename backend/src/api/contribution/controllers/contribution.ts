@@ -3,6 +3,7 @@
  */
 
 import { factories } from '@strapi/strapi'
+import { UserContext } from '../../user-context/services/user-context';
 
 
 async function addChildrenAndParentsToContribution(contribution, strapi, userContext){
@@ -26,7 +27,7 @@ async function addChildrenAndParentsToContribution(contribution, strapi, userCon
 
         contribution.children = children;
     }
-    
+
     {
         const promises = parents.map(id => strapi.service('api::contribution.contribution').findOne(id));
         const parentContributions = await Promise.all(promises);
@@ -53,10 +54,74 @@ async function computeNextPerAuthorTextIndexForUser(userContext) : Promise<numbe
     return contributions.length + 1;
 }
 
+
+type Context = {
+    terrain: any,
+    userContext: UserContext | null
+}
+
+async function authorize(strapi, ctx): Promise<Context> {
+    const terrainSlug = ctx.request.params.id;
+    const terrain = await strapi.service("api::terrain.terrain").getTerrainForSlug(terrainSlug);
+    if (!terrain) {
+        ctx.notFound();
+        throw new Error();
+    }
+
+    if(terrain.public){
+        return{
+            terrain,
+            userContext: null,
+        }
+    }
+
+    // handle cases where terrain is not public
+
+    if (!ctx.state.user) {
+        ctx.unauthorized();
+        throw new Error();
+    }
+
+    const userContext = await getUserContext(strapi, ctx);
+
+    if(userContext.author.terrain.id != terrain.id){
+        ctx.unauthorized();
+        throw new Error();
+    }
+
+    return {
+        terrain,
+        userContext,
+    }
+}
+
+async function getUserContext(strapi, ctx){
+
+    const userId = ctx.state.user.id;
+    let userContext;
+    try{
+        userContext = await strapi.service('api::user-context.user-context').getContext(userId);
+    }catch (e){
+        ctx.badRequest("invalid user context", {});
+        throw new Error();
+    }
+
+    return userContext;
+}
+
 export default factories.createCoreController('api::contribution.contribution', ({ strapi }) => ({
 
     // Method 2: Wrapping a core action (leaves core logic in place)
     async find(ctx) {
+        let context;
+        try{
+            context = await authorize(strapi, ctx);
+        }catch(e){
+            return ctx;
+        }
+
+        console.log("context", context);
+
         const userId = ctx.state.user.id;
         let userContext;
         try{
@@ -88,16 +153,16 @@ export default factories.createCoreController('api::contribution.contribution', 
             populate: ['author'],
             orderBy: { publicationDatetime: 'desc' }
         });
-        
+
         // add direct ancestors and children
         for(let contribution of contributions){
             await addChildrenAndParentsToContribution(contribution, strapi, userContext);
         }
-        
+
         // console.log("contributions", contributions);
 
         ctx.body = {
-            data: contributions 
+            data: contributions
         };
     },
 
@@ -120,9 +185,9 @@ export default factories.createCoreController('api::contribution.contribution', 
         }
 
         await addChildrenAndParentsToContribution(entity, strapi, userContext);
-        
+
         console.log(entity);
-        
+
         const sanitizedEntity = await this.sanitizeOutput(entity, ctx);
         ctx.body = sanitizedEntity;
 
@@ -139,7 +204,7 @@ export default factories.createCoreController('api::contribution.contribution', 
             return ctx.badRequest("invalid user context", {});
         }
         console.log("usercontext", userContext);
-        
+
         const contributions = await strapi.db.query('api::contribution.contribution').findMany({
             select: ['id', 'text', 'publicationDatetime', 'state', 'createdAt', 'perAuthorTextIndex'],
             where: {
@@ -152,7 +217,7 @@ export default factories.createCoreController('api::contribution.contribution', 
         for(const contribution of contributions){
             await addChildrenAndParentsToContribution(contribution, strapi, userContext);
         }
-        
+
         ctx.body = {
             data: contributions
         };
@@ -170,7 +235,7 @@ export default factories.createCoreController('api::contribution.contribution', 
             return ctx.badRequest("invalid user context", {});
         }
         console.log("usercontext", userContext);
-        
+
         // extract parentContributionId from request body
         const parentContributionId = ctx.request.body.data.parentContributionId;
         console.log("parentContributionId", parentContributionId);
@@ -203,7 +268,7 @@ export default factories.createCoreController('api::contribution.contribution', 
 
         console.log(newContribution);
         console.log("creating first link");
-        // 2. create link 
+        // 2. create link
         const link = await strapi.entityService.create('api::link.link', {
             data:{
                 parent: parentContributionId,
@@ -237,7 +302,7 @@ export default factories.createCoreController('api::contribution.contribution', 
             data: { id: id },
         };
     },
-    
+
     // async cancelPublication(ctx){
 
     //     // contribution id from query params
@@ -277,11 +342,11 @@ export default factories.createCoreController('api::contribution.contribution', 
     },
 
     /**
-     * adds secondary link to contribution 
-     * this adds the requested contribution (body.data.parentContributionId) 
+     * adds secondary link to contribution
+     * this adds the requested contribution (body.data.parentContributionId)
      * as a parent of the contribution
      * @param ctx
-     * @returns 
+     * @returns
      */
     async addParent(ctx){
         // contribution id from query params
@@ -304,7 +369,7 @@ export default factories.createCoreController('api::contribution.contribution', 
             return ctx.badRequest("invalid user context", {});
         }
         console.log("usercontext", userContext);
-        
+
         // check parentContribution exists and is a valid contrib (ie is in published state)
         const parentContribution = await strapi.db.query('api::contribution.contribution').findOne({
             select: ['id'],
@@ -330,7 +395,7 @@ export default factories.createCoreController('api::contribution.contribution', 
         if (maybeAlreadyExistingLink){
             return ctx.badRequest('link betwen contribution and parent already exists', { });
         }
-        
+
         // validations are ok
         // add the new secondary link
         const newLink = await strapi.entityService.create('api::link.link', {
@@ -344,4 +409,4 @@ export default factories.createCoreController('api::contribution.contribution', 
             data: { id: newLink.id },
         };
     }
-})); 
+}));

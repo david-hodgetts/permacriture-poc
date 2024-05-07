@@ -940,6 +940,7 @@ export interface ApiTerrainTerrain extends Schema.CollectionType {
       Attribute.Required &
       Attribute.DefaultTo<480>;
     slug: Attribute.UID<'api::terrain.terrain', 'title'>;
+    public: Attribute.Boolean & Attribute.Required & Attribute.DefaultTo<false>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

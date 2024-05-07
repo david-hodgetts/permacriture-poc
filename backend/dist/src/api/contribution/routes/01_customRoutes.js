@@ -12,6 +12,15 @@ exports.default = {
             },
         },
         {
+            method: 'GET',
+            path: '/contributions/terrain/:id',
+            handler: 'contribution.find',
+            config: {
+                policies: [],
+                middlewares: [],
+            },
+        },
+        {
             method: 'PUT',
             path: '/contributions/publish/:id',
             handler: 'contribution.publish',

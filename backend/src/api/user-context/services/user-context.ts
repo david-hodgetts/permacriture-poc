@@ -2,14 +2,20 @@
  * user-context service
  */
 
+export interface UserContext {
+  userId: number,
+  author: any,
+  role: string,
+}
+
 const { createCoreService } = require('@strapi/strapi').factories;
 
- module.exports = createCoreService('api::user-context.user-context', ({ strapi }) =>  ({
+module.exports = createCoreService('api::user-context.user-context', ({ strapi }) =>  ({
     // Method 1: Creating an entirely new custom service
-  
+
     // Method 3: Replacing a core service
-    
-    async getContext(userId: number) {
+
+    async getContext(userId: number): Promise<UserContext> {
 
         const user = await strapi.db.query('plugin::users-permissions.user').findOne({
                 where: { id: userId },

@@ -41,9 +41,57 @@ async function computeNextPerAuthorTextIndexForUser(userContext) {
     });
     return contributions.length + 1;
 }
+async function authorize(strapi, ctx) {
+    const terrainSlug = ctx.request.params.id;
+    const terrain = await strapi.service("api::terrain.terrain").getTerrainForSlug(terrainSlug);
+    if (!terrain) {
+        ctx.notFound();
+        throw new Error();
+    }
+    if (terrain.public) {
+        return {
+            terrain,
+            userContext: null,
+        };
+    }
+    // handle cases where terrain is not public
+    if (!ctx.state.user) {
+        ctx.unauthorized();
+        throw new Error();
+    }
+    const userContext = await getUserContext(strapi, ctx);
+    if (userContext.author.terrain.id != terrain.id) {
+        ctx.unauthorized();
+        throw new Error();
+    }
+    return {
+        terrain,
+        userContext,
+    };
+}
+async function getUserContext(strapi, ctx) {
+    const userId = ctx.state.user.id;
+    let userContext;
+    try {
+        userContext = await strapi.service('api::user-context.user-context').getContext(userId);
+    }
+    catch (e) {
+        ctx.badRequest("invalid user context", {});
+        throw new Error();
+    }
+    return userContext;
+}
 exports.default = strapi_1.factories.createCoreController('api::contribution.contribution', ({ strapi }) => ({
     // Method 2: Wrapping a core action (leaves core logic in place)
     async find(ctx) {
+        let context;
+        try {
+            context = await authorize(strapi, ctx);
+        }
+        catch (e) {
+            return ctx;
+        }
+        console.log("context", context);
         const userId = ctx.state.user.id;
         let userContext;
         try {
@@ -172,7 +220,7 @@ exports.default = strapi_1.factories.createCoreController('api::contribution.con
         });
         console.log(newContribution);
         console.log("creating first link");
-        // 2. create link 
+        // 2. create link
         const link = await strapi.entityService.create('api::link.link', {
             data: {
                 parent: parentContributionId,

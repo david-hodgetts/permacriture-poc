@@ -1,6 +1,8 @@
+"use strict";
 /**
  * user-context service
  */
+Object.defineProperty(exports, "__esModule", { value: true });
 const { createCoreService } = require('@strapi/strapi').factories;
 module.exports = createCoreService('api::user-context.user-context', ({ strapi }) => ({
     // Method 1: Creating an entirely new custom service

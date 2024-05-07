@@ -42,6 +42,11 @@
     "slug": {
       "type": "uid",
       "targetField": "title"
+    },
+    "public": {
+      "type": "boolean",
+      "default": false,
+      "required": true
     }
   }
 }
