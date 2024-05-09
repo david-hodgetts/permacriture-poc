@@ -12,8 +12,17 @@ export default {
         },
         {
             method: 'GET',
-            path: '/contributions/terrain/:id',
+            path: '/terrain/:terrainId/contributions',
             handler: 'contribution.find',
+            config: {
+                policies: [],
+                middlewares: [],
+            },
+        },
+        {
+            method: 'GET',
+            path: '/terrain/:terrainId/contributions/:contributionId',
+            handler: 'contribution.findOne',
             config: {
                 policies: [],
                 middlewares: [],

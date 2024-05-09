@@ -5,7 +5,12 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const strapi_1 = require("@strapi/strapi");
 exports.default = strapi_1.factories.createCoreService('api::link.link', ({ strapi }) => ({
-    async parentsOfContribution(contributionId, userContext) {
+    /**
+     * @param {number} contributionId
+     * @param {UserContext|null} userContext // if null, assume terrain is public
+     * @returns a collection of parent links
+     */
+    async parentsOfContribution(contributionId, userContext = null) {
         let data = await strapi.db.query('api::link.link').findMany({
             select: ['id',],
             where: {
@@ -17,11 +22,21 @@ exports.default = strapi_1.factories.createCoreService('api::link.link', ({ stra
         const authorId = userContext.author.id;
         data = data.filter((elem) => {
             const p = elem.parent;
-            return p.state === "Published" || (p.author && p.author.id === authorId);
+            if (userContext) {
+                return p.state === "Published" || (p.author && p.author.id === authorId);
+            }
+            else {
+                return p.state === "Published";
+            }
         });
         return data;
     },
-    async childrenOfContribution(contributionId, userContext) {
+    /**
+     * @param {number} contributionId
+     * @param {UserContext|null} userContext // if null, assume terrain is public
+     * @returns a collection of child links
+     */
+    async childrenOfContribution(contributionId, userContext = null) {
         let data = await strapi.db.query('api::link.link').findMany({
             select: ['id',],
             where: {
@@ -33,7 +48,12 @@ exports.default = strapi_1.factories.createCoreService('api::link.link', ({ stra
         const authorId = userContext.author.id;
         data = data.filter((elem) => {
             const c = elem.child;
-            return c.state === "Published" || (c.author && c.author.id === authorId);
+            if (userContext) {
+                return c.state === "Published" || (c.author && c.author.id === authorId);
+            }
+            else {
+                return c.state === "Published";
+            }
         });
         return data;
     },

@@ -4,6 +4,12 @@
  */
 Object.defineProperty(exports, "__esModule", { value: true });
 const strapi_1 = require("@strapi/strapi");
+/**
+ *
+ * @param contribution
+ * @param strapi
+ * @param {UserContext|null} userContext
+ */
 async function addChildrenAndParentsToContribution(contribution, strapi, userContext) {
     const parentLinks = await strapi.service('api::link.link').parentsOfContribution(contribution.id, userContext);
     const childrenLinks = await strapi.service('api::link.link').childrenOfContribution(contribution.id, userContext);
@@ -42,7 +48,7 @@ async function computeNextPerAuthorTextIndexForUser(userContext) {
     return contributions.length + 1;
 }
 async function authorize(strapi, ctx) {
-    const terrainSlug = ctx.request.params.id;
+    const terrainSlug = ctx.request.params.terrainId;
     const terrain = await strapi.service("api::terrain.terrain").getTerrainForSlug(terrainSlug);
     if (!terrain) {
         ctx.notFound();
@@ -84,67 +90,76 @@ async function getUserContext(strapi, ctx) {
 exports.default = strapi_1.factories.createCoreController('api::contribution.contribution', ({ strapi }) => ({
     // Method 2: Wrapping a core action (leaves core logic in place)
     async find(ctx) {
-        let context;
+        let terrainContext;
         try {
-            context = await authorize(strapi, ctx);
+            terrainContext = await authorize(strapi, ctx);
         }
         catch (e) {
             return ctx;
         }
-        console.log("context", context);
-        const userId = ctx.state.user.id;
-        let userContext;
-        try {
-            userContext = await strapi.service('api::user-context.user-context').getContext(userId);
-        }
-        catch (e) {
-            return ctx.badRequest("invalid user context", {});
-        }
-        console.log("usercontext", userContext);
-        const contributions = await strapi.db.query('api::contribution.contribution').findMany({
-            select: ['id', 'text', 'state', 'publicationDatetime', 'createdAt', 'perAuthorTextIndex'],
-            where: {
-                $or: [
-                    {
-                        'terrain': {
-                            'id': userContext.author.terrain.id,
+        let contributions = [];
+        if (terrainContext.terrain.public) {
+            contributions = await strapi.db.query('api::contribution.contribution').findMany({
+                select: ['id', 'text', 'state', 'publicationDatetime', 'createdAt', 'perAuthorTextIndex'],
+                where: {
+                    $or: [
+                        {
+                            'terrain': {
+                                'id': terrainContext.terrain.id,
+                            },
+                            'state': 'Published',
                         },
-                        'state': 'Published',
-                    },
-                    {
-                        'terrain': {
-                            'id': userContext.author.terrain.id,
+                    ]
+                },
+                populate: ['author'],
+                orderBy: { publicationDatetime: 'desc' }
+            });
+        }
+        else {
+            contributions = await strapi.db.query('api::contribution.contribution').findMany({
+                select: ['id', 'text', 'state', 'publicationDatetime', 'createdAt', 'perAuthorTextIndex'],
+                where: {
+                    $or: [
+                        {
+                            'terrain': {
+                                'id': terrainContext.terrain.id,
+                            },
+                            'state': 'Published',
                         },
-                        'author': userContext.author.id,
-                    },
-                ]
-            },
-            populate: ['author'],
-            orderBy: { publicationDatetime: 'desc' }
-        });
+                        {
+                            'terrain': {
+                                'id': terrainContext.terrain.id,
+                            },
+                            'author': terrainContext.userContext.author.id,
+                        },
+                    ]
+                },
+                populate: ['author'],
+                orderBy: { publicationDatetime: 'desc' }
+            });
+        }
         // add direct ancestors and children
         for (let contribution of contributions) {
-            await addChildrenAndParentsToContribution(contribution, strapi, userContext);
+            await addChildrenAndParentsToContribution(contribution, strapi, terrainContext.userContext);
         }
         // console.log("contributions", contributions);
         ctx.body = {
             data: contributions
         };
     },
-    // Method 3: Replacing a core action
     async findOne(ctx) {
-        const userId = ctx.state.user.id;
-        let userContext;
+        let terrainContext;
         try {
-            userContext = await strapi.service('api::user-context.user-context').getContext(userId);
+            terrainContext = await authorize(strapi, ctx);
         }
         catch (e) {
-            return ctx.badRequest("invalid user context", {});
+            return ctx;
         }
-        console.log("usercontext", userContext);
-        const { id } = ctx.params;
+        let userContext = terrainContext.userContext;
+        ;
+        const { contributionId } = ctx.params;
         const { query } = ctx;
-        const entity = await strapi.service('api::contribution.contribution').findOne(id, query);
+        const entity = await strapi.service('api::contribution.contribution').findOne(contributionId, query);
         if (!entity) {
             return ctx.notFound("contribution not found", {});
         }
@@ -155,14 +170,17 @@ exports.default = strapi_1.factories.createCoreController('api::contribution.con
         // return this.transformResponse(sanitizedEntity);
     },
     async myContributions(ctx) {
-        const userId = ctx.state.user.id;
-        let userContext;
+        let terrainContext;
         try {
-            userContext = await strapi.service('api::user-context.user-context').getContext(userId);
+            terrainContext = await authorize(strapi, ctx);
         }
         catch (e) {
-            return ctx.badRequest("invalid user context", {});
+            return ctx;
         }
+        if (!terrainContext.userContext) {
+            return ctx.unauthorized("you are not authorized to view these contributions", {});
+        }
+        let userContext = terrainContext.userContext;
         console.log("usercontext", userContext);
         const contributions = await strapi.db.query('api::contribution.contribution').findMany({
             select: ['id', 'text', 'publicationDatetime', 'state', 'createdAt', 'perAuthorTextIndex'],
