@@ -4,6 +4,7 @@
 
 import { factories } from '@strapi/strapi'
 import { UserContext } from '../../user-context/services/user-context';
+import { authorize } from '../../../lib/authHelper';
 
 /**
  *
@@ -59,60 +60,6 @@ async function computeNextPerAuthorTextIndexForUser(userContext) : Promise<numbe
     return contributions.length + 1;
 }
 
-
-type TerrainContext = {
-    terrain: any,
-    userContext: UserContext | null
-}
-
-async function authorize(strapi, ctx): Promise<TerrainContext> {
-    const terrainSlug = ctx.request.params.terrainId;
-    const terrain = await strapi.service("api::terrain.terrain").getTerrainForSlug(terrainSlug);
-    if (!terrain) {
-        ctx.notFound();
-        throw new Error();
-    }
-
-    if(terrain.public){
-        return{
-            terrain,
-            userContext: null,
-        }
-    }
-
-    // handle cases where terrain is not public
-
-    if (!ctx.state.user) {
-        ctx.unauthorized();
-        throw new Error();
-    }
-
-    const userContext = await getUserContext(strapi, ctx);
-
-    if(userContext.author.terrain.id != terrain.id){
-        ctx.unauthorized();
-        throw new Error();
-    }
-
-    return {
-        terrain,
-        userContext,
-    }
-}
-
-async function getUserContext(strapi, ctx){
-
-    const userId = ctx.state.user.id;
-    let userContext;
-    try{
-        userContext = await strapi.service('api::user-context.user-context').getContext(userId);
-    }catch (e){
-        ctx.badRequest("invalid user context", {});
-        throw new Error();
-    }
-
-    return userContext;
-}
 
 export default factories.createCoreController('api::contribution.contribution', ({ strapi }) => ({
 
