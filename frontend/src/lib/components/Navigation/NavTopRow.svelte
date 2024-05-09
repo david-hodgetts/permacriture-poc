@@ -6,10 +6,12 @@
     $: isJournalSelected = $page.url.pathname == '/' || $page.url.pathname.startsWith("/?");
     $: isMapSelected = $page.url.pathname.startsWith("/map");
 
+    const { terrainSlug } = $page.params;
+
 </script>
 
 <div class="row">
-    <a href="/" >
+    <a href={`/terrain/${terrainSlug}`} >
         <div class="capsule capsule-left generic-box-shadow" 
             class:selected={isJournalSelected} 
             >
@@ -19,7 +21,7 @@
                 <JournalIcon selected={isJournalSelected} />
         </div>
     </a>
-    <a href="/map" >
+    <a href={`/terrain/${terrainSlug}/map`} >
         <div 
             class="capsule generic-box-shadow" 
             class:selected={isMapSelected}

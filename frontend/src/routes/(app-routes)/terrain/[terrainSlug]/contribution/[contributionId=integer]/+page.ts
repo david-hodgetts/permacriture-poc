@@ -6,10 +6,10 @@ import type { PageLoad } from './$types';
 import type { D3Graph } from '$lib/models/D3Graph';
 
 
-async function prepareMapData(contribution: Contribution){
+async function prepareMapData(contribution: Contribution, terrainSlug:string){
     try{
         const authors = await strapiService.getAuthors();
-        const graph: D3Graph = await strapiService.getD3Graph();
+        const graph: D3Graph = await strapiService.getD3Graph(terrainSlug);
         return {
             graph,  
             contribution,
@@ -24,10 +24,12 @@ async function prepareMapData(contribution: Contribution){
 export const load: PageLoad = async ({ params }) => {
     // console.log(params);
     const contributionId = parseInt(params.contributionId);
-    // console.log(contributionId);
+
+    const terrainSlug = params.terrainSlug;
 
     try{
-        const contributions: Contribution[] = await strapiService.getContributions();
+        const contributions: Contribution[] = await strapiService.getContributionsForTerrainWithSlug(terrainSlug);
+        console.log("contributions", contributions);
         const mapOfContributions:Map<id, Contribution> = new Map<id, Contribution>();
         for(const c of contributions){
             mapOfContributions.set(c.id, c);
@@ -45,7 +47,7 @@ export const load: PageLoad = async ({ params }) => {
             return mapOfContributions.get(id);
         }) as Contribution[];
 
-        const mapData = await prepareMapData(contribution);
+        const mapData = await prepareMapData(contribution, terrainSlug);
         return {
             contribution,
             parentContributions,
@@ -53,7 +55,6 @@ export const load: PageLoad = async ({ params }) => {
             mapData,
         };
     }catch(e){
-
         // FIX: improve error handling 
         error(404, 'Not found');
     }

@@ -28,6 +28,8 @@
     const orderParamKey = "order";
     const filterParamKey = "filter";
 
+    const { terrainSlug } = $page.params
+
     onMount(() => {
         // @ts-ignore
         console.log("app version", __APP_VERSION__);
@@ -85,13 +87,13 @@
 
     function onShowDetailRequest(e:any){
         const contributionId = e.detail.id;
-        goto(`/contribution/${contributionId}`);
+        goto(`/terrain/${terrainSlug}/contribution/${contributionId}`);
     }
 
     async function getContributions():Promise<Contribution[]>
     {
         try{
-            const newContributions: Contribution[] = await strapiService.getContributions();
+            const newContributions: Contribution[] = await strapiService.getContributionsForTerrainWithSlug(terrainSlug);
             return newContributions;
         }catch(e){
             if(isUnAuthorizedError(e)){

@@ -56,7 +56,8 @@
         };
         UserStore.setUser(user, jwt);
 
-        goto("/");
+
+        goto(`/terrain/${context.terrain.slug}`);
     }
 
 </script>

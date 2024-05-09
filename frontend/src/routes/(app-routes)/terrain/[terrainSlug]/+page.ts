@@ -5,8 +5,9 @@ import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 
 export const load: PageLoad = async ({ params }) => {
+    const terrainSlug = params.terrainSlug;
     try{
-        const contributions: Contribution[] = await strapiService.getContributions();
+        const contributions: Contribution[] = await strapiService.getContributionsForTerrainWithSlug(terrainSlug);
 
         return {
             contributions,

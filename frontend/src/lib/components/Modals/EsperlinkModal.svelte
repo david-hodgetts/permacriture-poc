@@ -36,11 +36,10 @@
     // and all its parent
     async function getContributions(): Promise<Contribution[]>{
 
-        return (await strapiService.getContributions()).filter(c => {
+        return (await strapiService.getContributionsForTerrainWithSlug()).filter(c => {
             return  c.state == ContributionState.Published &&
                     c.id != contribution.id && 
-                    !contribution.parents.includes(c.id);
-        });
+                    !contribution.parentsgetContributionsForTerrainWithId);
     }
 
     async function linkAllRequestedParents(){

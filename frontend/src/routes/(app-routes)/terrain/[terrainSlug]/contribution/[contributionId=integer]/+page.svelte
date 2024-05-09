@@ -4,12 +4,14 @@
     import Map from "$lib/components/Map.svelte";
 	import { goto } from "$app/navigation";
 	import { onDestroy, onMount } from "svelte";
+    import { page } from "$app/stores";
 
     export let data: PageData;
 
     let mapContainer: HTMLElement;
 
     let colWidth:number;
+    let terrainSlug = $page.params.terrainSlug;
 
     onMount(() => {
         addEventListener('resize', onResize);
@@ -32,7 +34,7 @@
 
     function onContributionSelectionRequest(e:any){
         const contributionId = e.detail.id;
-        goto(`/contribution/${contributionId}`);
+        goto(`/terrain/${terrainSlug}/contribution/${contributionId}`);
     }
 </script>
 

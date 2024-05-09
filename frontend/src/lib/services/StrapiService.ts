@@ -56,8 +56,9 @@ class StrapiService
         }
     }
 
-    async getContributions(): Promise<Contribution[]>{
-        const url = `${Config.baseUrl}/api/contributions`;
+    async getContributionsForTerrainWithSlug(terrainSlug: string): Promise<Contribution[]>{
+        console.log("getting contribution for terrain slug", terrainSlug);
+        const url = `${Config.baseUrl}/api/terrain/${terrainSlug}/contributions`;
         try{
             const response = await axios.get(url, axiosOptions());
             const contributions = response.data.data.map((item: any) => new Contribution(item)) as Contribution[];
@@ -69,8 +70,8 @@ class StrapiService
         }
     }
 
-    async getLinks(): Promise<Link[]>{
-        const url = `${Config.baseUrl}/api/links?populate=%2A`;
+    async getLinksForTerrainSlug(terrainSlug:string): Promise<Link[]>{
+        const url = `${Config.baseUrl}/api/terrain/${terrainSlug}/links`;
         try{
             const response = await axios.get(url, axiosOptions());
             return response.data.data.map((l: any) => {
@@ -185,13 +186,13 @@ class StrapiService
         
     }
 
-    async getD3Graph(): Promise<D3Graph> {
-        const contributions = (await this.getContributions()).filter(c => {
+    async getD3Graph(terrainSlug:string): Promise<D3Graph> {
+        const contributions = (await this.getContributionsForTerrainWithSlug(terrainSlug)).filter(c => {
             return c.state == ContributionState.Published ||
             (c.isMine && c.state == ContributionState.Editing);
         });
 
-        const links: Link[] = (await strapiService.getLinks()).filter((l: Link) => {
+        const links: Link[] = (await strapiService.getLinksForTerrainSlug(terrainSlug)).filter((l: Link) => {
             // ensure we only get link for contributions that are accessible to current user
             // TODO: this check should be done in the backend
             // console.log(l);
