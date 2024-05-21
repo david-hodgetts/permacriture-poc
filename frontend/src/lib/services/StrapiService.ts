@@ -85,12 +85,13 @@ class StrapiService
         const url = `${Config.baseUrl}/api/terrain/${terrainSlug}/links`;
         try{
             const response = await axios.get(url, axiosOptions());
-            return response.data.data.map((l: any) => {
+            console.log(JSON.stringify(response.data));
+            return response.data.map((l: any) => {
                 return {
                     id: l.id,
-                    parent: l.attributes.parent.data.id,
-                    child: l.attributes.child.data.id,
-                    isFirstLink: l.attributes.isFirstLink,
+                    parent: l.parent.id,
+                    child: l.child.id,
+                    isFirstLink: l.isFirstLink,
                 };
             }) as Link[];
         }catch(e){
