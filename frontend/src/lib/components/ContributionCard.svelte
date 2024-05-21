@@ -9,6 +9,7 @@
 	import { ContributionState, type Contribution } from "$lib/models/Contribution";
 	import { strapiService } from "$lib/services/StrapiService";
 	import Config from "$lib/services/Config";
+    import { page } from "$app/stores";
     
 	import { goto } from "$app/navigation";
     import { getNotificationsContext } from 'svelte-notifications';
@@ -98,7 +99,8 @@
 
     function handleGotoDetailRequest(e:any){
         const contributionId = e.detail.id;
-        goto(`/contribution/${contributionId}`);
+        const {terrainSlug} = $page.params;
+        goto(`/terrain/${terrainSlug}/contribution/${contributionId}`);
     }
 
 </script>

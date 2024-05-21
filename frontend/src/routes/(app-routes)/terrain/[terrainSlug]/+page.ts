@@ -7,7 +7,7 @@ import type { PageLoad } from './$types';
 export const load: PageLoad = async ({ params }) => {
     const terrainSlug = params.terrainSlug;
     try{
-        const contributions: Contribution[] = await strapiService.getContributionsForTerrainWithSlug(terrainSlug);
+        const contributions: Contribution[] = await strapiService.contributionsForTerrainWithSlug(terrainSlug);
 
         return {
             contributions,

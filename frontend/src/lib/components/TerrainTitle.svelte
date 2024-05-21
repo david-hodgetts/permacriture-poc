@@ -6,6 +6,7 @@
 	import { onMount } from 'svelte';
 	import { fade } from 'svelte/transition';
 	import { goto } from '$app/navigation';
+    import { page } from '$app/stores';
 
     let modalIsOpen = false;
 
@@ -33,8 +34,9 @@
     }
 
     onMount(async () => {
+        const { terrainSlug } = $page.params;
         try{
-            authors = await strapiService.getAuthors();
+            authors = await strapiService.getAuthorsForTerrain(terrainSlug);
             authors = authors.sort((a, b) => a.nickname.localeCompare(b.nickname));
         }catch(e){
             console.error(e);

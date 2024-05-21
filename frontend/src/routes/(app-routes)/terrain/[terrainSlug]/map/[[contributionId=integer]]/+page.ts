@@ -7,13 +7,14 @@ import type Author from '$lib/models/Author';
 
 
 export const load: PageLoad = async ({ params }) => {
+    const terrainSlug = params.terrainSlug;
     let contribution: Contribution | null = null;
     console.log("reload");
     if(params.contributionId){
         const contributionId = parseInt(params.contributionId);
         if(!isNaN(contributionId)){
             try{
-                contribution = await strapiService.contributionWithId(contributionId);
+                contribution = await strapiService.contributionForTerrainWithId(terrainSlug, contributionId);
             }catch(e){
                 console.error(e);
                 error(404, 'Not found');
@@ -25,7 +26,7 @@ export const load: PageLoad = async ({ params }) => {
     // get list of authors
     let authors: Author[] = [];
     try{
-        authors = await strapiService.getAuthors();
+        authors = await strapiService.getAuthorsForTerrain(terrainSlug);
     }catch(e){
         console.error(e);
         error(404, 'Not found');
@@ -35,7 +36,7 @@ export const load: PageLoad = async ({ params }) => {
 
 
     try{
-        const graph: D3Graph = await strapiService.getD3Graph();
+        const graph: D3Graph = await strapiService.getD3Graph(terrainSlug);
         return {
             graph,  
             contribution,

@@ -8,7 +8,7 @@ import type { D3Graph } from '$lib/models/D3Graph';
 
 async function prepareMapData(contribution: Contribution, terrainSlug:string){
     try{
-        const authors = await strapiService.getAuthors();
+        const authors = await strapiService.getAuthorsForTerrain(terrainSlug);
         const graph: D3Graph = await strapiService.getD3Graph(terrainSlug);
         return {
             graph,  
@@ -24,11 +24,10 @@ async function prepareMapData(contribution: Contribution, terrainSlug:string){
 export const load: PageLoad = async ({ params }) => {
     // console.log(params);
     const contributionId = parseInt(params.contributionId);
-
     const terrainSlug = params.terrainSlug;
 
     try{
-        const contributions: Contribution[] = await strapiService.getContributionsForTerrainWithSlug(terrainSlug);
+        const contributions: Contribution[] = await strapiService.contributionsForTerrainWithSlug(terrainSlug);
         console.log("contributions", contributions);
         const mapOfContributions:Map<id, Contribution> = new Map<id, Contribution>();
         for(const c of contributions){

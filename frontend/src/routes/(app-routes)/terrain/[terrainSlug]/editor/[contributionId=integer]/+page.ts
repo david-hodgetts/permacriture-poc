@@ -9,7 +9,7 @@ export const load: PageLoad = async ({ params }) => {
     console.log(contributionId);
 
     try{
-        const contribution: Contribution = await strapiService.contributionWithId(parseInt(contributionId));
+        const contribution: Contribution = await strapiService.contributionForTerrainWithId(parseInt(contributionId));
         return {
             contribution,
         };

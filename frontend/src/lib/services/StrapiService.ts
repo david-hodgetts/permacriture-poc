@@ -56,7 +56,7 @@ class StrapiService
         }
     }
 
-    async getContributionsForTerrainWithSlug(terrainSlug: string): Promise<Contribution[]>{
+    async contributionsForTerrainWithSlug(terrainSlug: string): Promise<Contribution[]>{
         console.log("getting contribution for terrain slug", terrainSlug);
         const url = `${Config.baseUrl}/api/terrain/${terrainSlug}/contributions`;
         try{
@@ -64,6 +64,17 @@ class StrapiService
             const contributions = response.data.data.map((item: any) => new Contribution(item)) as Contribution[];
 
             return contributions;
+        }catch(e){
+            errorHandler(e);
+            throw e;
+        }
+    }
+    
+    async contributionForTerrainWithId(terrainSlug: string, contributionId: id): Promise<Contribution>{
+        const url = `${Config.baseUrl}/api/terrain/${terrainSlug}/contributions/${contributionId}?populate[0]=author`;
+        try{
+            const response = await axios.get(url, axiosOptions());
+            return new Contribution(response.data);
         }catch(e){
             errorHandler(e);
             throw e;
@@ -123,16 +134,6 @@ class StrapiService
         }
     }
     
-    async contributionWithId(contributionId: id): Promise<Contribution>{
-        const url = `${Config.baseUrl}/api/contributions/${contributionId}?populate[0]=author`;
-        try{
-            const response = await axios.get(url, axiosOptions());
-            return new Contribution(response.data);
-        }catch(e){
-            errorHandler(e);
-            throw e;
-        }
-    }
 
     async updateContribution(changedProps: any): Promise<null>{
         const url = `${Config.baseUrl}/api/contributions/${changedProps.id}`;
@@ -173,8 +174,8 @@ class StrapiService
         }
 	}
 
-    async getAuthors(): Promise<Author[]> {
-        const url = `${Config.baseUrl}/api/authors`;
+    async getAuthorsForTerrain(terrainSlug:string): Promise<Author[]> {
+        const url = `${Config.baseUrl}/api/terrain/${terrainSlug}/authors`;
         
         try{
             const response = await axios.get(url, axiosOptions());
@@ -187,7 +188,7 @@ class StrapiService
     }
 
     async getD3Graph(terrainSlug:string): Promise<D3Graph> {
-        const contributions = (await this.getContributionsForTerrainWithSlug(terrainSlug)).filter(c => {
+        const contributions = (await this.contributionsForTerrainWithSlug(terrainSlug)).filter(c => {
             return c.state == ContributionState.Published ||
             (c.isMine && c.state == ContributionState.Editing);
         });

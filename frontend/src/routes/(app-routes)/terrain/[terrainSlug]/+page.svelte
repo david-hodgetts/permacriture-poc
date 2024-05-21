@@ -28,7 +28,7 @@
     const orderParamKey = "order";
     const filterParamKey = "filter";
 
-    const { terrainSlug } = $page.params
+    const { terrainSlug } = $page.params;
 
     onMount(() => {
         // @ts-ignore
@@ -93,7 +93,7 @@
     async function getContributions():Promise<Contribution[]>
     {
         try{
-            const newContributions: Contribution[] = await strapiService.getContributionsForTerrainWithSlug(terrainSlug);
+            const newContributions: Contribution[] = await strapiService.contributionsForTerrainWithSlug(terrainSlug);
             return newContributions;
         }catch(e){
             if(isUnAuthorizedError(e)){

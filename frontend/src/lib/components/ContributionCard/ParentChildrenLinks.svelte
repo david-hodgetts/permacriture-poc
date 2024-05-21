@@ -5,6 +5,9 @@
 	import { strapiService } from "$lib/services/StrapiService";
 	import { onMount, createEventDispatcher } from "svelte";
 	import MiniBadge from "./MiniBadge.svelte";
+    import { page } from '$app/stores';
+
+
 
     const dispatch = createEventDispatcher();
 
@@ -23,8 +26,10 @@
         //     ...contributions,
         //     ...contributions,
         // ]
+        
+        const {terrainSlug} = $page.params;
         const promises = contributionIds.map((id:id) => {
-            return strapiService.contributionWithId(id);
+            return strapiService.contributionForTerrainWithId(terrainSlug, id);
         });
         try{
             contributions = await Promise.all(promises);
