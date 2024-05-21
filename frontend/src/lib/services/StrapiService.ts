@@ -9,6 +9,7 @@ import type { Link } from '$lib/models/Link';
 import { Graph } from '$lib/models/Graph';
 import type { D3Graph } from '$lib/models/D3Graph';
 import type Author from '$lib/models/Author';
+import type { TerrainStatus } from '$lib/models/Terrain';
 
 function axiosOptions(optionaJwt: string = "") {
     const authToken = optionaJwt ? optionaJwt : getJwt();
@@ -85,7 +86,6 @@ class StrapiService
         const url = `${Config.baseUrl}/api/terrain/${terrainSlug}/links`;
         try{
             const response = await axios.get(url, axiosOptions());
-            console.log(JSON.stringify(response.data));
             return response.data.map((l: any) => {
                 return {
                     id: l.id,
@@ -174,6 +174,44 @@ class StrapiService
             throw e;
         }
 	}
+
+    async isTerrainEditable(): Promise<TerrainStatus>{
+        const ctx = await strapiService.getContext();
+
+        const start = ctx.terrain.start;
+        const end = ctx.terrain.end;
+        if(!start|| !end){
+            return false;
+        }
+
+        const startDate = new Date(start);
+        const endDate = new Date(end);
+        const now = Date.now();
+        const oneDay = 60 * 60 * 24 * 1000;
+        const isActive = now >= startDate.getTime() && now <= (endDate.getTime() + oneDay) ; 
+
+        if(isActive){
+            return {
+                isEditable: true,
+                message: "",
+            }
+        }
+
+        const dateToDateStr = (date:Date) => `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`
+
+        let terrainInactiveMessage = "";
+        if(!isActive && now < startDate.getTime()){
+            terrainInactiveMessage = `Ce terrain sera actif à partir du ${dateToDateStr(startDate)}`;
+        }
+        if(!isActive && now > (endDate.getTime() + oneDay)){
+            terrainInactiveMessage = `Ce terrain a été actif du ${dateToDateStr(startDate)} au ${dateToDateStr(endDate)}`;
+        }
+
+        return {
+            isEditable:false,
+            message: terrainInactiveMessage
+        }
+    }
 
     async getAuthorsForTerrain(terrainSlug:string): Promise<Author[]> {
         const url = `${Config.baseUrl}/api/terrain/${terrainSlug}/authors`;

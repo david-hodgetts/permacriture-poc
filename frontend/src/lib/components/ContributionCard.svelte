@@ -34,43 +34,16 @@
         newContributionParentContribution = null;
     }
 
-    async function checkTerrainIsActive(): Promise<boolean>{
-        const ctx = await strapiService.getContext();
-
-        const start = ctx.terrain.start;
-        const end = ctx.terrain.end;
-        if(!start|| !end){
-            return false;
-        }
-
-        const startDate = new Date(start);
-        const endDate = new Date(end);
-        const now = Date.now();
-        const oneDay = 60 * 60 * 24 * 1000;
-        const isActive = now >= startDate.getTime() && now <= (endDate.getTime() + oneDay) ; 
-
-        const dateToDateStr = (date:Date) => `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`
-
-
-        if(!isActive && now < startDate.getTime()){
-            terrainInactiveMessage = `Ce terrain sera actif à partir du ${dateToDateStr(startDate)}`;
-        }
-        if(!isActive && now > (endDate.getTime() + oneDay)){
-            terrainInactiveMessage = `Ce terrain a été actif du ${dateToDateStr(startDate)} au ${dateToDateStr(endDate)}`;
-        }
-
-        return isActive;
-    }
-
     async function requestNewContribution(){
-        const terrainIsActive = await checkTerrainIsActive();
-        if(!terrainIsActive){
-            console.log("terrain is inactive");
-            showTerrainIsInactiveModal = true;
-        }else{
-            // show new contribution modal
+        const result = await strapiService.isTerrainEditable();
+        if(result.isEditable){
             newContributionParentContribution = contribution;
             showNewContributionModal = true;
+        }else{
+            // show new contribution modal
+            console.log("terrain is inactive");
+            terrainInactiveMessage = result.message;
+            showTerrainIsInactiveModal = true;
         }
     }
 

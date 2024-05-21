@@ -7,3 +7,8 @@ export default interface Terrain
     contribution_max_publication_delay_minutes: number,
     slug: string,
 }
+
+export interface TerrainStatus{
+    isEditable:boolean,
+    message:string,
+}

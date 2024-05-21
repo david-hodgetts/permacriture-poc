@@ -10,12 +10,15 @@
 	import Config from "$lib/services/Config";
 	import { goto } from "$app/navigation";
     import { getNotificationsContext } from 'svelte-notifications';
+	import AlertModal from "./Modals/AlertModal.svelte";
     const { addNotification } = getNotificationsContext();
 
     export let contribution: Contribution;
     
     // new contribution state
     let showNewContributionModal = false;
+    let showTerrainIsInactiveModal = false;
+    let terrainInactiveMessage = "";
     let newContributionParentContribution: Contribution | null = null;
 
     function onNewContributionModalCloseRequest(){
@@ -23,9 +26,17 @@
         newContributionParentContribution = null;
     }
 
-    function requestNewContribution(){
-        newContributionParentContribution = contribution;
-        showNewContributionModal = true;
+    async function requestNewContribution(){
+        const result = await strapiService.isTerrainEditable();
+        if(result.isEditable){
+            newContributionParentContribution = contribution;
+            showNewContributionModal = true;
+        }else{
+            // show new contribution modal
+            console.log("terrain is inactive");
+            terrainInactiveMessage = result.message;
+            showTerrainIsInactiveModal = true;
+        }
     }
 
     async function createNewContribution(){
@@ -51,6 +62,13 @@
         goto(`/editor/${newContributionId}`);
     }
 </script>
+
+<AlertModal 
+    visible={showTerrainIsInactiveModal}
+    title="Il n'est pas possible de se perlier, le terrain est inerte."
+    subTitle={terrainInactiveMessage}
+    on:close={() => showTerrainIsInactiveModal = false}
+/>
 
 <NewContributionModal 
     visible={showNewContributionModal}
