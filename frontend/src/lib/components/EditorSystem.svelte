@@ -15,6 +15,8 @@
 	import type { BeforeNavigate } from "@sveltejs/kit";
 	import BottomCounter from "./ContributionCard/decoration/BottomCounter.svelte";
 	import ParentChildrenLinks from "./ContributionCard/ParentChildrenLinks.svelte";
+    import { page } from "$app/stores";
+    
     const { addNotification } = getNotificationsContext();
 
     export let contribution: Contribution;
@@ -46,7 +48,8 @@
         showReallyLeavePageDialog = false;
         enableSaveTextButton = false; // force before navigation to succeed
         if(!desiredDestination){
-            goto("/");
+            const { terrainSlug } = $page.params;
+            goto(`/terrain/${terrainSlug}`);
         }else{
             goto(desiredDestination.pathname);
         }
@@ -91,7 +94,8 @@
                 type: "success",
                 removeAfter: Config.notificationDuration,
             });
-            goto("/");
+            const { terrainSlug } = $page.params;
+            goto(`/terrain/${terrainSlug}`);
         }catch(e){
             console.error(e);
             addNotification({
@@ -125,7 +129,8 @@
                 removeAfter: Config.notificationDuration,
             });
         }finally{
-            goto("/?filter=mes-textes");
+            const { terrainSlug } = $page.params;
+            goto(`/terrain/${terrainSlug}/?filter=mes-textes`);
         }
     }
 
@@ -161,8 +166,8 @@
 
     function onParentContributionSelectionRequest(e:any){
         const contributionId = e.detail.id;
-        console.log("selected", contributionId);
-        goto(`/contribution/${contributionId}`);
+        const { terrainSlug } = $page.params;
+        goto(`/terrain/${terrainSlug}/contribution/${contributionId}`);
     }
 </script>
 

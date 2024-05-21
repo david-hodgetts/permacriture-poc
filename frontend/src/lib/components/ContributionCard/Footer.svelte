@@ -2,8 +2,10 @@
 	import { goto } from "$app/navigation";
 	import { ContributionState, type Contribution } from "$lib/models/Contribution";
     import {createEventDispatcher} from "svelte";
+    import { page } from "$app/stores";
 
     const dispatch = createEventDispatcher();
+    const { terrainSlug } = $page.params;
 
     export let contribution:Contribution;
 
@@ -15,7 +17,7 @@
 <div class={`footer no-select ${classFromRole}`}>
     {#if contribution.state == ContributionState.Editing}
     <div 
-        on:click|stopPropagation={() => goto(`/editor/${contribution.id}`)}
+        on:click|stopPropagation={() => goto(`/terrain/${terrainSlug}/editor/${contribution.id}`)}
         on:keydown={() => null}
         role="button" 
         tabindex=0>… modifier</div>

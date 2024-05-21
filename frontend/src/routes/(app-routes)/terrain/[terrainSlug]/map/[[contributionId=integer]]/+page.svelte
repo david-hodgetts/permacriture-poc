@@ -4,19 +4,21 @@
 	import Slider from "$lib/components/Slider.svelte";
 	import TerrainTitle from "$lib/components/TerrainTitle.svelte";
 	import { goto } from "$app/navigation";
+    import { page } from "$app/stores";
 
     export let data:PageData;
 
     let separation = 20; 
+    const { terrainSlug } = $page.params;
 
     function onContributionSelection(e:any){
         const { id } = e.detail;
         console.log("contrib ", id);
-        goto(`/contribution/${id}`);
+        goto(`/terrain/${terrainSlug}/contribution/${id}`);
     }
 
     function onContributionUnSelected(e:any){
-        goto('/map');
+        goto(`/terrain/${terrainSlug}/map`);
     }
 
 </script>

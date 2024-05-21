@@ -155,9 +155,6 @@
                 return;
             }
 
-            // goto(`/map/${selectedContributionId}`);
-
-
             select(d);
 
             // remove fixed status set during drag

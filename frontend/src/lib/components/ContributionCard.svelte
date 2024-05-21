@@ -66,8 +66,9 @@
         showNewContributionModal = false;
         newContributionParentContribution = null;
 
+        const { terrainSlug } = $page.params; 
         // open the editor 
-        goto(`/editor/${newContributionId}`);
+        goto(`/terrain/${terrainSlug}/editor/${newContributionId}`);
     }
 
     function handleGotoDetailRequest(e:any){

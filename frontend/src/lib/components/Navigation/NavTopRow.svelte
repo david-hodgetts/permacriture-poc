@@ -3,10 +3,13 @@
     import MapNavIcon from "$lib/icons/MapNavIcon.svelte";
     import { page } from "$app/stores";
 
-    $: isJournalSelected = $page.url.pathname == '/' || $page.url.pathname.startsWith("/?");
-    $: isMapSelected = $page.url.pathname.startsWith("/map");
-
     const { terrainSlug } = $page.params;
+
+    $: pathnameWithoutQueryParams = $page.url.pathname.replace(/(\?.+)$/, "");
+    $: isJournalSelected = pathnameWithoutQueryParams == `/terrain/${terrainSlug}` || 
+        pathnameWithoutQueryParams == `/terrain/${terrainSlug}/`;
+    $: isMapSelected = pathnameWithoutQueryParams.startsWith(`/terrain/${terrainSlug}/map`);
+
 
 </script>
 

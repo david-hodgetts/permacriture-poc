@@ -4,12 +4,11 @@ import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 
 export const load: PageLoad = async ({ params }) => {
-    console.log(params);
     const contributionId = params.contributionId;
-    console.log(contributionId);
+    const terrainSlug = params.terrainSlug;
 
     try{
-        const contribution: Contribution = await strapiService.contributionForTerrainWithId(parseInt(contributionId));
+        const contribution: Contribution = await strapiService.contributionForTerrainWithId(terrainSlug, parseInt(contributionId));
         return {
             contribution,
         };

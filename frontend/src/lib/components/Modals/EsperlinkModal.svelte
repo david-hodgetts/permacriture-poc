@@ -5,6 +5,7 @@
     import { ContributionState, type Contribution } from "$lib/models/Contribution";
     import { strapiService } from "$lib/services/StrapiService";
     import { createEventDispatcher } from "svelte";
+    import { page } from '$app/stores';
 
     import { getNotificationsContext } from 'svelte-notifications';
     import Config from "$lib/services/Config";
@@ -35,11 +36,12 @@
     // get all published contributions except this one
     // and all its parent
     async function getContributions(): Promise<Contribution[]>{
-
-        return (await strapiService.getContributionsForTerrainWithSlug()).filter(c => {
+        const { terrainSlug } = $page.params;
+        return (await strapiService.contributionsForTerrainWithSlug(terrainSlug)).filter(c => {
             return  c.state == ContributionState.Published &&
                     c.id != contribution.id && 
-                    !contribution.parentsgetContributionsForTerrainWithId);
+                    !contribution.parents.includes(c.id);
+        });
     }
 
     async function linkAllRequestedParents(){

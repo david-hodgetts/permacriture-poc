@@ -11,6 +11,7 @@
 	import { goto } from "$app/navigation";
     import { getNotificationsContext } from 'svelte-notifications';
 	import AlertModal from "./Modals/AlertModal.svelte";
+    import { page } from "$app/stores";
     const { addNotification } = getNotificationsContext();
 
     export let contribution: Contribution;
@@ -59,7 +60,8 @@
         newContributionParentContribution = null;
 
         // open the editor 
-        goto(`/editor/${newContributionId}`);
+        const { terrainSlug } = $page.params;
+        goto(`/terrain/${terrainSlug}/editor/${newContributionId}`);
     }
 </script>
 
