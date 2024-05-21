@@ -226,21 +226,6 @@ exports.default = strapi_1.factories.createCoreController('api::contribution.con
             data: { id: id },
         };
     },
-    // async cancelPublication(ctx){
-    //     // contribution id from query params
-    //     const { id } = ctx.params;
-    //     console.log("cancel publication for contribution id", id);
-    //     await strapi.entityService.update("api::contribution.contribution", id,
-    //     {
-    //         data: {
-    //             'state': 'Editing',
-    //             'publicationDatetime': null,
-    //         },
-    //     });
-    //     ctx.body = {
-    //         data: { id: id },
-    //     };
-    // },
     async abandon(ctx) {
         // contribution id from query params
         const { id } = ctx.params;
