@@ -23,7 +23,6 @@ export default factories.createCoreService('api::link.link', ({ strapi }) =>  ({
         });
 
         // we only want to return the links that point to contributions that are either mine or with state published
-        const authorId = userContext.author.id;
         data = data.filter((elem: {
             id:number,
             parent:{state: string, author:{id:number}|null},
@@ -31,6 +30,7 @@ export default factories.createCoreService('api::link.link', ({ strapi }) =>  ({
         }) => {
             const p = elem.parent;
             if(userContext){
+                const authorId = userContext.author.id;
                 return p.state === "Published" || (p.author && p.author.id === authorId);
             }else{
                 return p.state === "Published";
@@ -55,7 +55,6 @@ export default factories.createCoreService('api::link.link', ({ strapi }) =>  ({
         });
 
         // we only want to return the links that point to contributions that are either mine or with state published
-        const authorId = userContext.author.id;
         data = data.filter((elem: {
             id:number,
             parent:{state: string, author:{id:number}|null},
@@ -63,6 +62,7 @@ export default factories.createCoreService('api::link.link', ({ strapi }) =>  ({
         }) => {
             const c = elem.child;
             if(userContext){
+                const authorId = userContext.author.id;
                 return c.state === "Published" || (c.author && c.author.id === authorId);
             }else{
                 return c.state === "Published";

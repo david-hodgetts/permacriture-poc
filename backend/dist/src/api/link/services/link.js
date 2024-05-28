@@ -19,10 +19,10 @@ exports.default = strapi_1.factories.createCoreService('api::link.link', ({ stra
             populate: ['parent.author', 'child.author'],
         });
         // we only want to return the links that point to contributions that are either mine or with state published
-        const authorId = userContext.author.id;
         data = data.filter((elem) => {
             const p = elem.parent;
             if (userContext) {
+                const authorId = userContext.author.id;
                 return p.state === "Published" || (p.author && p.author.id === authorId);
             }
             else {
@@ -45,10 +45,10 @@ exports.default = strapi_1.factories.createCoreService('api::link.link', ({ stra
             populate: ['parent.author', 'child.author'],
         });
         // we only want to return the links that point to contributions that are either mine or with state published
-        const authorId = userContext.author.id;
         data = data.filter((elem) => {
             const c = elem.child;
             if (userContext) {
+                const authorId = userContext.author.id;
                 return c.state === "Published" || (c.author && c.author.id === authorId);
             }
             else {
