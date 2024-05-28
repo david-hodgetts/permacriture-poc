@@ -6,13 +6,16 @@ import { goto } from "$app/navigation";
 import { Contribution, ContributionState } from "$lib/models/Contribution";
 import type { id } from '$lib/models/Id';
 import type { Link } from '$lib/models/Link';
-import { Graph } from '$lib/models/Graph';
 import type { D3Graph } from '$lib/models/D3Graph';
 import type Author from '$lib/models/Author';
 import type { TerrainStatus } from '$lib/models/Terrain';
 
-function axiosOptions(optionaJwt: string = "") {
+function axiosOptions(optionaJwt = "") {
     const authToken = optionaJwt ? optionaJwt : getJwt();
+    if(!authToken){
+        return "";
+    }
+
     return {
         headers: {
             'Content-Type': 'application/json',
@@ -29,7 +32,7 @@ enum HttpCode{
  * error handler, redirect user to login if unauthorized
  * @param e: AxiosError
  */
-function errorHandler(e:any ){
+function errorHandler(e:any){
     console.error(e);
     if(isUnAuthorizedError(e)){
         goto("/login");
@@ -58,7 +61,7 @@ class StrapiService
     }
 
     async contributionsForTerrainWithSlug(terrainSlug: string): Promise<Contribution[]>{
-        console.log("getting contribution for terrain slug", terrainSlug);
+        console.log("getting contributions for terrain slug", terrainSlug, axiosOptions());
         const url = `${Config.baseUrl}/api/terrain/${terrainSlug}/contributions`;
         try{
             const response = await axios.get(url, axiosOptions());
@@ -180,8 +183,11 @@ class StrapiService
 
         const start = ctx.terrain.start;
         const end = ctx.terrain.end;
-        if(!start|| !end){
-            return false;
+        if(!start || !end){
+            return {
+                isEditable:false,
+                message: "invalid context provided",
+            };
         }
 
         const startDate = new Date(start);
