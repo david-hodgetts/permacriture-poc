@@ -42,7 +42,7 @@
         const jwt = decodedResp.jwt;
 
         // get user context with jwt
-        const context = await strapiService.getContext(jwt);
+        const context = await strapiService.getLoggedInContext(jwt);
         console.log("context", context);
 
         if(!context){
@@ -52,7 +52,7 @@
         // persist user
         const user: User = { 
             id: decodedResp.user.id, 
-            context: context,
+            userContext: context,
         };
         UserStore.setUser(user, jwt);
 

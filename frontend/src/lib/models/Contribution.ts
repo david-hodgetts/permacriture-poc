@@ -75,7 +75,7 @@ export class Contribution extends BaseStrapiEntity{
 
         const { user } = get(UserStore);
 
-        return user?.context.author.id === this.author.id;
+        return user?.userContext.author.id === this.author.id;
     }
 
     get isGraine(): boolean{
@@ -87,7 +87,7 @@ export class Contribution extends BaseStrapiEntity{
             return false;
         }
         const now = new Date();
-        const minDelayBeforePublication = UserStore.getUser()!.context.terrain.contribution_min_publication_delay_minutes;
+        const minDelayBeforePublication = UserStore.getUser()!.userContext.terrain.contribution_min_publication_delay_minutes;
         const elapsedMillisSinceCreation = (now.getTime() - this.createdAt.getTime());
         return elapsedMillisSinceCreation >= minDelayBeforePublication * 60 * 1000;
     }
@@ -118,7 +118,7 @@ export class Contribution extends BaseStrapiEntity{
             return 0;
         }
 
-        const delayInMinutes = UserStore.getUser()!.context.terrain.contribution_min_publication_delay_minutes;
+        const delayInMinutes = UserStore.getUser()!.userContext.terrain.contribution_min_publication_delay_minutes;
 
         const now = new Date();
         const remainingMillis = (this.createdAt.getTime() + delayInMinutes * 60 * 1000) - now.getTime();
@@ -134,7 +134,7 @@ export class Contribution extends BaseStrapiEntity{
             return 0;
         }
 
-        const delayInMinutes = UserStore.getUser()!.context.terrain.contribution_max_publication_delay_minutes;
+        const delayInMinutes = UserStore.getUser()!.userContext.terrain.contribution_max_publication_delay_minutes;
 
         const now = new Date();
         const remainingMillis = (this.createdAt.getTime() + delayInMinutes * 60 * 1000) - now.getTime();
@@ -199,7 +199,7 @@ export class Contribution extends BaseStrapiEntity{
 
     whenPublishedEnsurePublicationDateIsPresent(){
         if(this.state === ContributionState.Published && !this.publicationDatetime){
-            const publicationDelayMinutes = UserStore.getUser()?.context.terrain.contribution_max_publication_delay_minutes;
+            const publicationDelayMinutes = UserStore.getUser()?.userContext.terrain.contribution_max_publication_delay_minutes;
             if(publicationDelayMinutes){
                 const minutesToMillis = 60000;
                 this.publicationDatetime = new Date(this.createdAt.getTime() + publicationDelayMinutes * minutesToMillis);

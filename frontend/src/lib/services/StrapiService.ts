@@ -1,6 +1,6 @@
 import axios from 'axios';
 import Config from "$lib/services/Config";
-import type { Context } from "$lib/models/User";
+import type { UserContext } from "$lib/models/User";
 import { getJwt } from "$lib/services/LocalStorage";
 import { goto } from "$app/navigation";
 import { Contribution, ContributionState } from "$lib/models/Contribution";
@@ -9,11 +9,12 @@ import type { Link } from '$lib/models/Link';
 import type { D3Graph } from '$lib/models/D3Graph';
 import type Author from '$lib/models/Author';
 import type { TerrainStatus } from '$lib/models/Terrain';
+import type { AppContext } from '$lib/models/App';
 
 function axiosOptions(optionaJwt = "") {
     const authToken = optionaJwt ? optionaJwt : getJwt();
     if(!authToken){
-        return "";
+        return {};
     }
 
     return {
@@ -45,15 +46,27 @@ export function isUnAuthorizedError(e:any): boolean{
 
 class StrapiService
 {
-    async getContext(optionaJwt = ""): Promise<Context>{
+    async getLoggedInContext(optionaJwt = ""): Promise<UserContext>{
         const url = `${Config.baseUrl}/api/user-context`;
         // console.log(axiosOptions(optionaJwt));
         try{
             const response = await axios.get(url, axiosOptions(optionaJwt));
-            const context = response.data;
-            context.terrain = context.author.terrain;
-            delete context.author.terrain;
-            return context as Context;
+            const userContext = response.data;
+            userContext.terrain = userContext.author.terrain;
+            delete userContext.author.terrain;
+            return userContext as UserContext;
+        }catch(e){
+            errorHandler(e);
+            throw e;
+        }
+    }
+
+    async getAppContext(terrainSlug: string): Promise<AppContext>{
+        const url = `${Config.baseUrl}/api/terrain/${terrainSlug}/context`;
+        try{
+            const response = await axios.get(url, axiosOptions());
+            const appContext = response.data.data;
+            return appContext as AppContext;
         }catch(e){
             errorHandler(e);
             throw e;
@@ -179,7 +192,7 @@ class StrapiService
 	}
 
     async isTerrainEditable(): Promise<TerrainStatus>{
-        const ctx = await strapiService.getContext();
+        const ctx = await strapiService.getLoggedInContext();
 
         const start = ctx.terrain.start;
         const end = ctx.terrain.end;

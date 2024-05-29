@@ -20,7 +20,7 @@
     </p>
     <p>
         connexion en tant que {#if $UserStore.user} 
-            {$UserStore.user.context.author.nickname} 
+            {$UserStore.user.userContext.author.nickname} 
         {/if}
     </p>
     <Button buttonType="danger" on:click={() => goto("/logout")}>se déconnecter</Button>

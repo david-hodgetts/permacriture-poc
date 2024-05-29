@@ -4,10 +4,10 @@ import type { id } from "./Id";
 export default interface User
 {
     id: id,
-    context: Context,
+    userContext: UserContext,
 }
 
-export interface Context
+export interface UserContext
 {
     author: Author,
     terrain: {

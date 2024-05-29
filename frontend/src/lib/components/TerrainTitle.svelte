@@ -7,14 +7,11 @@
 	import { fade } from 'svelte/transition';
 	import { goto } from '$app/navigation';
     import { page } from '$app/stores';
+	import { appContextManager } from '$lib/models/App';
 
     let modalIsOpen = false;
 
-    $: {
-        if(!$UserStore.user){
-            goto('/login');
-        }   
-    }
+    let terrainTitle = "";
 
     let authors: Author[] = [];
     
@@ -35,6 +32,8 @@
 
     onMount(async () => {
         const { terrainSlug } = $page.params;
+        const appContext = await appContextManager.contextForTerrainSlug(terrainSlug);
+        terrainTitle = appContext?.terrain.title ?? "";
         try{
             authors = await strapiService.getAuthorsForTerrain(terrainSlug);
             authors = authors.sort((a, b) => a.nickname.localeCompare(b.nickname));
@@ -53,7 +52,7 @@
     <div class="title" 
         on:click={() => modalIsOpen = true} 
         role="button" tabindex=0  on:keydown={() => null}>
-        {$UserStore.user?.context.terrain.title}
+        {terrainTitle}
     </div>
 
     {#if modalIsOpen}
