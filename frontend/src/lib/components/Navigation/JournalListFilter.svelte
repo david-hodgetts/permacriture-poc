@@ -5,14 +5,12 @@
     
     import { Filter, Order } from "$lib/models/Contribution";
     import { createEventDispatcher } from "svelte";
-	import { page } from "$app/stores";
+    import UserStore from '$lib/stores/user.store';
 
     export let filter: Filter = Filter.all;
-    
     export let order: Order;
 
     const dispatch = createEventDispatcher();
-    
 
     function select(selectedFilter: Filter){
         if(selectedFilter == filter){
@@ -27,7 +25,7 @@
 
 <div class="element">
     <div class="row no-select">
-        <div class="capsule generic-box-shadow">
+        <div class="capsule generic-box-shadow" class:notLoggedIn={!$UserStore.user}>
             <div 
                 class="item left" 
                 class:selected={filter == Filter.all}
@@ -42,20 +40,22 @@
                     <OrderArrow order={order}/>
                 {/if}
             </div>
-            <div 
-                class="item right" 
-                class:selected={filter == Filter.mine}
-                on:click={() => select(Filter.mine)}
-                on:keydown={() => null}
-                role="button"
-                tabindex=0
-            >
-                <NavDot isSelected={filter == Filter.mine} />
-                <div class="text">mes textes</div>
-                {#if filter == Filter.mine}
-                    <OrderArrow order={order}/>
-                {/if}
-            </div>
+            {#if $UserStore.user}
+                <div 
+                    class="item right" 
+                    class:selected={filter == Filter.mine}
+                    on:click={() => select(Filter.mine)}
+                    on:keydown={() => null}
+                    role="button"
+                    tabindex=0
+                >
+                    <NavDot isSelected={filter == Filter.mine} />
+                    <div class="text">mes textes</div>
+                    {#if filter == Filter.mine}
+                        <OrderArrow order={order}/>
+                    {/if}
+                </div>
+            {/if}
         </div>
     </div>
 
@@ -89,6 +89,11 @@
         display: flex;
         align-items: center;
         gap: 20px;
+    }
+
+    .notLoggedIn{
+        width: 200px;
+        justify-content: center;
     }
 
     .item{
