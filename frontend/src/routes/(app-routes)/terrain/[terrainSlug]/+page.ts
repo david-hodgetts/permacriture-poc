@@ -13,7 +13,6 @@ export const load: PageLoad = async ({ params }) => {
             contributions,
         };
     }catch(e){
-
         // FIX: improve error handling 
         throw error(404, 'Not found');
     }

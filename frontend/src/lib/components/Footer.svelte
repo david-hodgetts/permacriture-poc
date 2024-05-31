@@ -1,16 +1,9 @@
 <script lang="ts">
+	import { goto } from "$app/navigation";
     import Button from "$lib/components/Button.svelte";
     import UserStore from '$lib/stores/user.store';
-    import { goto } from '$app/navigation';
     // @ts-ignore
     const appVersion = __APP_VERSION__;
-
-    $: {
-        if(!$UserStore.user){
-            goto('/login');
-        }   
-    }
-
 </script>
 
 
@@ -18,21 +11,19 @@
     <p>
         Permacriture, version {appVersion} 
     </p>
-    <p>
-        connexion en tant que {#if $UserStore.user} 
-            {$UserStore.user.userContext.author.nickname} 
-        {/if}
-    </p>
-    <Button buttonType="danger" on:click={() => goto("/logout")}>se déconnecter</Button>
+    {#if $UserStore.user}
+        <p>
+            connexion en tant que {$UserStore.user.userContext.author.nickname} 
+        </p>
+        <Button buttonType="danger" on:click={() => goto("/logout")}>se déconnecter</Button>
+    {/if}
 </footer>
-
 
 <style>
     footer{
         font-size: 14px;
         color: var(--color-text-selected);
         text-align: center;
-
         padding-bottom: 40px;
     }
 

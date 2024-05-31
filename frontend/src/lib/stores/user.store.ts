@@ -23,9 +23,6 @@ function createUserStore() {
             set({ user: null, jwt: "" });
         },
         getUser,
-        isLoggedIn:() => {
-            !!getUser();
-        },
 	};
 }
 
