@@ -2,10 +2,8 @@
     import AuthorListElement from './terrainTitle/AuthorListElement.svelte';
 	import type Author from '$lib/models/Author';
 	import { strapiService } from '$lib/services/StrapiService';
-    import UserStore from '$lib/stores/user.store';
 	import { onMount } from 'svelte';
 	import { fade } from 'svelte/transition';
-	import { goto } from '$app/navigation';
     import { page } from '$app/stores';
 	import { appContextManager } from '$lib/models/App';
 

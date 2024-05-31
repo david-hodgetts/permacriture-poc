@@ -6,11 +6,14 @@
     import { Filter, Order } from "$lib/models/Contribution";
     import { createEventDispatcher } from "svelte";
     import UserStore from '$lib/stores/user.store';
+    import { page } from "$app/stores";
 
     export let filter: Filter = Filter.all;
     export let order: Order;
 
     const dispatch = createEventDispatcher();
+
+    $: loggedInAndOnMyTerrain = !!$UserStore.user && $UserStore.user.userContext.terrain.slug == $page.params.terrainSlug;
 
     function select(selectedFilter: Filter){
         if(selectedFilter == filter){
@@ -25,7 +28,7 @@
 
 <div class="element">
     <div class="row no-select">
-        <div class="capsule generic-box-shadow" class:notLoggedIn={!$UserStore.user}>
+        <div class="capsule generic-box-shadow" class:notLoggedIn={!loggedInAndOnMyTerrain}>
             <div 
                 class="item left" 
                 class:selected={filter == Filter.all}
@@ -40,7 +43,7 @@
                     <OrderArrow order={order}/>
                 {/if}
             </div>
-            {#if $UserStore.user}
+            {#if loggedInAndOnMyTerrain}
                 <div 
                     class="item right" 
                     class:selected={filter == Filter.mine}

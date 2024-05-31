@@ -10,6 +10,7 @@
 	import { strapiService } from "$lib/services/StrapiService";
 	import Config from "$lib/services/Config";
     import { page } from "$app/stores";
+    import UserStore from "$lib/stores/user.store";
     
 	import { goto } from "$app/navigation";
     import { getNotificationsContext } from 'svelte-notifications';
@@ -17,6 +18,7 @@
 
     export let contribution: Contribution;
 
+    $: loggedInAndOnMyTerrain = !!$UserStore.user && $UserStore.user.userContext.terrain.slug == $page.params.terrainSlug;
     const cardHeight = contribution.state == ContributionState.Editing ? 187 : 289
     
     // new contribution state
@@ -109,7 +111,9 @@
                     heightOffset="-5px"/>
                 {/if}
             </div>
-            <LinkToMe isGraine={contribution.isGraine} on:click={requestNewContribution} />
+            {#if loggedInAndOnMyTerrain}
+                <LinkToMe isGraine={contribution.isGraine} on:click={requestNewContribution} />
+            {/if}
         {/if}
     </div>
 

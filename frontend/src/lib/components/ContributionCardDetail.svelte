@@ -12,6 +12,7 @@
     import { getNotificationsContext } from 'svelte-notifications';
 	import AlertModal from "./Modals/AlertModal.svelte";
     import { page } from "$app/stores";
+    import UserStore from "$lib/stores/user.store";
     const { addNotification } = getNotificationsContext();
 
     export let contribution: Contribution;
@@ -21,6 +22,7 @@
     let showTerrainIsInactiveModal = false;
     let terrainInactiveMessage = "";
     let newContributionParentContribution: Contribution | null = null;
+    $: loggedInAndOnMyTerrain = !!$UserStore.user && $UserStore.user.userContext.terrain.slug == $page.params.terrainSlug;
 
     function onNewContributionModalCloseRequest(){
         showNewContributionModal = false;
@@ -92,7 +94,9 @@
                 contributionIds={contribution.isAbandonned ? [] : contribution.children} 
                 on:contributionSelection
                 heightOffset="-5px"/>
-            <LinkToMe isGraine={contribution.isGraine} on:click={requestNewContribution} />
+            {#if loggedInAndOnMyTerrain}
+                <LinkToMe isGraine={contribution.isGraine} on:click={requestNewContribution} />
+            {/if}
         {/if}
     </div>
 
