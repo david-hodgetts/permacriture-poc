@@ -28,9 +28,6 @@
     let showTerrainIsInactiveModal = false;
     let terrainInactiveMessage = "";
 
-    let showTopLinks = false;
-    let showBottomLinks = false;
-
     function onNewContributionModalCloseRequest(){
         showNewContributionModal = false;
         newContributionParentContribution = null;
@@ -102,14 +99,11 @@
                 <Counter 
                     count={contribution.isAbandonned ? 0 : contribution.children.length} 
                     isGraine={contribution.isGraine} 
-                    isClickable={true}
-                    on:click={() => showTopLinks = !showTopLinks}/>
-                {#if showTopLinks}
+                    />
                 <ParentChildrenLinks 
                     contributionIds={contribution.isAbandonned ? [] : contribution.children} 
                     on:contributionSelection={handleGotoDetailRequest}
                     heightOffset="-5px"/>
-                {/if}
             </div>
             {#if loggedInAndOnMyTerrain}
                 <LinkToMe isGraine={contribution.isGraine} on:click={requestNewContribution} />
@@ -127,14 +121,11 @@
         <div class="bottom-decoration">
             <BottomCounter 
                 count={contribution.isAbandonned ? 0 : contribution.parents.length} 
-                isClickable={true}
-                on:click={() => showBottomLinks = !showBottomLinks}/>
-            {#if showBottomLinks}
+                />
             <ParentChildrenLinks 
                 contributionIds={contribution.isAbandonned ? [] : contribution.parents}
                 on:contributionSelection={handleGotoDetailRequest}
                 heightOffset="5px"/>
-            {/if}
         </div>
     {/if}
 </div>
