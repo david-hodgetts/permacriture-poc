@@ -37,7 +37,9 @@
                 role="button"
                 tabindex=0
             >
-                <NavDot isSelected={filter == Filter.all} />
+                {#if loggedInAndOnMyTerrain }
+                    <NavDot isSelected={filter == Filter.all} />
+                {/if}
                 <div class="text">tous les textes</div>
                 {#if filter == Filter.all}
                     <OrderArrow order={order}/>
