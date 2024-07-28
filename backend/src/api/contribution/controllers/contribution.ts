@@ -105,6 +105,12 @@ export default factories.createCoreController('api::contribution.contribution', 
                             'terrain': {
                                 'id': terrainContext.terrain.id,
                             },
+                            'state': 'Editing',
+                        },
+                        {
+                            'terrain': {
+                                'id': terrainContext.terrain.id,
+                            },
                             'author': terrainContext.userContext.author.id,
                         },
                     ]

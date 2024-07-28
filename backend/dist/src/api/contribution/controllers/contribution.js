@@ -91,6 +91,12 @@ exports.default = strapi_1.factories.createCoreController('api::contribution.con
                             'terrain': {
                                 'id': terrainContext.terrain.id,
                             },
+                            'state': 'Editing',
+                        },
+                        {
+                            'terrain': {
+                                'id': terrainContext.terrain.id,
+                            },
                             'author': terrainContext.userContext.author.id,
                         },
                     ]
