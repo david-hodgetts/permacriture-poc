@@ -28,9 +28,7 @@
         class:textEllipsisForEditingState={contribution.state == ContributionState.Editing && !isInDetailCard}>
         {@html contribution.textHtml }
     </div>
-    {#if !isInDetailCard}
-        <Footer on:showDetailRequest contribution={contribution}/>
-    {/if}
+    <Footer on:showDetailRequest isInDetailCard={isInDetailCard} contribution={contribution}/>
 </div>
 
 

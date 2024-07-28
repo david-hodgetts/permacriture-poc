@@ -8,6 +8,7 @@
     const { terrainSlug } = $page.params;
 
     export let contribution:Contribution;
+    export let isInDetailCard = false;
 
     const classFromRole = contribution.isGraine ? "graine" : 
         (contribution.state === ContributionState.Published ? "published" : "editing")  
@@ -22,12 +23,14 @@
         role="button" 
         tabindex=0>… modifier</div>
     {/if}
+
+    {#if !isInDetailCard}
     <div
         on:click|stopPropagation={() => dispatch("showDetailRequest", {id: contribution.id})} 
         on:keydown={() => null}
         role="button" 
         tabindex=0>… ouvrir</div>
-
+    {/if}
 </div>
 
 
