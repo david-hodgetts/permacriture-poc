@@ -16,6 +16,11 @@
     cursor: pointer;
 }
 
+.unselectable{
+    cursor: auto;
+    pointer-events: none;
+}
+
 // .selected circle{
 //     fill: #ffaa00 !important;
 // }

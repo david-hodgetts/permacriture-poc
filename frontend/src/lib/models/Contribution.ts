@@ -65,6 +65,13 @@ export class Contribution extends BaseStrapiEntity{
         this.children = obj.children;
         this.parents = obj.parents;
 
+        // remove text for contributions that should not be readable
+        // i.e. contributions in Editing state that are not mine
+
+        if(this.isBeingEditedBySomeoneElse){
+            this.textHtml == "";
+        }
+
         this.whenPublishedEnsurePublicationDateIsPresent();
     }
 
@@ -76,6 +83,10 @@ export class Contribution extends BaseStrapiEntity{
         const { user } = get(UserStore);
 
         return user?.userContext.author.id === this.author.id;
+    }
+
+    get isBeingEditedBySomeoneElse(): boolean{
+        return !this.isMine && this.state == ContributionState.Editing;
     }
 
     get isGraine(): boolean{
@@ -181,6 +192,10 @@ export class Contribution extends BaseStrapiEntity{
     get color(): string{
         if(this.isGraine){
             return "#525EF5";
+        }
+
+        if(this.isBeingEditedBySomeoneElse){
+            return "#eeeeee99";
         }
 
         return colorForAuthor(this.author!);

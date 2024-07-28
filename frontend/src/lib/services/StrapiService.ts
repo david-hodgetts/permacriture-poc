@@ -247,9 +247,9 @@ class StrapiService
 
     async getD3Graph(terrainSlug:string): Promise<D3Graph> {
         const contributions = (await this.contributionsForTerrainWithSlug(terrainSlug)).filter(c => {
-            return c.state == ContributionState.Published ||
-            (c.isMine && c.state == ContributionState.Editing);
+            return c.state == ContributionState.Published || c.state == ContributionState.Editing;
         });
+
 
         const links: Link[] = (await strapiService.getLinksForTerrainSlug(terrainSlug)).filter((l: Link) => {
             // ensure we only get link for contributions that are accessible to current user

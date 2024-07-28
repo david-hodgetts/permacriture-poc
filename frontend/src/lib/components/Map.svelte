@@ -132,6 +132,7 @@
         .selectAll(".node")
         .data(data.graph.nodes)
         .join("g")
+        .classed("unselectable", (d) => d.isBeingEditedBySomeoneElse)
         .attr("fx", (d:any) => {
             if(defaultSelectedContribution && d.badgeText == defaultSelectedContribution.badgeText){
                 d.fx = width / 2;
@@ -381,8 +382,9 @@
         d3.selectAll(".link")
         .classed('greyed-link', function(d:any){
             // changed all links not connected to selected contribution
-            return d.source.id != activeContribution!.id && d.target.id != activeContribution!.id;
-        });
+            return d.source.id != activeContribution!.id && 
+            d.target.id != activeContribution!.id; 
+        })
 
         const selectedVisualElement = d3.select(`#contribution_id_${activeContribution.id}`)
         // selectedVisualElement.classed('selected', true);
@@ -392,7 +394,7 @@
 
         const greyedOutColor = "#9B9B9B";
         rect.style("fill", (d:any) => {
-            return d.id == activeContribution!.id ? d.color : greyedOutColor;
+            return (d.id == activeContribution!.id || d.isBeingEditedBySomeoneElse) ? d.color : greyedOutColor;
         });
     }
 
