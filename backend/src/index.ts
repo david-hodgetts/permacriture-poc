@@ -165,6 +165,7 @@ export default {
                 const newTerrain = await strapi.db.query('api::terrain.terrain').create({
                     data:{
                         title: terrain.title,
+                        slug: terrain.slug,
                         description: terrain.description,
                         start: dayDateToDate(terrain.start),
                         end: dayDateToDate(terrain.end),

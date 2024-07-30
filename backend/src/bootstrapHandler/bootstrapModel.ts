@@ -27,12 +27,12 @@ export interface Graine{
 
 export interface TerrainJSON{
     title: string;
+    slug: string,
     description: string;
     start: DayDate;
     end: DayDate;
     contribution_min_publication_delay_minutes: number; // min minutes before user can force publication
     contribution_max_publication_delay_minutes: number; // threshold after which contribution will be automatically published,
-
     cryptonims: string[],
     grainePublicationDatetime: DayDate,
     graines: Graine[],
@@ -40,6 +40,7 @@ export interface TerrainJSON{
 
 export interface Terrain{
     title: string;
+    slug: string;
     description: string;
     start: DayDate;
     end: DayDate;
@@ -91,6 +92,7 @@ export function ingestTerrainData(terrainJson:TerrainJSON): Terrain{
 
     const result: Terrain = {
         title: terrainJson.title,
+        slug: terrainJson.slug,
         description: terrainJson.description,
         start: terrainJson.start,
         end: terrainJson.end,

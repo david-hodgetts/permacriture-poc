@@ -36,6 +36,7 @@ exports.cryptonimToUserAuthorPair = cryptonimToUserAuthorPair;
 function ingestTerrainData(terrainJson) {
     const result = {
         title: terrainJson.title,
+        slug: terrainJson.slug,
         description: terrainJson.description,
         start: terrainJson.start,
         end: terrainJson.end,
