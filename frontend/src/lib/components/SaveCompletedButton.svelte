@@ -1,10 +1,9 @@
 <script lang="ts">
-
+    export let isDisabled = true;
 </script>
 
 <button disabled >
-    <img src="/images/icon-saved.svg" alt="">
-    <div class="label no-select">sauvé</div>
+    <img class:disabled={isDisabled} src="/images/icon-saved.svg" alt="">
 </button>
 
 <style>
@@ -18,6 +17,10 @@
         outline: none;
         box-shadow: none;
         cursor: pointer;
+    }
+
+    .disabled {
+        filter: grayscale(100%) opacity(30%);
     }
 
     .label{

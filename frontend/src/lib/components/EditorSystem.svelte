@@ -4,7 +4,6 @@
     import DialogModal from "./Modals/DialogModal.svelte";
     import AlertModal from "./Modals/AlertModal.svelte";
     import EsperlinkModal from "./Modals/EsperlinkModal.svelte";
-    import SaveButton from "./SaveButton.svelte";
     import SaveCompletedButton from "./SaveCompletedButton.svelte";
 	import ButtonSmall from "./ButtonSmall.svelte";
 	import { ContributionState, type Contribution } from "$lib/models/Contribution";
@@ -16,37 +15,46 @@
 	import BottomCounter from "./ContributionCard/decoration/BottomCounter.svelte";
 	import ParentChildrenLinks from "./ContributionCard/ParentChildrenLinks.svelte";
     import { page } from "$app/stores";
+
+    import { editorAutosaveService } from "$lib/services/EditorAutosaveService";
+	import { onMount } from "svelte";
     
     const { addNotification } = getNotificationsContext();
 
     export let contribution: Contribution;
-
-    let enableSaveTextButton = false;
     
     let showEsperlinkDialog = false;
     let showPubliForceDialog = false;
     let showAbandonDialog = false;
     let showNotPubliforcableAlert = false;
     let notPubliForcableAlertText = "";
-    let showSavedStatus = false;
 
     let showReallyLeavePageDialog = false;
+    let allowLeavingPage = false;
     let desiredDestination:URL;
 
-    let invalidationKey: 0;
+    let saveTasksAreComplete = true;
+
+    let invalidationKey = 0;
+
+    onMount(() => {
+        console.log("allow lea", allowLeavingPage);
+        editorAutosaveService.errorCallback = onSaveError;
+        editorAutosaveService.autosaveTasksCompletedCallback = onSaveTasksComplete;
+    });
 
     beforeNavigate((navigation: BeforeNavigate) => {
         console.log("leaving for", navigation.to?.url.pathname);
-        if(enableSaveTextButton){
+        if(!editorAutosaveService.isUpToDate && !allowLeavingPage){
             desiredDestination = navigation.to?.url as URL;
             showReallyLeavePageDialog = true;
+            allowLeavingPage = true;
             navigation.cancel();
         }
     });
      
     function handleLeavePageWithoutSaving(){
         showReallyLeavePageDialog = false;
-        enableSaveTextButton = false; // force before navigation to succeed
         if(!desiredDestination){
             const { terrainSlug } = $page.params;
             goto(`/terrain/${terrainSlug}`);
@@ -57,8 +65,22 @@
 
     function onTextChange(e:any){
         // console.log("on text change", e.detail.text);
-        enableSaveTextButton = true;
-        contribution.text = e.detail.text
+        contribution.text = e.detail.text;
+        editorAutosaveService.addState(structuredClone(contribution));
+        saveTasksAreComplete = false;
+    }
+    
+    function onSaveTasksComplete(){
+        saveTasksAreComplete = true;
+    }
+
+    function onSaveError(e:any){
+        addNotification({
+            text: e,
+            position: 'top-center',
+            type: 'error',
+            removeAfter: Config.notificationDuration,
+        });
     }
 
     function handleShowNotPubliforcableDialog(){
@@ -133,25 +155,6 @@
             goto(`/terrain/${terrainSlug}/?filter=mes-textes`);
         }
     }
-
-    async function save(){
-        try{
-            await strapiService.updateContribution({ id: contribution.id, text: contribution.text }) 
-            enableSaveTextButton = false;
-
-            // show saved status version of the button for 3 seconds
-            showSavedStatus = true;
-            setTimeout(() => showSavedStatus = false, 3000);
-        }catch(e){
-            console.error(e);
-            addNotification({
-                text: e,
-                position: 'top-center',
-                type: 'error',
-                removeAfter: Config.notificationDuration,
-            });
-        }
-    }
     
     async function onEsperlinkModalCloseRequest(e:any){
         const invalidationRequired = !!e.detail.invalidationRequired;
@@ -221,11 +224,12 @@
     />
     <div class="footer">
         <div class="first-button">
-            {#if !showSavedStatus}
+            <SaveCompletedButton isDisabled={!saveTasksAreComplete} />
+            <!-- {#if !showSavedStatus}
                 <SaveButton disabled={!enableSaveTextButton} on:click={save} />
             {:else}
                 <SaveCompletedButton />
-            {/if}
+            {/if} -->
         </div>
 
         <ButtonSmall 

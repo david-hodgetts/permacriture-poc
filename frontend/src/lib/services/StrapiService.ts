@@ -160,8 +160,7 @@ class StrapiService
         delete payload.data.id;
         // console.log(payload);
         try{
-            const response = await axios.put(url, payload, axiosOptions());
-            console.log(response.data);
+            await axios.put(url, payload, axiosOptions());
             return null;
         }catch(e){
             errorHandler(e);
