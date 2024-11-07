@@ -7,8 +7,6 @@
 	import MiniBadge from "./MiniBadge.svelte";
     import { page } from '$app/stores';
 
-
-
     const dispatch = createEventDispatcher();
 
     export let contributionIds:id[] = []; 

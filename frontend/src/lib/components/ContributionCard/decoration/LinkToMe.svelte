@@ -1,12 +1,15 @@
 <script lang=ts>
     import LinkToMeIcon from "../LinkToMeIcon.svelte";
+    import tippy from '$lib/actions/tippyAction';
     export let isGraine:boolean;
 
 </script>
 
 <div class="link-to-contribution no-select" 
     on:click|stopPropagation 
-    on:keydown={() => null} role="button" tabindex=0>
+    on:keydown={() => null} role="button" tabindex=0
+    use:tippy={{content:'se lier au texte lu et commencer à rédiger'}}
+    >
     <LinkToMeIcon isGraine={isGraine} />
     <div class="text" class:graine={isGraine}>perlier</div>
 </div>

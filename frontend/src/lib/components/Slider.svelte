@@ -1,6 +1,6 @@
 <script lang="ts">
     import { onDestroy, onMount } from "svelte";
-
+    import tippy from "$lib/actions/tippyAction";
     import { createEventDispatcher } from "svelte";
     const dispatch = createEventDispatcher();
 
@@ -30,7 +30,11 @@
 
 </script>
 
-<div class="slider generic-box-shadow" style="max-width:{width}">
+<div    
+    class="slider generic-box-shadow" 
+    style="max-width:{width}"
+    use:tippy={{content:"modifier la géométrie de la carte"}}
+    >
     <div class="controls">
         <div class="text">&minus;</div>
         <input 

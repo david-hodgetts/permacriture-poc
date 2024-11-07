@@ -8,6 +8,8 @@
     import UserStore from '$lib/stores/user.store';
     import { page } from "$app/stores";
 
+    import tippy from '$lib/actions/tippyAction';
+
     export let filter: Filter = Filter.all;
     export let order: Order;
 
@@ -40,7 +42,10 @@
                 {#if loggedInAndOnMyTerrain }
                     <NavDot isSelected={filter == Filter.all} />
                 {/if}
-                <div class="text">tous les textes</div>
+                <div
+                    use:tippy={{content: 'afficher tous les textes publiés'}} 
+                    class="text"
+                >tous les textes</div>
                 {#if filter == Filter.all}
                     <OrderArrow order={order}/>
                 {/if}
@@ -55,7 +60,10 @@
                     tabindex=0
                 >
                     <NavDot isSelected={filter == Filter.mine} />
-                    <div class="text">mes textes</div>
+                    <div 
+                        use:tippy={{content: 'afficher mes textes uniquement (publiés et non publiés)'}} 
+                        class="text"
+                    >mes textes</div>
                     {#if filter == Filter.mine}
                         <OrderArrow order={order}/>
                     {/if}

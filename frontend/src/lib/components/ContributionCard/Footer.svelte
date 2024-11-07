@@ -3,6 +3,7 @@
 	import { ContributionState, type Contribution } from "$lib/models/Contribution";
     import {createEventDispatcher} from "svelte";
     import { page } from "$app/stores";
+    import tippy from "$lib/actions/tippyAction";
 
     const dispatch = createEventDispatcher();
     const { terrainSlug } = $page.params;
@@ -21,6 +22,7 @@
         on:click|stopPropagation={() => goto(`/terrain/${terrainSlug}/editor/${contribution.id}`)}
         on:keydown={() => null}
         role="button" 
+        use:tippy={{content:"reprendre et continuer l’écriture de son texte"}}
         tabindex=0>… modifier</div>
     {/if}
 
@@ -29,6 +31,7 @@
         on:click|stopPropagation={() => dispatch("showDetailRequest", {id: contribution.id})} 
         on:keydown={() => null}
         role="button" 
+        use:tippy={{content:"lire le texte"}}
         tabindex=0>… ouvrir</div>
     {/if}
 </div>

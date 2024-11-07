@@ -233,24 +233,28 @@
         </div>
 
         <ButtonSmall 
-            on:click={() => showEsperlinkDialog = true}>
+            on:click={() => showEsperlinkDialog = true}
+            tippyContent="se lier à un ou plusieurs autres textes">
             esperlier
         </ButtonSmall>
         {#if contribution.isPublishable}
             <ButtonSmall 
-                on:click={() => showPubliForceDialog = true}>
+                on:click={() => showPubliForceDialog = true}
+                tippyContent="avancer la publication de son texte">
                 avancer
             </ButtonSmall>
         {:else}
             <ButtonSmall 
                 buttonType="neutral"
-                on:click={handleShowNotPubliforcableDialog}>
+                on:click={handleShowNotPubliforcableDialog}
+                tippyContent="avancer la publication de son texte">
                 avancer
             </ButtonSmall>
         {/if}
         <ButtonSmall 
             inverse={true}
-            on:click={()=> showAbandonDialog = true}>
+            on:click={()=> showAbandonDialog = true}
+            tippyContent="abandonner la publication de son texte">
             disperlier
         </ButtonSmall>
     </div>

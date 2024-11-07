@@ -1,8 +1,10 @@
 <script lang="ts">
+    import tippy from "$lib/actions/tippyAction";
     export let buttonType = 'primary';
     export let flat = true;
     export let inverse = false;
     export let disabled = false;
+    export let tippyContent = "";
 </script>
 
 <button 
@@ -11,7 +13,9 @@
     class={buttonType} 
     class:flat={flat} 
     class:inverse={inverse} 
-    class:disabled={disabled}>
+    class:disabled={disabled}
+    use:tippy={{content: tippyContent}}
+    >
     <slot></slot>
 </button>
 

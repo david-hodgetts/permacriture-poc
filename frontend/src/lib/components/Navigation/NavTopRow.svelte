@@ -3,6 +3,8 @@
     import MapNavIcon from "$lib/icons/MapNavIcon.svelte";
     import { page } from "$app/stores";
 
+    import tippy from '$lib/actions/tippyAction';
+
     const { terrainSlug } = $page.params;
 
     $: pathnameWithoutQueryParams = $page.url.pathname.replace(/(\?.+)$/, "");
@@ -16,7 +18,8 @@
 <div class="row">
     <a href={`/terrain/${terrainSlug}`} >
         <div class="capsule capsule-left generic-box-shadow" 
-            class:selected={isJournalSelected} 
+             class:selected={isJournalSelected} 
+             use:tippy={{content: 'accéder à l’ensemble des textes sous forme de journal' }}
             >
                 <div class="text no-select">
                     journal
@@ -28,6 +31,7 @@
         <div 
             class="capsule generic-box-shadow" 
             class:selected={isMapSelected}
+            use:tippy={{content: 'accéder à l’ensemble des textes sous forme de carte' }}
             >
                 <div class="text no-select">
                     carte
