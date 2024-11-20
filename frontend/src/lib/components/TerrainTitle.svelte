@@ -6,6 +6,7 @@
 	import { fade } from 'svelte/transition';
     import { page } from '$app/stores';
 	import { appContextManager } from '$lib/models/App';
+    import tippy from "$lib/actions/tippyAction";
 
     let modalIsOpen = false;
 
@@ -45,7 +46,10 @@
     }
 </script>
 
-<div class="terrain-title no-select" >
+<div 
+    class="terrain-title no-select" 
+    use:tippy={{content:'liste des participant·es'}}
+>
     <img src="/images/terrain-title.svg" alt="">
     <div class="title" 
         on:click={() => modalIsOpen = true} 

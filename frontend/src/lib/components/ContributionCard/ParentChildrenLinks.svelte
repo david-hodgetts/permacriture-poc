@@ -6,15 +6,21 @@
 	import { onMount, createEventDispatcher } from "svelte";
 	import MiniBadge from "./MiniBadge.svelte";
     import { page } from '$app/stores';
+	import { ParentChildrenLinksPosition } from '$lib/models/Misc';
+
 
     const dispatch = createEventDispatcher();
 
     export let contributionIds:id[] = []; 
     export let heightOffset:string;
+    export let position:ParentChildrenLinksPosition = ParentChildrenLinksPosition.TOP;
 
     let contributions: Contribution[] = [];
     let options = { loop: false, dragFree: true };
 
+    $: miniBadgeToolTipText = position == ParentChildrenLinksPosition.TOP ? 
+        "lire un texte lié ultérieurement":
+        "lire un texte lié antérieurement";
     onMount(async() => {
         // contributions = await strapiService.getContributions();
         // contributions = [
@@ -44,6 +50,7 @@
             <div class="embla__slide">
                 <MiniBadge 
                     contribution={contribution} 
+                    toolTipText={miniBadgeToolTipText}
                     on:click={() => dispatch("contributionSelection", {id: contribution.id})} />
             </div>
         {/each}

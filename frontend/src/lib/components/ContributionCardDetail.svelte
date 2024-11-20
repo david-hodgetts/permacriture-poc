@@ -13,6 +13,7 @@
 	import AlertModal from "./Modals/AlertModal.svelte";
     import { page } from "$app/stores";
     import UserStore from "$lib/stores/user.store";
+	import { ParentChildrenLinksPosition } from "$lib/models/Misc";
     const { addNotification } = getNotificationsContext();
 
     export let contribution: Contribution;
@@ -93,6 +94,7 @@
             <ParentChildrenLinks 
                 contributionIds={contribution.isAbandonned ? [] : contribution.children} 
                 on:contributionSelection
+                position={ParentChildrenLinksPosition.TOP}
                 heightOffset="-5px"/>
             {#if loggedInAndOnMyTerrain}
                 <LinkToMe isGraine={contribution.isGraine} on:click={requestNewContribution} />
@@ -112,6 +114,7 @@
             <ParentChildrenLinks 
                 contributionIds={contribution.isAbandonned ? [] : contribution.parents}
                 on:contributionSelection
+                position={ParentChildrenLinksPosition.BOTTOM}
                 heightOffset="5px"/>
         </div>
     {/if}

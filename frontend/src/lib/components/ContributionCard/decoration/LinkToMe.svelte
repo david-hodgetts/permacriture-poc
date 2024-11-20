@@ -8,7 +8,7 @@
 <div class="link-to-contribution no-select" 
     on:click|stopPropagation 
     on:keydown={() => null} role="button" tabindex=0
-    use:tippy={{content:'se lier au texte lu et commencer à rédiger'}}
+    use:tippy={{content:'rédiger à partir de ce texte'}}
     >
     <LinkToMeIcon isGraine={isGraine} />
     <div class="text" class:graine={isGraine}>perlier</div>

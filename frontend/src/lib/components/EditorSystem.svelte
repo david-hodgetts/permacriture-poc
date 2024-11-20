@@ -18,6 +18,7 @@
 
     import { editorAutosaveService } from "$lib/services/EditorAutosaveService";
 	import { onMount } from "svelte";
+	import { ParentChildrenLinksPosition } from "$lib/models/Misc";
     
     const { addNotification } = getNotificationsContext();
 
@@ -240,14 +241,14 @@
         {#if contribution.isPublishable}
             <ButtonSmall 
                 on:click={() => showPubliForceDialog = true}
-                tippyContent="avancer la publication de son texte">
+                tippyContent="accélérer la publication de son texte">
                 avancer
             </ButtonSmall>
         {:else}
             <ButtonSmall 
                 buttonType="neutral"
                 on:click={handleShowNotPubliforcableDialog}
-                tippyContent="avancer la publication de son texte">
+                tippyContent="accélérer la publication de son texte">
                 avancer
             </ButtonSmall>
         {/if}
@@ -265,6 +266,7 @@
     <ParentChildrenLinks 
         contributionIds={contribution.parents}
         on:contributionSelection={onParentContributionSelectionRequest}
+        position={ParentChildrenLinksPosition.BOTTOM}
         heightOffset="5px"/>
 </div>
 

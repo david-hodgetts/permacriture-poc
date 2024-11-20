@@ -4,12 +4,14 @@
 
     export let contribution: Contribution;
 
+    export let toolTipText = "";
+
     $: backgroundColor = contribution.isGraine ? "#525EF5" : contribution.color;
 </script>
 
 <div 
     class="badge" 
-    use:tippy={{content:'lire un texte lié'}}
+    use:tippy={{content: toolTipText}}
     style="background-color: {backgroundColor}" 
     on:click on:keydown={() => null} 
     role="button" 

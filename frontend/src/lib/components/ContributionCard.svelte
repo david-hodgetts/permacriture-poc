@@ -14,6 +14,7 @@
     
 	import { goto } from "$app/navigation";
     import { getNotificationsContext } from 'svelte-notifications';
+	import { ParentChildrenLinksPosition } from "$lib/models/Misc";
     const { addNotification } = getNotificationsContext();
 
     export let contribution: Contribution;
@@ -103,6 +104,7 @@
                 <ParentChildrenLinks 
                     contributionIds={contribution.isAbandonned ? [] : contribution.children} 
                     on:contributionSelection={handleGotoDetailRequest}
+                    position={ParentChildrenLinksPosition.TOP}
                     heightOffset="-5px"/>
             </div>
             {#if loggedInAndOnMyTerrain}
@@ -125,6 +127,7 @@
             <ParentChildrenLinks 
                 contributionIds={contribution.isAbandonned ? [] : contribution.parents}
                 on:contributionSelection={handleGotoDetailRequest}
+                position={ParentChildrenLinksPosition.BOTTOM}
                 heightOffset="5px"/>
         </div>
     {/if}

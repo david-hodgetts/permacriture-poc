@@ -19,7 +19,7 @@
     <a href={`/terrain/${terrainSlug}`} >
         <div class="capsule capsule-left generic-box-shadow" 
              class:selected={isJournalSelected} 
-             use:tippy={{content: 'accéder à l’ensemble des textes sous forme de journal' }}
+             use:tippy={{content: 'accéder aux textes sous forme chronologique' }}
             >
                 <div class="text no-select">
                     journal
@@ -31,7 +31,7 @@
         <div 
             class="capsule generic-box-shadow" 
             class:selected={isMapSelected}
-            use:tippy={{content: 'accéder à l’ensemble des textes sous forme de carte' }}
+            use:tippy={{content: 'accéder à la cartographie des textes' }}
             >
                 <div class="text no-select">
                     carte

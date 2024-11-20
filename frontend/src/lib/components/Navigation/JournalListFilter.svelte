@@ -61,7 +61,7 @@
                 >
                     <NavDot isSelected={filter == Filter.mine} />
                     <div 
-                        use:tippy={{content: 'afficher mes textes uniquement (publiés et non publiés)'}} 
+                        use:tippy={{content: 'afficher mes textes publiés et non publiés'}} 
                         class="text"
                     >mes textes</div>
                     {#if filter == Filter.mine}
