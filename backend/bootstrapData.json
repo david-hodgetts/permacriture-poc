@@ -191,5 +191,39 @@
                 "text": "«Vous êtes peut-être en train de vous demander si je plaisante ou si je suis sérieux. Je plaisante et je suis sérieux. Etre ludique ne veut pas dire être ridicule. Le jeu n'est pas forcément frivole, même si frivolité n'est pas trivialité : le plus souvent, on devrait prendre la frivolité au sérieux. J'aimerais que la vie soit un jeu – mais un jeu dont l'enjeu soit vertigineux. Je veux jouer pour de vrai.»"
             }
         ]
+    },
+    {
+        "title": "demostratus",
+        "slug": "demostratus",
+        "description": "terrain de démonstration",
+        "start": {
+            "year": 2024,
+            "month": 12,
+            "day": 2
+        },
+        "end": {
+            "year": 2026,
+            "month": 31,
+            "day": 12
+        },
+        "contribution_min_publication_delay_minutes": 2,
+        "contribution_max_publication_delay_minutes": 15,
+        "cryptonims": ["Ariel", "Déméter", "Godot", "Ino", "Kali", "Médiatio", "Prospero", "Ulysse"],
+        "grainePublicationDatetime":{
+            "year": 2024,
+            "month": 12,
+            "day": 1
+        },
+        "graines":[
+            {
+                "text": "“Façonner: Travailler une chose, lui donner une façon, une forme particulière. (Littré)”"
+            },
+            {
+                "text": "“Un jour j'irai vivre en Théorie, car en Théorie tout se passe bien.” Pierre Desproges."
+            },
+            {
+                "text": "Salut, grand maître ! grave seigneur, salut ! je viens — pour satisfaire ton meilleur désir : qu'il s'agisse de voler, — de nager, de plonger dans le feu, de chevaucher — sur les nuages frisés ! À ton service impérieux emploie — Ariel et toute sa bande.\nPROSPERO. Esprit, as-tu — exécuté minutieusement la tempête que je t’ai commandée ?” (La Tempête)"
+            }
+        ]
     }
 ]
