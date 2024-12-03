@@ -17,7 +17,7 @@
     import { page } from "$app/stores";
 
     import { editorAutosaveService } from "$lib/services/EditorAutosaveService";
-	import { onMount } from "svelte";
+	import { onDestroy, onMount } from "svelte";
 	import { ParentChildrenLinksPosition } from "$lib/models/Misc";
     
     const { addNotification } = getNotificationsContext();
@@ -38,11 +38,25 @@
 
     let invalidationKey = 0;
 
+    let isPublishable = contribution.isPublishable;
+
+    let intervalId:number = -1;
+
     onMount(() => {
         console.log("allow lea", allowLeavingPage);
         editorAutosaveService.errorCallback = onSaveError;
         editorAutosaveService.autosaveTasksCompletedCallback = onSaveTasksComplete;
+
+        intervalId = setInterval(updatePublishableState, 1000);
     });
+
+    onDestroy(() => {
+        clearInterval(intervalId);
+    });
+
+    function updatePublishableState(){
+        isPublishable = contribution.isPublishable;
+    }
 
     beforeNavigate((navigation: BeforeNavigate) => {
         console.log("leaving for", navigation.to?.url.pathname);
@@ -238,7 +252,7 @@
             tippyContent="se lier à un ou plusieurs autres textes">
             esperlier
         </ButtonSmall>
-        {#if contribution.isPublishable}
+        {#if isPublishable}
             <ButtonSmall 
                 on:click={() => showPubliForceDialog = true}
                 tippyContent="accélérer la publication de son texte">
