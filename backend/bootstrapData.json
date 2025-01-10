@@ -302,5 +302,110 @@
                 "text": "«Aujourd’hui, le vêtement le plus durable est celui qu’on n’achète pas.» Public Eye"
             }
         ]
+    },
+    {
+        "title": "La manufacture des idées",
+        "slug": "la-manufacture-des-idees",
+        "description": "Alexandre Gillet, Collège Sismondi",
+        "start": {
+            "year": 2025,
+            "month": 11,
+            "day": 16
+        },
+        "end": {
+            "year": 2025,
+            "month": 3,
+            "day": 13
+        },
+        "contribution_min_publication_delay_minutes": 60,
+        "contribution_max_publication_delay_minutes": 2880,
+        "cryptonims": ["Assertion", "Ballade", "Chute", "Digression", "Ellipse", "Fil", "Geste", "Hiatus", "Image", "Jargon", "Lapsus", "Maxime", "Néologisme", "Onomatopée", "Périphrase", "Question", "Refrain", "Similitude", "Tempo", "Variation", "Zeugme"],
+        "grainePublicationDatetime":{
+            "year": 2025,
+            "month": 1,
+            "day": 15
+        },
+        "graines":[
+            {
+                "text": "«Formez-vous parce que nous aurons besoin de toute votre intelligence, mettez-vous en mouvement parce que nous aurons de tout votre enthousiasme, organisez-vous parce que nous aurons de toute votre force.» Antonio GRAMSCI"
+            },
+            {
+                "text": "«j'ai beau faire, tout m'intéresse» Paul VALERY"
+            },
+            {
+                "text": "«Nous avons la sensibilité pour percevoir les souffrances du monde, l'intelligence pour les analyser, et l'imagination pour inventer les solutions politiques qui devront y mettre fin.» Martin RUEFF"
+            },
+            {
+                "text": "«Une grande partie de la pratique anarchiste tourne autour d’un certain principe dialogique : on prête une grande attention à prendre des décisions pragmatiques et coopératives avec des gens qui ont des visions du monde fondamentalement différentes, sans essayer de les convertir à un point de vue particulier.» David GRAEBER"
+            }
+        ]
+    },
+    {
+        "title": "Ce bon Gustave Le Bon",
+        "slug": "ce-bon-gustave-le-bon",
+        "description": "Classe Claudio, Collège Sismondi",
+        "start": {
+            "year": 2025,
+            "month": 1,
+            "day": 13
+        },
+        "end": {
+            "year": 2025,
+            "month": 3,
+            "day": 13
+        },
+        "contribution_min_publication_delay_minutes": 60,
+        "contribution_max_publication_delay_minutes": 2880,
+        "cryptonims": ["Angélique", "Buis", "Ciguë", "Digitale", "Esparcette", "Ficaire", "Gui", "Hellébore", "Impatiente", "Jarosse", "Liseron", "Mouron", "Nénuphar", "Oseille", "Populage", "Renoncule", "Silène", "Trolle", "Urtica", "Violette", "Wolffia"],
+        "grainePublicationDatetime":{
+            "year": 2025,
+            "month": 1,
+            "day": 12
+        },
+        "graines":[
+            {
+                "text": "“Un certain système d'autorité est une exigence de toute vie communautaire. Et seul un homme qui vit dans l'isolement n'est pas obligé de répondre, par défi ou soumission, aux mandats des autres.”"
+            },
+            {
+                "text": "“C'est pas méchant de mentir c'est gentil des fois.”"
+            }
+        ]
+    },
+    {
+        "title": "d’où je suis, fenêtre sur le monde...",
+        "slug": "d-ou-je-suis-fenetre-sur-le-monde",
+        "description": "Mélodie Le Blevennec, Collège Rousseau",
+        "start": {
+            "year": 2025,
+            "month": 1,
+            "day": 16
+        },
+        "end": {
+            "year": 2025,
+            "month": 3,
+            "day": 31
+        },
+        "contribution_min_publication_delay_minutes": 60,
+        "contribution_max_publication_delay_minutes": 2880,
+        "cryptonims": ["Agrippa", "Benvolio", "Curio", "Diomède", "Escanès", "Florizel", "Guildenstern", "Hécate", "Iras", "Jacquenetta", "Kent", "Lysimaque", "Mustardseed", "Nym", "Obéron", "Pinch", "Quince", "Rosencrantz", "Solanio", "Thaisa", "Ursule", "Voltemand", "Warwick", "Xénophon", "York", "Zanaé"],
+        "grainePublicationDatetime":{
+            "year": 2025,
+            "month": 1,
+            "day": 15
+        },
+        "graines":[
+            {
+                "text": "\"Je suis concrètement séparé de toi/ de vous par la scène. Vous êtes les individus parmi le groupe, pendant que moi je m’expose. Je suis par ma position dans l’espace un différent, et à la fois un observé.  Moi, je vois un groupe de personne pas toi. (...) Par moment un visage de ton groupe sort du lot, m’est perçu comme une terreur et à la fois je prends un plaisir à être observé par cet être indivisible. Je/tu/il/elle/vous me transformez par le regard que l’on s’échange.  (...) Je suis là, mais pas là à la fois. Je suis dans un non lieu qui n’est plus en relation avec ce qui constitue l’individu c’est-à-dire la psyché, le corps et les autres. Je me situe dans une conscience absente ou l’inconscient lui même n’est plus présent, un non lieu. (...) L'expérience est tout autre, ni liberté, ni provocation, juste...\" Milø Slayers"
+            },
+            {
+                "text": "\"C'est quoi un \"monstre\" pour moi? Je vois le monstre comme étant une notion subjective aux individus, sociétés et certaines périodes historiques. C'est pourquoi la performance ne veut et ne peut pas décrire le monstre.\" Milø Slayers"
+            },
+            {
+                "text": "\"Le visage : 1. Un lieu dans le corps qui a la particularité de me projeter à ma propre personne et est un lieu qui aide l'autre à me reconnaitre. Dans le premier cas, quand je m'observe dans le miroir, c'est mon visage qui me servira pour voir mon moi. Il peut me permettre de savoir si j'ai bonne mine et surtout de voir ce que l'autre verra en me voyant. L'introspection instantanée quotidienne ne dure que très peu de temps dans l'action mais elle nous donne une image imaginaire de soi qui permet de nous voir dans / par les autres.  2. Le masque permet de transformer, de cacher le visage que je porte. Cette métamorphose donne la possibilité de m'imaginer, de me voir différemment et même de me rappeler à une autre personne. (...)\" Milø Slayers"
+            },
+            {
+                "text": "\"Le dramaturge ou le metteur en scène voudrait que les spectateurs voient ceci et qu’ils ressentent cela, qu’ils comprennent telle chose et qu’ils en tirent telle conséquence. C’est la logique du pédagogue abrutissant, la logique de la transmission droite à l’identique : il y a quelque chose, un savoir, une capacité, une énergie qui est d’un côté – dans un corps ou un esprit – et qui doit passer dans un autre. Ce que l’élève doit apprendre est ce que le maître lui apprend. Ce que le spectateur doit voir est ce que le metteur en scène lui fait voir. Ce qu’il doit ressentir est l’énergie qu’il lui communique. À cette identité de la cause et de l’effet qui est au cœur de la logique abrutissante, l’émancipation oppose leur dissociation. C’est le sens du paradoxe du maître ignorant : l’élève apprend du maître quelque chose que le maître ne sait pas lui-même. Il l’apprend comme effet de la maîtrise qui l’oblige à chercher et vérifie cette recherche. Mais il n’apprend pas le savoir du maître.\" extrait de \"Le spectateur émancipé\" de Jacques Rancière"
+            }
+        ]
     }
 ]
