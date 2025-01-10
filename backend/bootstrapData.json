@@ -203,8 +203,8 @@
         },
         "end": {
             "year": 2026,
-            "month": 31,
-            "day": 12
+            "month": 12,
+            "day": 31
         },
         "contribution_min_publication_delay_minutes": 2,
         "contribution_max_publication_delay_minutes": 15,
@@ -223,6 +223,83 @@
             },
             {
                 "text": "Salut, grand maître ! grave seigneur, salut ! je viens — pour satisfaire ton meilleur désir : qu'il s'agisse de voler, — de nager, de plonger dans le feu, de chevaucher — sur les nuages frisés ! À ton service impérieux emploie — Ariel et toute sa bande.\nPROSPERO. Esprit, as-tu — exécuté minutieusement la tempête que je t’ai commandée ?” (La Tempête)"
+            }
+        ]
+    },
+    {
+        "title": "Cercle de lecture : Des arcs-en-ciel au paradis ?",
+        "slug": "cercle-de-lecture",
+        "description": "Vincent Chazaud, Collège Rousseau",
+        "start": {
+            "year": 2025,
+            "month": 1,
+            "day": 15
+        },
+        "end": {
+            "year": 2025,
+            "month": 3,
+            "day": 10
+        },
+        "contribution_min_publication_delay_minutes": 60,
+        "contribution_max_publication_delay_minutes": 2880,
+        "cryptonims": ["Aarau", "Bienne", "Coire", "Delémont", "Emmen", "Frauenfeld", "Glaris", "Hinwil", "Interlaken", "Jussy", "Kloten", "Le Locle", "Martigny", "Nyon", "Olten", "Payerne", "Rapperswil", "Soleure", "Thoune", "Uster", "Viège", "Wohlen", "Yverdon", "Zermatt"],
+        "grainePublicationDatetime":{
+            "year": 2025,
+            "month": 1,
+            "day": 14
+        },
+        "graines":[
+            {
+                "text": "\"L'utopie [est] la vérité de demain.\" (Victor Hugo, Les Misérables, 1862)"
+            },
+            {
+                "text": "\"J'entends la tempête. On me parle de progrès, de « réalisations », de maladies guéries, de niveaux de vie élevés au-dessus d'eux-mêmes. Moi, je parle de sociétés vidées d'elles-mêmes, des cultures piétinées, d'institutions minées, de terres confisquées, de religions assassinées, de magnificences artistiques anéanties, d'extraordinaires possibilités supprimées.\" (Aimé Césaire, poète et homme politique martiniquais, Discours sur le colonialisme, 1950)"
+            },
+            {
+                "text": "\"Je suis nègre et des tonnes de chaînes, des orages de coups, des fleuves de crachats ruissellent sur mes épaules. Mais je n'ai pas le droit de me laisser ancrer. [...] Je n'ai pas le droit de me laisser engluer par les déterminations du passé. Je ne suis pas esclave de l'Esclavage qui déshumanisa mes pères. [...] Moi, l'homme de couleur, je ne veux qu'une chose : que jamais l'instrument ne domine l'homme. Que cesse à jamais l'asservissement de l'homme par l'homme. [...] Qu'il me soit permis de découvrir et de vouloir l'homme, où qu'il se retrouve. Le nègre n'est pas. Pas plus que le blanc.\" (Frantz Fanon, Peau noire, Masques blancs, 1952)"
+            },
+            {
+                "text": "\"Les livres n'étaient qu'un des nombreux types de réceptacles destinés à conserver ce que nous avions peur d'oublier.\" (Ray Bradbury, Fahrenheit 451, 1953)"
+            },
+            {
+                "text": "\"Les vivants ne peuvent plus rien apprendre aux morts, mais les morts au contraire instruisent les vivants.\" (François-René de Chateaubriand, Mémoires d'Outre-tombe, 1849)"
+            }
+        ]
+    },
+    {
+        "title": "Je porte donc je suis",
+        "slug": "je-porte-donc-je-suis",
+        "description": "Karine Gillet, ECG Henry-Dunant",
+        "start": {
+            "year": 2025,
+            "month": 14,
+            "day": 1
+        },
+        "end": {
+            "year": 2025,
+            "month": 3,
+            "day": 9
+        },
+        "contribution_min_publication_delay_minutes": 60,
+        "contribution_max_publication_delay_minutes": 2880,
+        "cryptonims": ["Adadas", "Brosse", "Canel", "Diar", "EmpiroArmano", "Filou", "Gacci", "Herpès", "Jenpolbeaupieds", "Kenzou", "Lacouste", "Manga", "Nuke", "Oréel", "Padra", "RayBand", "SheOut", "TomyLeFlingueur", "Uniclaq", "Vertache", "Wronger", "YvesSansLaurent", "Zoro"],
+        "grainePublicationDatetime":{
+            "year": 2025,
+            "month": 1,
+            "day": 13
+        },
+        "graines":[
+            {
+                "text": "«La mode, c’est ce qui se démode» Jean Cocteau"
+            },
+            {
+                "text": "«Internet : on ne sait pas ce qu’on cherche mais on trouve tout ce qu’on ne cherchait pas.» Anne Roumanoff"
+            },
+            {
+                "text": "«Ce qu’on appelle la société de consommation devrait être rebaptisé : Société de Tentation.» Frédéric Beigbeder"
+            },
+            {
+                "text": "«Aujourd’hui, le vêtement le plus durable est celui qu’on n’achète pas.» Public Eye"
             }
         ]
     }
